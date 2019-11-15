@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lab 3 - Exoplanets</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="./ui-choose.css" rel="stylesheet" />
+</head>
+<body style="background-color:#1E1E1E;">
+    <div class="main">
+        <div class="head">
+            <div id="logo">
+                <img src="./youtube.png"  alt="logo" height=30px/>
+            </div>
+            <div id="headline">
+                <h1> Trending Videos on Youtube </h1>
+            </div>
+        </div>
+
+         <div class="search">  
+             <form>  
+                 <input type="text" placeholder="Search by keyword"> 
+                 <button type="submit"></button>  
+             </form>  
+         </div>  
+
+        <div class="sort">
+            <td>
+                <select class="ui-choose" id="uc_02">
+                    <option value="a">view</option>
+                    <option value="b">like:dislike</option>
+                    <option value="c">comment</option>
+                    <option value="d">income</option>
+                    <option value="e">temperature</option>
+                    <option value="f">trending length</option>
+                </select>
+            </td>
+        </div>
+
+        <div class="scatterplot">
+          <h1> scatterplot </h1>
+        </div>
+
+        <div class="filter">
+            <div class="category">
+                <p class="body1">Category</p>
+            </div>
+            <div class="timerange">
+                <p class="body1">Date Range</p>
+            </div>
+            <div class="viewbreakdown"></div>
+        </div>
+    </div>
+</body>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="./exoplanets.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+<script src="./ui-choose.js"></script>
+<script>   
+    $('.ui-choose').ui_choose();
+    var uc_02 = $('#uc_02').data('ui-choose');
+    uc_02.click = function(value, item) {
+        console.log('click', value);
+    };
+    uc_02.change = function(value, item) {
+        console.log('change', value);
+    };
+</script>
+
+</html>
