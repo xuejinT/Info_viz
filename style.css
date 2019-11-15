@@ -1,0 +1,198 @@
+/* our design style*/
+/* page */
+.main{
+    width:1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* font */
+h1 {
+    font-family: "roboto";
+    font-weight: bold ;
+    font-size: 34;
+    color : #ffffff;
+    line-height: 2;
+}
+
+h2 {
+    font-family: "roboto";
+    font-weight: bold ;
+    font-size: 20;
+    color : #ffffff;
+    line-height: 2;
+}
+
+.body1 {
+    font-family: "roboto";
+    font-size: 16;
+    color : #ffffff;
+    line-height: 1.5;
+    margin:0;
+}
+
+.body2 {
+    font-family: "roboto";
+    font-size: 16;
+    color : #aaaaaa;
+    line-height: 1.5;
+}
+
+.textbutton {
+    font-family: "roboto";
+    font-weight: bold;
+    font-size: 16;
+    color : #3ea6ff;
+    line-height: 1.5;
+}
+
+.similarvideo {
+    font-family: "roboto";
+    font-size: 16;
+    color : #3ea6ff;
+    line-height: 1.5;
+}
+
+/* axis */
+.axis text {
+    fill: #aaaaaa;
+}
+
+.axis path,
+.axis line {
+    stroke: #aaaaaa;
+}
+
+.axisLabel {
+    fill: #ffffff;
+    font-size: 12px;
+    font-family: "roboto";
+    text-anchor: middle;
+}
+
+/* overview */
+#logo {
+    width: 62px;
+    float:left;
+    margin-top: 16px;
+    margin-bottom: 22px;
+}
+
+#headline {
+    margin-left: 20px;
+}
+
+
+.search input {  
+    float:left;
+    width: 528px; 
+    height: 30px;
+    border-radius: 5px 0 0 5px;  
+    background: #282828;  
+    border-style: none;
+    text-indent: 10px;
+    /* font size not changed here*/
+    font-family: "roboto";
+    font-size: 16;
+    color : #aaaaaa;
+}  
+
+.search input:focus {  
+    outline:none;
+    border-style: none;
+    text-indent: 10px;
+    font-family: "roboto";
+    font-size: 16;
+    color : #ffffff;
+}  
+
+.search button {  
+    top : 0;
+    right: 0;
+    width: 60px; 
+    height: 32px;
+    background: #404040;  
+    border-radius: 0 5px 5px 0; 
+    border-style :none; 
+    outline: none;
+}  
+
+.search button:hover{
+    background: #191919;
+}
+
+.search button:active{
+    border-style: none;
+    outline: none;
+}
+
+.search button:before {  
+    content: "\f002";  
+    font-family: FontAwesome;  
+    font-size: 16px;  
+    color: #ffffff;  
+}  
+
+.sort {
+    margin-top: 24px;
+    height:32px;
+}
+
+.scatterplot{
+    height:564px;
+    background-color: #aaaaaa;
+}
+
+.filter{
+    height:176px;
+    background-color: #282828;
+    border-radius: 5px;
+    margin-top: 24px;
+}
+
+.category, .timerange, .viewbreakdown{
+    width:30%;
+    height: 144px;
+    float:left;
+    margin-top: 16px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 16px;
+}
+/* lab4 original codes
+.planet {
+    fill-opacity: 0.4;
+    stroke: #fff;
+    stroke-width: 0.5;
+    stroke-opacity: 0.6;
+}
+
+.planet-label {
+    fill: #ccc;
+    font-size: 11px;
+}
+
+.axis text {
+    fill: #ccc;
+}
+
+.axis path,
+.axis line {
+    stroke: #ccc;
+}
+
+.axisLabel {
+    fill: #ccc;
+    font-size: 11px;
+    text-anchor: middle;
+}
+
+body {
+    font-family: "Open Sans";
+    margin: 0;
+    background-color: #000;
+}
+
+#main {
+    margin: 0;
+}
