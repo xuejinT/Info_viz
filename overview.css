@@ -21,7 +21,7 @@
     text-indent: 10px;
     /* font size not changed here*/
     font-family: "roboto";
-    font-size: 16;
+    font-size: 14px;
     color : #aaaaaa;
 }  
 
@@ -30,7 +30,7 @@
     border-style: none;
     text-indent: 10px;
     font-family: "roboto";
-    font-size: 16;
+    font-size: 14px;
     color : #ffffff;
 }  
 
@@ -63,12 +63,8 @@
 
 .sort {
     margin-top: 24px;
+    margin-bottom: 24px;
     height:32px;
-}
-
-.scatterplot{
-    height:564px;
-    background-color: #aaaaaa;
 }
 
 .filter{
@@ -87,6 +83,123 @@
     margin-right: 20px;
     margin-bottom: 16px;
 }
+
+table{
+    padding-top: 12px;
+}
+
+tr td{
+    padding-top: 6px;
+    padding-bottom: 6px;
+
+}
+
+
+input[type="checkbox"] {
+    visibility: hidden;
+    margin: 0px;
+    height:0px;
+    width: 0px;
+}
+label {
+  cursor: pointer;
+}
+
+input[type="checkbox"] + label:before {
+  border: 1px solid #aaaaaa;
+  border-radius: 2px;
+  content: "\00a0";
+  display: inline-block;
+  font: 14px/1em roboto;
+  font-weight: normal;
+  margin: 0 0.8em 0 0;
+  padding: 0;
+  height: 12px;
+  width: 12px;
+}
+
+[id="all"]:checked + label:before {
+  background: #85c0ce;
+  border:1px solid #85c0ce;
+  text-align: center;
+}
+
+[id="c1"]:checked + label:before {
+  background: #7CC237;
+  border:1px solid #7CC237;
+  text-align: center;
+}
+
+[id="c2"]:checked + label:before {
+  background: #DE5555 ;
+  border:1px solid #DE5555 ;
+  text-align: center;
+}
+
+[id="c3"]:checked + label:before {
+  background: #6D72E7;
+  border:1px solid #6D72E7;
+  text-align: center;
+}
+
+[id="c4"]:checked + label:before {
+  background: #DEB75B;
+  border:1px solid #DEB75B;
+  text-align: center;
+}
+
+#slider {
+    margin-top:16px;
+    float:left;
+    width: 300px; 
+    height: 32px;
+    border-radius: 5px;  
+    background: #1e1e1e;  
+    border-style: none;
+    text-indent: 10px;
+    /* font size not changed here*/
+    font-family: "roboto";
+    font-size: 14px;
+    color : #aaaaaa;
+}
+
+#breakdownbutton{
+  width: 160px;
+  height:32px;
+  border-radius: 5px;
+  background-color:#007FF5;
+  border-style: none;
+  font-family: "roboto";
+  color:#FFFFFF;
+  font-size:14px;
+}
+
+#breakdownbutton{
+  width: 160px;
+  height:32px;
+  border-radius: 5px;
+  background-color:#007FF5;
+  border-style: none;
+  font-family: "roboto";
+  color:#FFFFFF;
+  font-size:14px;
+}
+
+#breakdownbutton:hover{
+    background: #0065E1;
+}
+
+#breakdownbutton:active{
+    background: #004BA7;
+    border-style: none;
+    outline: none;
+}
+
+#breakdownbutton:focus{
+    border-style: none;
+    outline: none;
+}
+
 /* lab4 original codes
 .planet {
     fill-opacity: 0.4;

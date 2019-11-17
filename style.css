@@ -7,10 +7,14 @@
 }
 
 /* font */
+p {
+    margin: 0px;
+}
+
 h1 {
     font-family: "roboto";
     font-weight: bold ;
-    font-size: 34;
+    font-size: 34px;
     color : #ffffff;
     line-height: 2;
 }
@@ -18,14 +22,14 @@ h1 {
 h2 {
     font-family: "roboto";
     font-weight: bold ;
-    font-size: 20;
+    font-size: 20px;
     color : #ffffff;
     line-height: 2;
 }
 
 .body1 {
     font-family: "roboto";
-    font-size: 16;
+    font-size: 16px;
     color : #ffffff;
     line-height: 1.5;
     margin:0;
@@ -33,7 +37,7 @@ h2 {
 
 .body2 {
     font-family: "roboto";
-    font-size: 16;
+    font-size: 14px;
     color : #aaaaaa;
     line-height: 1.5;
 }
@@ -41,14 +45,14 @@ h2 {
 .textbutton {
     font-family: "roboto";
     font-weight: bold;
-    font-size: 16;
+    font-size: 16px;
     color : #3ea6ff;
     line-height: 1.5;
 }
 
 .similarvideo {
     font-family: "roboto";
-    font-size: 16;
+    font-size: 16px;
     color : #3ea6ff;
     line-height: 1.5;
 }
