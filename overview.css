@@ -148,6 +148,18 @@ input[type="checkbox"] + label:before {
   text-align: center;
 }
 
+[id="c5"]:checked + label:before {
+  background: #26BDD2;
+  border:1px solid #26BDD2;
+  text-align: center;
+}
+
+[id="c6"]:checked + label:before {
+  background: #B155DE;
+  border:1px solid #B155DE;
+  text-align: center;
+}
+
 #slider {
     margin-top:16px;
     float:left;
