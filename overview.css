@@ -105,6 +105,11 @@ label {
   cursor: pointer;
 }
 
+circle {
+  cursor:  pointer;
+}
+
+
 input[type="checkbox"] + label:before {
   border: 1px solid #aaaaaa;
   border-radius: 2px;
@@ -215,12 +220,32 @@ input[type="checkbox"] + label:before {
 .tooltip { 
     position: absolute;     
     text-align: center;     
-    width: 200px;          
-    height: 40px;         
-    padding: 2px;       
-    font: 12px sans-serif;    
+    width: auto;          
+    height: auto;         
+    padding: 10px;  
+    font-family: "roboto";  
+    font-size: 12px;    
     background: lightsteelblue; 
     border: 0px;    
     border-radius: 8px;     
     pointer-events: none;     
 }
+
+/* Line Animation */
+.line {
+        fill: none;
+        stroke: #00A699;
+        opacity: 0.5;
+        stroke-width: 2px;
+        stroke-dasharray:1000;
+        stroke-dashoffset: 1000;
+        animation: dash 2s linear forwards;
+    }
+    @keyframes dash{
+        from{
+            stroke-dashoffset: 1000;
+        }
+        to{
+            stroke-dashoffset: 0;
+        }
+    }
