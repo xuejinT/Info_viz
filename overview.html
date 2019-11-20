@@ -107,18 +107,24 @@
             <div class="viewbreakdown">
                 <p class="body1">Detail</p>
                 <div style="margin-top:16px ">
-                    <button type="button" id="breakdownbutton">View Breakdown</button>
+                    <button type="button" id="breakdownbutton" onclick="breakdown_click()">View Breakdown</button>
                     <p class="body2" style="margin-top: 12px; margin-left: 8px">Please apply filters first</p>
                 </div>
             </div>
         </div>
     </div>
+    <section class="chart-1">
+  <div id="chart"></div>
+  <div id="legend"></div>
+        </section>
 </body>
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
 <script src="//d3js.org/d3.v3.min.js"></script> -->
 <script src="./plugin/choose/ui-choose.js"></script>
+<script src="./breakdown.js"></script>
+
 <script>   
     $('.ui-choose').ui_choose();
     var uc_02 = $('#uc_02').data('ui-choose');
