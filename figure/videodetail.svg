@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="384px" height="480px" viewBox="0 0 384 480" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>Combined Shape@2x</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Hifi" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="3-Similarity" transform="translate(-120.000000, -177.000000)" fill="#282828">
+            <g id="Group-7" transform="translate(120.000000, 177.000000)">
+                <path d="M88,6 L98,0 L108,6 L379,6 C381.761424,6 384,8.23857625 384,11 L384,475 C384,477.761424 381.761424,480 379,480 L5,480 C2.23857625,480 3.22224576e-14,477.761424 0,475 L0,11 C-3.38176876e-16,8.23857625 2.23857625,6 5,6 L88,6 Z" id="Combined-Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

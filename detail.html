@@ -8,30 +8,68 @@
     <link rel="stylesheet" type="text/css" href="./plugin/slickplugin/slick/slick.css"/>
     <link rel="stylesheet" type="text/css" href="./plugin/slickplugin/slick/slick-theme.css"/>   
 </head>
-<body style="background-color:#1E1E1E;">
+<body style="background-color:#1E1E1E;  background-image: url(./figure/detailbg.svg);">
     <div class="main">
-        <div id="backbutton" style="height:24px">
-            <a href="javascript:history.go(-1);"><p class="textbutton" style="margin-top:30px;">BACK</p></a>
+      <div id="backbutton" style="height:24px">
+          <a href="javascript:history.go(-1);"><p class="textbutton" style="margin-top:30px;">BACK</p></a>
+      </div>
+
+      <div class="variable slider">
+        <div class="thumbnail">
+          <img src="./figure/placeholder.png">
         </div>
-        <div class="carousel" style="height:124px">
+        <div class="thumbnail">
+          <img src="./figure/placeholder.png">
         </div>
-        <div class=selectedvideo style="float: left; width: 384px; height:1184px">
-            
+        <div class="thumbnail">
+          <img src="./figure/placeholder.png">
         </div>
-        <div class=charts style="float: right; width: 766px; height:1184px">
-            <div id=categorychart style="width:auto; height:378px; margin-bottom: 25px"></div>
-            <div id=wordle style="width:auto; height:378px;margin-bottom: 25px"></div>
-            <div id=parallelcoordinate style="width:auto; height:378px"></div>
+        <div class="thumbnail">
+          <img src="./figure/placeholder.png">
+        </div>
+        <div class="thumbnail">
+          <img src="./figure/placeholder.png">
+        </div>
+
+      </div>
+          <div class=selectedvideo style="float: left; width: 384px; height:1008px">  
+            <div id="videodetail">
+              <p class="body2">Selected Video</p>
+              <p class="body1" id="videotitle">Patriots vs. Ravens Week 9 Highlights | NFL 2019</p>
+              <p class="body2" id="channelname">by NYL</p>
+              <ul class="tags body2">
+                <li>#NFL</li>
+                <li>#Patriots</li>
+              </ul>
+              <div style='background-color:#363636;height:1px;border:none;'></div>
+              <div id="selectedattitude" style="height:270px; margin-top: 10px"></div>
+            </div>
+            <div id="similarvideo" style="height: 480px; background-color: #282828; border-radius: 5px;"></div>
+          </div>
+          <div class=charts style="float: right; width: 766px; margin-top:38px">
+            <div id=categorychart style="width:auto; height:320px; margin-top:12px;margin-bottom: 24px">
+              <p class="body1">Category</p>
+            </div>
+            <div id=wordle style="width:auto; height:320px;margin-bottom: 24px">
+              <p class="body1">Topic</p>
+            </div>
+            <div id=parallelcoordinate style="width:auto; height:320px">
+              <p class="body1">Attitude</p>
+            </div>
         </div>
     </div>
 </body>
+<script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="./detail.js"></script>
-<script>   
-$(document).ready(function(){
-  $('.carousel').slick({
-    setting-name: setting-value
-  });
-});
+<script type="text/javascript" src="./plugin/slickplugin/slick/slick.min.js"></script>
+<script type="text/javascript">
+    $(document).on('ready', function() {
+      $(".variable").slick({
+        dots: true,
+        infinite: false,
+        variableWidth: true
+      });
+    });
 </script>
 </html>

@@ -27,6 +27,8 @@
 
     margin: 0;
     padding: 0;
+
+    width: 1120px;
 }
 .slick-list:focus
 {
@@ -117,3 +119,5 @@
 .slick-arrow.slick-hidden {
     display: none;
 }
+
+
