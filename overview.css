@@ -221,37 +221,15 @@ input[type="checkbox"] + label:before {
     position: absolute;     
     text-align: center;     
     width: auto;          
-    height: auto;
+    height: auto;         
     padding: 10px;  
     font-family: "roboto";  
     font-size: 12px;    
     background: lightsteelblue; 
     border: 0px;    
     border-radius: 8px;     
-    pointer-events: none;   
+    pointer-events: none;     
 }
-
-/* .tooltip {
-  position: absolute;
-  width: 200px;
-  height: auto;
-  padding: 10px;
-  background: white;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-  -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-  pointer-events: none;
-}
- */      
-.tooltip p {
-  margin: 0;
-  font-family: Arial;
-  font-size: 16px;
-  line-height: 20px;
-} 
 
 /* Line Animation */
 .line {

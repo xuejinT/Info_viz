@@ -101,8 +101,8 @@ var root = {
 };
 
 // set width, height, and radius
-var width = 500,
-    height = 500,
+var width = 325,
+    height = 325,
     radius = (Math.min(width, height) / 2) - 10; // lowest number divided by 2. Then subtract 10
 
 // legend dimensions

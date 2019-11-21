@@ -17,7 +17,6 @@ var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S");
 //     .range(['#d64d3f', '#96ac3d', '#208d8d']);
 var color = "rgb(128, 168, 180)"
 var tooltip = d3.select(".tooltip");
-var logo = d3.select("logo");
 
 d3.selection.prototype.moveToFront = function() {
     return this.each(function() {
@@ -140,12 +139,17 @@ d3.dsv('\\', './data/US_final.csv').then(function(dataset) {
                 .duration(200)
                 .style("opacity", .9);
             tooltip.html(d["title"] + "<br/>" + d["views"] + " views")
-                .style("margin-left", (d3.event.pageX-250) + "px")
-                .style("margin-top", (d3.event.pageY-250) + "px")
+                .style("left", (d3.event.pageX - 70) + "px")
+                .style("top", (d3.event.pageY - 60) + "px")
                 .style("cursor", "pointer");
-
             connect_dots(dataset, d);
             show_all(d);
+
+            // var hovered = d3.select(this);
+            // hovered
+            //     .style('stroke-width', 2)
+            //     .style('fill', 'orange')
+            //     .style('stroke', '#333');
         })
         .on("mouseout", function(d) {
             tooltip.transition()
@@ -153,6 +157,11 @@ d3.dsv('\\', './data/US_final.csv').then(function(dataset) {
                 .style("opacity", 0);
             reset_all_circles();
             remove_path();
+            // var hovered = d3.select(this);
+            // hovered
+            //     .style('stroke-width', 0)
+            //     .style('fill', null)
+            //     .style('stroke', 'none');
         });
 
     // Create axes for both the y- and x-scale
