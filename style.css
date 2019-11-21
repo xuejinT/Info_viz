@@ -121,13 +121,34 @@ rect {
   stroke-width: 2;
 }
 
+
+
+.bd-box{
+    height:176px;
+    background-color: #282828;
+    border-radius: 5px;
+    margin-top: 24px;
+}
+
+.bd-filter {
+    width: 33.333%;
+    float: left;
+    padding-right: 100px;
+    position: relative;
+}
+
+.bd-chart {
+    width: 66% - 100px;
+    float: left;
+}
+
 .legend {
   width: 50%;
   margin: 0 auto;
 }
 
-.chart-1 {
-  width: 33%;
+.breakdownSection {
+  width: 100%;
 }
 
 /* lab4 original codes
