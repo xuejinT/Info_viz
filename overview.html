@@ -10,9 +10,7 @@
 </head>
 <body style="background-color:#1E1E1E;">
     <div class="main">
-        <div class="tooltip" style="opacity:0%">
-            
-        </div>
+        
         <div class="head">
             <div id="logo">
                 <img src="./figure/youtube.png"  alt="logo" height=30px/>
@@ -42,6 +40,8 @@
         </div>
 
         <div class="scatterplot">
+            <div class="tooltip" style="opacity:0">
+        </div>
             <svg style="height:600px; width:100%;"></svg>
             </svg>
         </div>
@@ -120,10 +120,8 @@
 </body>
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
-<script src="//d3js.org/d3.v3.min.js"></script> -->
 <script src="./plugin/choose/ui-choose.js"></script>
-<script src="./breakdown.js"></script>
+<!-- <script src="./breakdown.js"></script> -->
 
 <script>   
     $('.ui-choose').ui_choose();
