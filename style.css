@@ -50,6 +50,13 @@ h2 {
     line-height: 1.5;
 }
 
+.body3 {
+    font-family: "roboto";
+    font-size: 14px;
+    color : #ffffff;
+    line-height: 1.5;
+}
+
 .textbutton {
     font-family: "roboto";
     font-weight: bold;
@@ -144,9 +151,13 @@ div.tooltip p {
 	line-height: 20px;
 } 
 
-.legend {
+/*.legend {
   width: 50%;
   margin: 0 auto;
+}*/
+
+table { 
+    border-spacing:0; 
 }
 
 .chart-1 {

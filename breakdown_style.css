@@ -1,0 +1,59 @@
+    
+.breakdownSection {
+  width: 100%;
+}
+    
+.bd-filter {
+    width: 28%;
+    float: left;
+    position: relative;
+}
+
+.bd-chart {
+    padding-left: 74px;
+    width: 66%px;
+    float: left;
+}
+
+.legend {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.bd-filterbox{
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.bd-boxcurrent{
+    height:196px;
+    background-color: #282828;
+    border-radius: 5px;
+}
+
+.bd-boxhierarchy{
+    height:122px;
+    background-color: #282828;
+    border-radius: 5px;
+}
+
+.bd-boxselected{
+    height:122px;
+    background-color: #282828;
+    border-radius: 5px;
+}
+
+.bd-box1, .bd-box2, .bd-box3{
+    float:left;
+    margin-top: 16px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 16px;
+}
+
+.bd-table{
+    padding-top: 0px;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+

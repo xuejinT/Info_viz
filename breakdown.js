@@ -1,8 +1,24 @@
 //script for showing breakdown graph
 
+var bd_isClick = false;
+//document.getElementById("breakdownSection").style.display = "none";
+
+
+
+
 function breakdown_click()
-  {
-      console.log("breakdown btn clicked");
+{
+    bd_isClick = !bd_isClick;
+    console.log("breakdown btn clicked");
+    console.log(bd_isClick);
+    console.log(document.getElementById("breakdownSection").style.display);
+
+    if (bd_isClick == true){
+            console.log("true");
+        document.getElementById("breakdownSection").style.display = "block";
+    } else {
+        document.getElementById("breakdownSection").style.display = "none";
+    }
 var root = {
  "name": "TOTAL",
  "color": "#FFF",
@@ -101,8 +117,8 @@ var root = {
 };
 
 // set width, height, and radius
-var width = 325,
-    height = 325,
+var width = 500,
+    height = 500,
     radius = (Math.min(width, height) / 2) - 10; // lowest number divided by 2. Then subtract 10
 
 // legend dimensions
@@ -164,7 +180,7 @@ root.data.children.forEach(function(d){
 })
 
 // define SVG element
-var svg = d3.select("#chart").append("svg")
+var svg = d3.select("#bdchart").append("svg")
     .attr("width", width) // set width
     .attr("height", height) // set height
   .append("g") // append g element

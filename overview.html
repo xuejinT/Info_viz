@@ -5,6 +5,7 @@
     <title>Trending Videos on Youtube</title>
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./overview.css">
+    <link rel="stylesheet" href="./breakdown_style.css">
     <link href="./plugin/choose/ui-choose.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="./plugin/daterangepicker-master/daterangepicker.css" />
 </head>
@@ -112,11 +113,95 @@
                 </div>
             </div>
         </div>
-    </div>
-    <section class="chart-1">
-  <div id="chart"></div>
-  <div id="legend"></div>
+    
+        <section id="breakdownSection">
+            <div>
+                <h2> Trending Videos on Youtube </h2>
+            </div>
+            <div class="bd-filter">
+                <div class="bd-filterbox">
+                    <div class="bd-boxcurrent">
+                        <div class="bd-box1">
+                            <p class="body1">Currently Selected Videos </p>
+                            <p class="body2">Videos in category</p>
+                            <table class="bd-table">
+                                <tr>
+                                    <th height = "0"></th>
+                                </tr>
+                                <tr>
+                                    <td  height="24">
+                            <p class="body3" style="display:inline-block; height:24px;margin-left: 16px">Activism</p>
+                                    </td>
+                                    <td height="24">
+                            <p class="body3" style="display:inline-block; height:24px;margin-left: 16px">Education</p>
+                                    </td>
+                                    <td height="24">
+                            <p class="body3" style="display:inline-block; height:24px;margin-left: 16px">Entertainment</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td height="24">
+                            <p class="body3" style="display:inline-block; height:24px;margin-left: 16px">Lifestyle</p>
+                                    </td>
+                                    <td height="24">
+                            <p class="body3" style="display:inline-block; height:24px;margin-left: 16px">News</p>
+                                    </td>
+                                    <td height="24">
+                            <p class="body3" style="display:inline-block; height:24px;margin-left: 16px">Technology</p>
+                                    </td>
+                                </tr>
+                            </table >
+                            <p class="body2">Date range</p>
+                            <p class="body3" style="display:inline-block; height:24px;margin-left: 16px">date</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bd-filterbox">
+                    <div class="bd-boxhierarchy">
+                        <div class = "bd-box2">
+                            <p class="body1">Hierarchy</p>
+                            <table  class="bd-table">
+                                <tr>
+                                    <td>
+                                        <p class="body2">Top level</p>
+                                    </td>
+                                    <td>
+                                        <p class="body3">Category Cluster</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p class="body2">Second level</p>
+                                    </td>
+                                    <td>
+                                        <p class="body3">Category Cluster</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="bd-filterbox">
+                    <div class="bd-boxselected">
+                        <div class = "bd-box3">
+                            <p class="body1">Selected Videos (0)</p>
+
+                        </div>
+                    </div>
+                </div>
+                                    
+            </div>
+            <div class="bd-chart">
+            <div id="bdchart"></div>
+            </div>
+  <!--<div id="legend"></div>-->
         </section>
+    
+    </div>
+    
+    
+   
+    
 </body>
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
