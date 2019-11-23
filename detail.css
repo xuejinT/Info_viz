@@ -35,6 +35,11 @@
 	width: 123px;
 }
 
+.thumbnail img{
+	width: 123px;
+	height: auto;
+}
+
 #videotitle{
 	height:48px;
 	margin-top: 4px
@@ -61,3 +66,37 @@
 	margin-right: 10px;
 	border-radius: 5px;
 }
+
+.bar {
+	fill: #85C0CE;
+	fill-opacity: 0.3;
+}
+
+.p_line {
+	stroke: #85C0CE;
+	opacity: 0.3;	
+	fill: none;
+}
+
+#viewsline {
+	stroke: #1C7E8C;
+	opacity: 1;	
+	fill: none;
+	stroke-width:2px;
+}
+
+#dislikesline {
+	stroke: #5D8931;
+	opacity: 1;	
+	fill: none;
+	stroke-width:2px;
+}
+
+#likesline {
+	stroke: #9D4747;
+	opacity: 1;	
+	fill: none;
+	stroke-width:2px;
+}
+
+
