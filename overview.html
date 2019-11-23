@@ -155,12 +155,7 @@
                                     </td>
                                     <td>
                                         <select class="select" id="bd-secondlevel">
-	    	                                  <option style="text-color:#"value="view">View</option>
-	    	                                  <option value="like:dislike">like:dislike</option>
-	    	                                  <option value="comment">comment</option>
-	    	                                  <option value="income">income</option>
-	    	                                  <option value="temperature">temperature</option>
-	    	                                  <option value="trending length">trending length</option>
+                                            
                                         </select> 
                                     </td>
                                 </tr>
@@ -197,13 +192,15 @@
 <script src="./plugin/choose/ui-choose.js"></script>
 <script src="./breakdown.js"></script>
 
-<script>   
+<script>
     $('.ui-choose').ui_choose();
     var uc_02 = $('#uc_02').data('ui-choose');
     uc_02.click = function(value, item) {
         console.log('click', value);
     };
-    uc_02.change = function(value, item) {
+    uc_02.change = function(value, item) 
+    {
+        bd_sortfunc();
         console.log('change', value);
     };
 </script>

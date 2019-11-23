@@ -9,8 +9,9 @@ var c5_new;
 var c6_tec;
 var bd_start;
 var bd_end;
+var bd_sort;
 
-//document.getElementById("breakdownSection").style.display = "none";
+document.getElementById("breakdownSection").style.display = "none";
 
 document.getElementById("bd-act").style.display = "none";
 document.getElementById("bd-tec").style.display = "none";
@@ -29,10 +30,21 @@ function breakdown_click()
 
     if (bd_isClick == true){
         bd_checkCategory();
+        bd_sortfunc();
         document.getElementById("breakdownSection").style.display = "block";
     } else {
         document.getElementById("breakdownSection").style.display = "none";
     }
+    
+}
+
+d3.dsv('\\', './data/US_final.csv').then(function(dataset) {
+    dataset.forEach(function(d) {
+        d.publish_time = parseTime(d.publish_time);
+        d.trending_date = parseTime(d.trending_date);
+    });
+    console.log(dataset);
+});
 var root = {
  "name": "TOTAL",
  "color": "#FFF",
@@ -359,7 +371,7 @@ function getRootmostAncestorByWhileLoop(node) {
     while (node.depth > 1) node = node.parent;
     return node;
 }      
-  }
+
 
 function bd_checkCategory(){
     c1_act = document.getElementById("c1").checked;
@@ -399,4 +411,22 @@ function bd_checkCategory(){
         } else {
             document.getElementById("bd-tec").style.display = "none";
         }
+}
+
+function bd_sortfunc() {
+    document.getElementById("bd-secondlevel").options.length = 0;
+    bd_sort = document.getElementById("uc_02").value;
+    //var el = document.getElementById('display');
+    var selectobject = document.getElementById("uc_02");
+    for (var i=0; i<selectobject.length; i++) {
+        if (selectobject.options[i].value != bd_sort){
+            var option = document.createElement("option");
+            option.text = selectobject.options[i].text;
+            option.value = selectobject.options[i].value;
+            document.getElementById("bd-secondlevel").add(option);
+    }
+
+    }
+  
+    
 }
