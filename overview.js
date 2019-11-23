@@ -205,5 +205,10 @@ $('input[name="daterange"]').daterangepicker({
     opens: 'left',
     drops: "up"
 }, function(start, end, label) {
+    //set up date range in breakdown
+    bd_start = start;
+    bd_end = end;
+    document.getElementById("bd-date").innerHTML = start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD') ;
+    
     console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
 });

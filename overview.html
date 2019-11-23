@@ -60,13 +60,13 @@
                     <tr>
                         <td>
                             <p class="body2">
-                                <input type="checkbox" name="c" value="activism" id="c1"/>
+                                <input type="checkbox" name="c" value="activism" id="c1" onclick = "bd_checkCategory()"/>
                                 <label for="c1">Activism</label>
                             </p>
                         </td>
                         <td>
                             <p class="body2">
-                                <input type="checkbox" name="c" value="education" style="margin-left: 80px" id="c2"/>
+                                <input type="checkbox" name="c" value="education" style="margin-left: 80px" id="c2" onclick = "bd_checkCategory()"/>
                                 <label for="c2">Education</label>
                             </p>
                         </td>
@@ -74,13 +74,13 @@
                     <tr>
                         <td>
                             <p class="body2">
-                                <input type="checkbox" name="c" value="entertainment" id="c3"/>
+                                <input type="checkbox" name="c" value="entertainment" id="c3" onclick = "bd_checkCategory()"/>
                                 <label for="c3">Entertainment</label>
                             </p>
                         </td>
                         <td>
                             <p class="body2">
-                                <input type="checkbox" name="c" value="lifestyle" style="margin-left: 80px" id="c4"/>
+                                <input type="checkbox" name="c" value="lifestyle" style="margin-left: 80px" id="c4" onclick = "bd_checkCategory()"/>
                                 <label for="c4">Lifestyle</label>
                             </p>
                         </td>
@@ -88,13 +88,13 @@
                     <tr>
                         <td>
                             <p class="body2">
-                                <input type="checkbox" name="c" value="news" id="c5"/>
+                                <input type="checkbox" name="c" value="news" id="c5" onclick = "bd_checkCategory()"/>
                                 <label for="c5">News</label>
                             </p>
                         </td>
                         <td>
                             <p class="body2">
-                                <input type="checkbox" name="c" value="technology" style="margin-left: 80px" id="c6"/>
+                                <input type="checkbox" name="c" value="technology" style="margin-left: 80px" id="c6" onclick = "bd_checkCategory()"/>
                                 <label for="c6">Technology</label>
                             </p>
                         </td>
@@ -124,35 +124,15 @@
                         <div class="bd-box1">
                             <p class="body1">Currently Selected Videos </p>
                             <p class="body2">Videos in category</p>
-                            <table class="bd-table">
-                                <tr>
-                                    <th height = "0"></th>
-                                </tr>
-                                <tr>
-                                    <td  height="24">
-                            <p class="body3" style="display:inline-block; height:24px;margin-left: 16px">Activism</p>
-                                    </td>
-                                    <td height="24">
-                            <p class="body3" style="display:inline-block; height:24px;margin-left: 16px">Education</p>
-                                    </td>
-                                    <td height="24">
-                            <p class="body3" style="display:inline-block; height:24px;margin-left: 16px">Entertainment</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td height="24">
-                            <p class="body3" style="display:inline-block; height:24px;margin-left: 16px">Lifestyle</p>
-                                    </td>
-                                    <td height="24">
-                            <p class="body3" style="display:inline-block; height:24px;margin-left: 16px">News</p>
-                                    </td>
-                                    <td height="24">
-                            <p class="body3" style="display:inline-block; height:24px;margin-left: 16px">Technology</p>
-                                    </td>
-                                </tr>
-                            </table >
-                            <p class="body2">Date range</p>
-                            <p class="body3" style="display:inline-block; height:24px;margin-left: 16px">date</p>
+                            
+                            <p class="body3" style="display:inline-block; height:24px;margin-left: 16px" id = "bd-act">Activism</p>
+                            <p class="body3" style="display:inline-block; height:24px;margin-left: 16px" id = "bd-edu">Education</p>
+                            <p class="body3" style="display:inline-block; height:24px;margin-left: 16px" id = "bd-ent">Entertainment</p>
+                            <p class="body3" style="display:inline-block; height:24px;margin-left: 16px" id = "bd-lif">Lifestyle</p>
+                            <p class="body3" style="display:inline-block; height:24px;margin-left: 16px" id = "bd-new">News</p>
+                            <p class="body3" style="display:inline-block; height:24px;margin-left: 16px" id = "bd-tec">Technology</p>
+                            <p class="body2" style="margin-top:14px">Date range</p>
+                            <p class="body3" style="display:inline-block; height:24px;margin-left: 16px" id = "bd-date">date</p>
                         </div>
                     </div>
                 </div>
@@ -160,13 +140,13 @@
                     <div class="bd-boxhierarchy">
                         <div class = "bd-box2">
                             <p class="body1">Hierarchy</p>
-                            <table  class="bd-table">
+                            <table  class="bd-table" cellpadding="10">
                                 <tr>
                                     <td>
                                         <p class="body2">Top level</p>
                                     </td>
                                     <td>
-                                        <p class="body3">Category Cluster</p>
+                                        <p class="body3">   Category Cluster</p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -174,7 +154,14 @@
                                         <p class="body2">Second level</p>
                                     </td>
                                     <td>
-                                        <p class="body3">Category Cluster</p>
+                                        <select class="select" id="bd-secondlevel">
+	    	                                  <option style="text-color:#"value="view">View</option>
+	    	                                  <option value="like:dislike">like:dislike</option>
+	    	                                  <option value="comment">comment</option>
+	    	                                  <option value="income">income</option>
+	    	                                  <option value="temperature">temperature</option>
+	    	                                  <option value="trending length">trending length</option>
+                                        </select> 
                                     </td>
                                 </tr>
                             </table>

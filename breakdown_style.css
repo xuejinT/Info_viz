@@ -29,6 +29,7 @@
     height:196px;
     background-color: #282828;
     border-radius: 5px;
+    overflow: auto;
 }
 
 .bd-boxhierarchy{
@@ -41,6 +42,7 @@
     height:122px;
     background-color: #282828;
     border-radius: 5px;
+    overflow: auto;
 }
 
 .bd-box1, .bd-box2, .bd-box3{
@@ -56,4 +58,3 @@
     border-spacing: 0;
     border-collapse: collapse;
 }
-

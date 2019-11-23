@@ -1,8 +1,24 @@
 //script for showing breakdown graph
 
 var bd_isClick = false;
+var c1_act;
+var c2_edu;
+var c3_ent;
+var c4_lif;
+var c5_new;
+var c6_tec;
+var bd_start;
+var bd_end;
+
 //document.getElementById("breakdownSection").style.display = "none";
 
+document.getElementById("bd-act").style.display = "none";
+document.getElementById("bd-tec").style.display = "none";
+document.getElementById("bd-edu").style.display = "none";
+document.getElementById("bd-ent").style.display = "none";
+document.getElementById("bd-lif").style.display = "none";
+document.getElementById("bd-new").style.display = "none";
+document.getElementById("bd-date").innerHTML = document.getElementById("slider").value;
 
 
 
@@ -10,11 +26,9 @@ function breakdown_click()
 {
     bd_isClick = !bd_isClick;
     console.log("breakdown btn clicked");
-    console.log(bd_isClick);
-    console.log(document.getElementById("breakdownSection").style.display);
 
     if (bd_isClick == true){
-            console.log("true");
+        bd_checkCategory();
         document.getElementById("breakdownSection").style.display = "block";
     } else {
         document.getElementById("breakdownSection").style.display = "none";
@@ -346,3 +360,43 @@ function getRootmostAncestorByWhileLoop(node) {
     return node;
 }      
   }
+
+function bd_checkCategory(){
+    c1_act = document.getElementById("c1").checked;
+    c2_edu = document.getElementById("c2").checked;
+    c3_ent = document.getElementById("c3").checked;
+    c4_lif = document.getElementById("c4").checked;
+    c5_new = document.getElementById("c5").checked;
+    c6_tec = document.getElementById("c6").checked;
+    
+    if(c1_act == true){
+            document.getElementById("bd-act").style.display = "inline";
+        } else {
+            document.getElementById("bd-act").style.display = "none";
+        }
+        if(c2_edu == true){
+            document.getElementById("bd-edu").style.display = "inline";
+        } else {
+            document.getElementById("bd-edu").style.display = "none";
+        }
+        if(c3_ent == true){
+            document.getElementById("bd-ent").style.display = "inline";
+        } else {
+            document.getElementById("bd-ent").style.display = "none";
+        }
+        if(c4_lif == true){
+            document.getElementById("bd-lif").style.display = "inline";
+        } else {
+            document.getElementById("bd-lif").style.display = "none";
+        }
+        if(c5_new == true){
+            document.getElementById("bd-new").style.display = "inline";
+        } else {
+            document.getElementById("bd-new").style.display = "none";
+        }
+        if(c6_tec == true){
+            document.getElementById("bd-tec").style.display = "inline";
+        } else {
+            document.getElementById("bd-tec").style.display = "none";
+        }
+}
