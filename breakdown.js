@@ -22,6 +22,7 @@ document.getElementById("bd-new").style.display = "none";
 document.getElementById("bd-date").innerHTML = document.getElementById("slider").value;
 
 
+
 function breakdown_click()
 {
     bd_isClick = !bd_isClick;
@@ -36,15 +37,20 @@ function breakdown_click()
     }
     
 }
-    
-    bd_dataclean();
-// define json object
+
+d3.dsv('\\', './data/US_final.csv').then(function(dataset) {
+    dataset.forEach(function(d) {
+        d.publish_time = parseTime(d.publish_time);
+        d.trending_date = parseTime(d.trending_date);
+    });
+    console.log(dataset);
+});
 var root = {
  "name": "TOTAL",
  "color": "#FFF",
  "children": [
   {
-   "name": "UNASSIGNED",
+   "name": "a",
    "color": '#DADFE1',
    "children": [
     {"name": "High", "size": 170},
@@ -53,7 +59,7 @@ var root = {
    ]
   },
   {
-   "name": "CLOSED",
+   "name": "b",
    "color": '#CF000F',
    "children": [
     {"name": "High", "size": 1701},
@@ -62,7 +68,7 @@ var root = {
    ]
   },
   {
-   "name": "ATTACHED",
+   "name": "c",
    "color": '#87D37C',
    "children": [
     {"name": "High", "size": 220},
@@ -71,7 +77,7 @@ var root = {
    ]
   },
   {
-   "name": "NOTIFIED",
+   "name": "d",
    "color": '#4ECDC4',
    "children": [
     {"name": "High", "size": 883},
@@ -80,7 +86,7 @@ var root = {
    ]
   },
   {
-   "name": "INTEGRATED",
+   "name": "e",
    "color": '#90C695',
    "children": [
     {"name": "High", "size": 883},
@@ -89,7 +95,7 @@ var root = {
    ]
   },
   {
-   "name": "DELIVERED",
+   "name": "f",
    "color": '#4183D7',
    "children": [
     {"name": "High", "size": 170},
@@ -98,7 +104,7 @@ var root = {
    ]
   },
   {
-   "name": "ESCALATED",
+   "name": "g",
    "color": '#DB0A5B',
    "children": [
     {"name": "High", "size": 170},
@@ -107,7 +113,7 @@ var root = {
    ]
   },
   {
-   "name": "COMMITTED",
+   "name": "h",
    "color": '#5AD427',
    "children": [
     {"name": "High", "size": 170},
@@ -116,7 +122,7 @@ var root = {
    ]
   },
   {
-   "name": "VERIFIED",
+   "name": "i",
    "color": '#81CFE0',
    "children": [
     {"name": "High", "size": 170},
@@ -125,7 +131,7 @@ var root = {
    ]
   },
   {
-   "name": "SUBMITTED",
+   "name": "j",
    "color": '#86a531',
    "children": [
     {"name": "High", "size": 170},
@@ -134,11 +140,11 @@ var root = {
    ]
   }
  ]
-}
+};
 
 // set width, height, and radius
-var width = 325,
-    height = 325,
+var width = 500,
+    height = 500,
     radius = (Math.min(width, height) / 2) - 10; // lowest number divided by 2. Then subtract 10
 
 // legend dimensions
@@ -200,7 +206,7 @@ root.data.children.forEach(function(d){
 })
 
 // define SVG element
-var svg = d3.select("#chart").append("svg")
+var svg = d3.select("#bdchart").append("svg")
     .attr("width", width) // set width
     .attr("height", height) // set height
   .append("g") // append g element
