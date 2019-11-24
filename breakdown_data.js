@@ -47,12 +47,6 @@ function bd_dataclean()
         d.trending_date = parseTime(d.trending_date);
     });
       
-    nested = d3.nest()
-        .key(function(c) {
-            return c.category_id;
-        })
-        .entries(dataset);
-    
     
     dataset.forEach(function(d){
         if (d.category_id == "29"){
@@ -237,7 +231,7 @@ function bd_dataclean()
         newArray_hig = hig_data(newArray_nested, newArray_hig);
 
         
-    var newroot ={
+        var newroot ={
         name: "TOTAL",
         color: "#1E1E1E",
         children: [
@@ -291,20 +285,10 @@ function bd_dataclean()
             ]
             }
         ]
+        
     };
-                    console.log(actArray_nested);
-                            console.log(actArray_hig);
-                                    console.log(actArray_med);
-                            console.log(actArray_low);
-                                    //console.log(newArray_nested);
-
-
-
-
-            console.log(newroot);
-
-
   
+        bdchartchart(newroot);
     function low_data(catArray_nested, catArray_low){
          for(i=0;i < Math.floor(catArray_nested.length/3);i++){
                 catArray_low =catArray_low.concat(catArray_nested[i]);
@@ -324,8 +308,7 @@ function bd_dataclean()
         } 
         return catArray_hig;
     }
-            
-       
     
 });
 }
+

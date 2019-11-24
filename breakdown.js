@@ -24,7 +24,6 @@ document.getElementById("bd-date").innerHTML = document.getElementById("slider")
 
 function breakdown_click()
 {
-        chartchart();
 
     bd_isClick = !bd_isClick;
     console.log("breakdown btn clicked");
@@ -40,7 +39,6 @@ function breakdown_click()
 }
     
     bd_dataclean();
-
 
 function bd_checkCategory(){
     c1_act = document.getElementById("c1").checked;

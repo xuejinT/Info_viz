@@ -1,5 +1,5 @@
-function chartchart(){
-var root = {
+function bdchartchart(root){
+/*var root = {
  "name": "TOTAL",
  "color": "#FFF",
  "children": [
@@ -94,9 +94,8 @@ var root = {
    ]
   }
  ]
-};
-
-// set width, height, and radius
+};*/
+    // set width, height, and radius
 var width = 500,
     height = 500,
     radius = (Math.min(width, height) / 2) - 10; // lowest number divided by 2. Then subtract 10
