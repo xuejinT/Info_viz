@@ -10,26 +10,36 @@
 </head>
 <body style="background-color:#1E1E1E;  background-image: url(./figure/detailbg.svg);">
     <div class="main">
+      <div class="fixed-box">
+        <p class="body2 settings">Filter category</p>
+        <p class="body2 settingvalue" id="filter">none</p>
+        <p class="body2 settings">Search tag</p>
+        <p class="body2 settingvalue" id="search">none</p>
+        <p class="body2 settings">Sort by</p>
+        <p class="body2 settingvalue" id="sort">none</p>
+        <button type="button" id="backtooverview" onclick="backtooverview_click()">View in Overview</button>
+      </div>
       <div id="backbutton" style="height:24px">
           <a href="javascript:history.go(-1);"><p class="textbutton" style="margin-top:30px;">BACK</p></a>
       </div>
 
       <div class="variable slider" id="carousel">
+        <!-- test
         <div class="thumbnail">
           <img src="./figure/placeholder.png">
         </div>
         <div class="thumbnail">
           <img src="./figure/placeholder.png">
         </div>
+      -->
       </div>
           <div class=selectedvideo style="float: left; width: 384px; height:1008px">  
             <div id="videodetail">
               <p class="body2">Selected Video</p>
-              <p class="body1" id="videotitle">Patriots vs. Ravens Week 9 Highlights | NFL 2019</p>
+              <a href="http://www.google.com" id=videolink><p class="body1" id="videotitle">Patriots vs. Ravens Week 9 Highlights | NFL 2019</p></a>
               <p class="body2" id="channelname">by NYL</p>
               <ul class="tags body2">
-                <li>#NFL</li>
-                <li>#Patriots</li>
+                <li id="tags" title ="" rel="tooltip">#tags</li>
               </ul>
               <div style='background-color:#363636;height:1px;border:none;'></div>
               <div>
@@ -56,18 +66,11 @@
         </div>
     </div>
 </body>
-<script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
+<script src="./plugin/anywidth-js-tooltip-master/js/index.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="./detail.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
 <script type="text/javascript" src="./plugin/slickplugin/slick/slick.min.js"></script>
-<script type="text/javascript">
-    $(document).on('ready', function() {
-      $(".variable").slick({
-        dots: true,
-        infinite: false,
-        variableWidth: true
-      });
-    });
-</script>
+
 </html>
