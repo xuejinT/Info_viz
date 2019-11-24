@@ -32,16 +32,17 @@
         <div class="sort">
             <td>
                 <select class="ui-choose" id="uc_02">
-                    <option value="a">view</option>
-                    <option value="b">like:dislike</option>
-                    <option value="c">comment</option>
-                    <option value="d">income</option>
-                    <option value="e">temperature</option>
-                    <option value="f">trending length</option>
+                    <option value="views">view</option>
+                    <option value="likes">like</option>
+                    <option value="dislikes">dislike</option>
+                    <option value="ratio">like:dislike</option>
+                    <option value="comments">comment</option>
+                    <option value="income">income</option>
+                    <option value="temperature">temperature</option>
+                    <option value="trending_length">trending length</option>
                 </select>
             </td>
         </div>
-
         <div class="scatterplot">
             <svg style="height:600px; width:100%;"></svg>
             </svg>
@@ -186,6 +187,7 @@
     
 </body>
 <script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://d3js.org/d3-quadtree.v1.min.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
 <script src="//d3js.org/d3.v3.min.js"></script> -->
@@ -193,16 +195,7 @@
 <script src="./breakdown.js"></script>
 
 <script>
-    $('.ui-choose').ui_choose();
-    var uc_02 = $('#uc_02').data('ui-choose');
-    uc_02.click = function(value, item) {
-        console.log('click', value);
-    };
-    uc_02.change = function(value, item) 
-    {
-        bd_sortfunc();
-        console.log('change', value);
-    };
+
 </script>
 <script type="text/javascript" src="./plugin/daterangepicker-master/moment.min.js"></script>
 <script type="text/javascript" src="./plugin/daterangepicker-master/daterangepicker.js"></script>
