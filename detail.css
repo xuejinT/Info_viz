@@ -67,21 +67,9 @@
 	border-radius: 5px;
 }
 
-.barselected{
-	fill:#3EA6FF ;
-    fill-opacity:1;
-}
-
 .bar {
 	fill: #85C0CE;
 	fill-opacity: 0.3;
-}
-
-.lineselected
-{	stroke: #3EA6FF;
-	stroke-width:2px;
-	opacity: 1;	
-	fill: none;
 }
 
 .p_line {
