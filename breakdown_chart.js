@@ -142,7 +142,7 @@ tooltip.append('div') // add divs to the tooltip defined above
 var root = d3.hierarchy(root);
 
 // calculate total
-var total = 0
+var total = 0;
 
 // must call sum on the hierarchy first
 // and as we're doing that, total up the sum of the chart
@@ -158,12 +158,14 @@ root.data.children.forEach(function(d){
   d.enabled = true;
 });
 
+    
+
 // define SVG element
 var svg = d3.select("#bdchart").append("svg")
-    .attr("width", width) // set width
+    .attr("width", width+100) // set width
     .attr("height", height) // set height
   .append("g") // append g element
-    .attr("transform", "translate(" + width / 2 + "," + (height / 2) + ")");
+    .attr("transform", "translate(" + (width / 2+100) + "," + (height / 2) + ")");
 
 // redraw(root);
 var path = svg.selectAll("path")
@@ -171,10 +173,11 @@ var path = svg.selectAll("path")
     .enter().append("path")
       .attr("d", arc) // draw arcs
       .attr("class", "path")
-      .style("fill", function (d) { return (d.children ? d : d.parent).data.color; })
+      .style("fill", function (d) { 
+          return d.data.color; })
+    .attr("opacity","0.8")
     .on("click", click)
     .on('mouseover', function(d) {
-        console.log(d.parent);
       var total = d.parent.value;
       var percent = Math.round(1000 * d.value / total) / 10; // calculate percent
       tooltip.select('.label').html(d.data.name); // set current label           
@@ -228,14 +231,7 @@ rect = legend.append('div').classed('rect', true) // append rectangle squares to
 
     var enabledCategory = Object.assign({}, d)
     enabledCategory = d3.hierarchy(enabledCategory.parent.data)
-//     console.log('enabledCopy')
-
-//     console.log(enabledCategory)
-    
-    enabledCategory.children = []
-    // console.log('empty copy')
-    // console.log(enabledCategory)
-  
+   enabledCategory.children = [];
     d.parent.children.forEach(function(child){
       if (child.data.enabled === true) {
         enabledCategory.children.push(child);
@@ -249,13 +245,10 @@ rect = legend.append('div').classed('rect', true) // append rectangle squares to
       return d.size; 
     });
   
-//     console.log('full copy')
-//     console.log(enabledCategory)
-  
     redraw(enabledCategory)
            
   
-    }) // end legend onclick
+    }); // end legend onclick
 
 // adding text to legend
 legend.append('span')
@@ -285,9 +278,7 @@ var drawArc = d3.arc()
       });
 
 // redraw on disabled category
-function redraw(d) {
-  console.log("function redraw");
-  
+function redraw(d) {  
   svg.transition()
       .duration(750)
       .tween("scale", function() {
@@ -304,9 +295,6 @@ function redraw(d) {
 
 // zoom on click
 function click(d) {
-  console.log("function click");
-  console.log("d.y0 = " + d.y0);
-  
   svg.transition()
       .duration(750) // duration of transition
       .tween("scale", function() {

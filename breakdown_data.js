@@ -236,54 +236,56 @@ function bd_dataclean()
         color: "#1E1E1E",
         children: [
             {
-                "name": "Activisim",
-                "color": "#7CC237",
-                "children": [
-                    {"name": "High", "size": actArray_hig.length, "children": actArray_hig},
-                    {"name": "Med", "size": actArray_med.length, "children": actArray_med},
-                    {"name": "Low", "size": actArray_low.length, "children": actArray_low}
-            ]},
-            {
-                "name": "Technology",
-                "color": "#B155DE",
-                "children": [
-                    {"name": "High", "size": tecArray_hig.length, "children": tecArray_hig},
-                    {"name": "Med", "size": tecArray_med.length, "children": tecArray_med},
-                    {"name": "Low", "size": tecArray_low.length, "children": tecArray_low}
-            ]},
-            {
-                "name": "Education",
-                "color": "#DE5555",
-                "children": [
-                    {"name": "High", "size": eduArray_hig.length, "children": eduArray_hig},
-                    {"name": "Med", "size": eduArray_med.length, "children": eduArray_med},
-                    {"name": "Low", "size": eduArray_low.length, "children": eduArray_low}
-            ]},
-            {
                 "name": "Entertainment",
                 "color": "#6D72E7",
                 "children": [
-                    {"name": "High", "size": entArray_hig.length, "children": entArray_hig},
-                    {"name": "Med", "size": entArray_med.length, "children": entArray_med},
-                    {"name": "Low", "size": entArray_low.length, "children": entArray_low}
+                    {"name": "High", "size": entArray_hig.length, "color": "#999cee","children": entArray_hig},
+                    {"name": "Med", "size": entArray_med.length, "color":"#c5c6f5","children": entArray_med},
+                    {"name": "Low", "size": entArray_low.length, "color":"#dbdbf9","children": entArray_low}
             ]},
             {
                 "name": "Lifestyle",
                 "color": "#DEB75B",
                 "children": [
-                    {"name": "High", "size": lifArray_hig.length, "children": lifArray_hig},
-                    {"name": "Med", "size": lifArray_med.length, "children": lifArray_med},
-                    {"name": "Low", "size": lifArray_low.length, "children": lifArray_low}
+                    {"name": "High", "size": lifArray_hig.length, "color": "#decd5b","children": lifArray_hig},
+                    {"name": "Med", "size": lifArray_med.length, "color": "#e7da85","children": lifArray_med},
+                    {"name": "Low", "size": lifArray_low.length, "color": "#efe7b0","children": lifArray_low}
             ]},
             {
                 "name": "News",
                 "color": "#26BDD2",
                 "children": [
-                    {"name": "High", "size": newArray_hig.length, "children": newArray_hig},
-                    {"name": "Med", "size": newArray_med.length, "children": newArray_med},
-                    {"name": "Low", "size": newArray_low.length, "children": newArray_low}
+                    {"name": "High", "size": newArray_hig.length, "color": "#4ccddf", "children": newArray_hig},
+                    {"name": "Med", "size": newArray_med.length, "color": "#77d9e7","children": newArray_med},
+                    {"name": "Low", "size": newArray_low.length, "color": "#a2e5ef","children": newArray_low}
             ]
-            }
+            },
+            {
+                "name": "Technology",
+                "color": "#B155DE",
+                "children": [
+                    {"name": "High", "size": tecArray_hig.length, "color": "#c580e6", "children": tecArray_hig},
+                    {"name": "Med", "size": tecArray_med.length, "color": "#d8abee","children": tecArray_med},
+                    {"name": "Low", "size": tecArray_low.length, "color": "#ecd5f7","children": tecArray_low}
+            ]},
+            {
+                "name": "Education",
+                "color": "#DE5555",
+                "children": [
+                    {"name": "High", "size": eduArray_hig.length, "color": "#e68080","children": eduArray_hig},
+                    {"name": "Med", "size": eduArray_med.length, "color": "#eeabab","children": eduArray_med},
+                    {"name": "Low", "size": eduArray_low.length, "color": "#f7d5d5","children": eduArray_low}
+            ]},
+            {
+                "name": "Activisim",
+                "color": "#7CC237",
+                "children": [
+                    {"name": "High", "size": actArray_hig.length, "color": "#96d15b","children": actArray_hig},
+                    {"name": "Med", "size": actArray_med.length, "color": "#b0dc83","children": actArray_med},
+                    {"name": "Low", "size": actArray_low.length, "color": "#c9e7ab","children": actArray_low}
+            ]}
+            
+            
         ]
         
     };
