@@ -77,6 +77,12 @@
 	fill-opacity: 0.3;
 }
 
+#linemouseover
+{	stroke: #3EA6FF;
+	stroke-width:2px;
+	opacity: 1;	
+	fill: none;
+}
 .lineselected
 {	stroke: red;
 	stroke-width:2px;
@@ -172,7 +178,8 @@ height:150px;
 
 #categorychart .bar,
 #wordle text,
-#parallelcoordinate .axis text{
+#parallelcoordinate .axis text,
+.p_line{
 		cursor: pointer;
 }
 #tohide path,

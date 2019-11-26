@@ -22,8 +22,9 @@ var brushedvideos = []; //unique video id array
 var categoryobject ={};
 var categorydata = []; // object {category : count}
 var tagarray = [];
+var tagobject={};
 var repeattimes = 0;
-var tagdata = {}; // object {tag : count}, tag filtered by repeattimes
+var tagdata = []; 
 var attitudeobject ={};
 var attitudedata = [];
 var selectedattitudedata=[];
@@ -103,38 +104,22 @@ var svg_t = d3.select("#wordle").append("svg")
         .attr("width", 766)
         .attr("height", 300)
         .append("g");
-// set repeat times according to the number of brushed videos
-function setrepeattimes(){
-  if (brushedvideos.length < 10){
-    repeattimes = 0;
-  }
-  if (10 <= brushedvideos.length < 50){
-    repeattimes = 1;
-  }
-  if (50 <= brushedvideos.length < 100){
-    repeattimes = 2;
-  }
-  if (100 <= brushedvideos.length ){
-    repeattimes = 3;
-  }
-}
-//get words with repeat times restriction
-function getrepeattimes(array) {
-    var map = new Map();
-    array.forEach(a => map.set(a, (map.get(a) || 0) + 1));
-    return array.filter(a => map.get(a) > repeattimes);
-}
-//remove duplicated tags and count repeating times
 function gettagdata(){
-  //setrepeattimes();
-  //function setrepeattimes is to aviod too many tags | possibly give viewers options?
-  var repeatedtag = getrepeattimes(tagarray);
-  for(var i = 0; i < repeatedtag.length; ++i) {
-    if(!tagdata[repeatedtag[i]])
-        tagdata[repeatedtag[i]] = 0;
-    ++tagdata[repeatedtag[i]];
-  }
-  tagdata = Object.keys(tagdata).map(key => ({tag: key, occurrence: tagdata[key]}));
+   for (i=0; i<brushedvideos.length; i++){
+   var id = brushedvideos[i];
+   var videoobject = videos.find(o => o.video_id === id);
+   var videotags = videoobject.tags;
+   var split = videotags.split("|");
+   split.forEach(element => tagarray.push(element));
+   split.forEach(function(d,a){
+   	if (tagobject.hasOwnProperty(d) == true){
+   		tagobject[d].push(i+"_"+a);
+   	}
+   	else{
+    		tagobject[d] = [];
+    		tagobject[d].push(i+"_"+a);}
+	 });}
+  tagdata = Object.keys(tagobject).map(key => ({tag: key, idlist: tagobject[key],occurrence:tagobject[key].length}));
 }
 
 
@@ -277,19 +262,11 @@ d3.dsv('\\', './data/US_sample100.csv').then(function(dataset) {
 
   //chart - tag cloud (t)
   //get tags
-    for (i=0; i<brushedvideos.length; i++){
-      var id = brushedvideos[i];
-      var videoobject = videos.find(o => o.video_id === id);
-      var videotags = videoobject.tags;
-      var split = videotags.split("|");
-      split.forEach(element => tagarray.push(element));
-    }
-  //find x times repeated tags
   gettagdata();
   //draw
   var layout = d3.layout.cloud()
     .size([766, 300])
-      .words(tagdata.map(function(d) { return {text: d.tag, size: d.occurrence}; }))
+      .words(tagdata.map(function(d) { return {text: d.tag, size: d.occurrence, idlist:d.idlist}; }))
       .rotate(function() { return ~~(Math.random() * 2) * 90; })
       .padding(2)
       .font("Impact")
@@ -315,7 +292,14 @@ d3.dsv('\\', './data/US_sample100.csv').then(function(dataset) {
         .attr("transform", function(d) {
           return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
         })
-        .text(function(d) { return d.text; });
+        .text(function(d) { return d.text; })
+        .attr("class",function(d){
+        	var classstring="";
+  			for (i=0; i<d.idlist.length; i++){
+  				classstring += d.idlist[i]+" "
+  			}
+  			return classstring;
+   		     });
   }
 
 });
@@ -359,7 +343,17 @@ d3.dsv('\\', './data/US_final.csv').then(function(dataset) {
     .enter().append("path")
     .attr("d",  path)
     .attr("class","p_line")
-      .attr("id",function(d){return "line" + d.num });
+    .attr("id",function(d){return "line" + d.num })
+    .on("mouseover",function(d){
+    	d3.select(this).attr("id","linemouseover")
+    })
+    .on("mouseout",function(d){
+    	d3.select(this).attr("id",function(d){return "line" + d.num })
+    })
+    .on("click",function(d){
+    	 $('.variable').slick('slickGoTo', d.num);
+    	 updateselectedvideoinfo(d.num);
+    })
   // Draw the a_ais:
   svg_a.selectAll("myAxis")
     // For each dimension of the dataset I add a 'g' element:
@@ -432,6 +426,9 @@ d3.dsv('\\', './data/US_final.csv').then(function(dataset) {
   		return 140 - y_l(d.y)})
   	.attr("width", bandScale.bandwidth())
   	.attr('transform', 'translate(34,0)')
+  	 .transition()
+     .duration(800)
+     .delay(function(d,i){console.log(i) ; return(i*100)})
   	// likes and dislikes bar
   layer.selectAll(".stacktype1,.stacktype2")
   	.data(function(d){return d})
@@ -620,6 +617,10 @@ function clearselected(){
 function highlightselectedvideo(){
   var category = selectedvideo.category_name;
   var tags= selectedvideo.tags.split("|");
+  var tagidlist=[];
+  for (var i=0; i<tags.length; i++){
+  	tagidlist.push(selectedvideonum+"s"+i);
+  }
   d3.select("#"+category.replace(/ /g, '').replace(/&/g, ''))
           .attr("class", "barselected")
   d3.select("#"+"line"+selectedvideonum).attr("class","lineselected").moveToFront();
