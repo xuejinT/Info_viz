@@ -294,7 +294,7 @@ d3.dsv('\\', './data/US_sample100.csv').then(function(dataset) {
         .selectAll("text")
         .data(words)
         .enter().append("text")
-        .attr("id",function(d){return d.text.replace(/ /g, '').replace(/&/g, '')})
+        .attr("id",function(d){return "a"+d.text.replace(/ /g, '').replace(/&/g, '')})
         .on("click", function(d){
         settingsobject.search = d.text;
         document.getElementById("search").innerHTML = d.text;
@@ -668,7 +668,7 @@ function highlightselectedvideo(){
           .attr("class", "barselected")
   d3.select("#"+"line"+selectedvideonum).attr("class","lineselected").moveToFront();
   tags.forEach(element =>
-        d3.select("#"+element.replace(/ /g, '').replace(/&/g, ''))
+        d3.select("#a"+element.replace(/ /g, '').replace(/&/g, ''))
           .style("fill", "#3EA6FF")
           .style("fill-opacity", "1")
     );
