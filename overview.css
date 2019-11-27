@@ -217,6 +217,20 @@ input[type="checkbox"] + label:before {
     outline: none;
 }
 
+.video-hovered{
+  fill:#FF5A5F;
+  opacity:1
+}
+.video{
+  fill: rgb(128, 168, 180);
+  opacity: 0.5;
+}
+
+.brushed{
+  fill: tomato;
+  opacity: 0.5;
+}
+
 .tooltip { 
     position: absolute;     
     text-align: center;     
@@ -234,7 +248,7 @@ input[type="checkbox"] + label:before {
 /* Line Animation */
 .line {
         fill: none;
-        stroke: #00A699;
+        stroke: tomato;
         opacity: 0.5;
         stroke-width: 2px;
         stroke-dasharray:1000;

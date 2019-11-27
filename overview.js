@@ -1,212 +1,139 @@
+var svg = d3.select('svg');
 var curr_y = "views";
+// Original lab3 codes
+// Create x-scale for positioning the circles
+var radius = 3;
+var xScale = d3.scaleTime()
+    .range([100, 1000]);
 
-var d_width = $(".scatterplot").width();
-var d_height = $(".scatterplot").height();
-
-var margin = {
-        top: 20,
-        right: 20,
-        bottom: 20,
-        left: 120
-    },
-    margin2 = {
-        top: 20,
-        right: 1060,
-        bottom: 20,
-        left: 50
-    },
-    width = d_width - margin.left - margin.right,
-    width2 = d_width - margin2.left - margin2.right,
-    height = d_height - margin.top - margin.bottom,
-    height2 = d_height - margin2.top - margin2.bottom;
+// Create y-scale for positioning the circles
+var yScale = d3.scaleLinear()
+    .range([550, 50]);
 
 var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S");
 
-var x = d3.scaleTime().range([0, width]),
-    x2 = d3.scaleTime().range([0, width2]),
-    y2 = d3.scaleLinear().range([height, 0]),
-    y = d3.scaleLinear().range([height, 0]);
-
-var xAxis = d3.axisBottom(x),
-    yAxis2 = d3.axisLeft(y2),
-    yAxis = d3.axisLeft(y);
-
-
-
-var brush_flag = 0;
-var brush = d3.brushY()
-    .extent([
-        [0, 0],
-        [width2, height]
-    ])
-    .on("brush", brushed);
-
-// var svg = d3.select("body").append("svg")
-//     .attr("width", width + margin.left + margin.right)
-//     .attr("height", height + margin.top + margin.bottom);
+// Create a quantize scale for the three habital zone bins
+// var colorScale = d3.scaleQuantize()
+//     .range(['#d64d3f', '#96ac3d', '#208d8d']);
 var color = "rgb(128, 168, 180)"
 var tooltip = d3.select(".tooltip");
-var radius = 3;
-var svg = d3.select('svg');
-svg.append("defs").append("clipPath")
-    .attr("id", "clip")
-    .append("rect")
-    .attr("width", width)
-    .attr("height", height);
+var logo = d3.select("logo");
 
-var focus = svg.append("g")
-    .attr("class", "focus")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+var g = svg
+    .append('g');
 
-var context = svg.append("g")
-    .attr("class", "context")
-    .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
+// Load the data
 d3.dsv('\\', './data/US_final.csv').then(function(data) {
-    // if (error) throw error;
     data.forEach(function(d) {
         d.publish_time = parseTime(d.publish_time);
         d.trending_date = parseTime(d.trending_date);
     });
+
     videos = data;
 
-    quadtree = d3.quadtree()
-        .extent([
-            [0, 0],
-            [width, height]
-        ])
-        .x(function(d) {
-            return d.trending_date
-        })
-        .y(function(d) {
-            return d.views
-        })
-        .addAll(data);
-
-    quadData = quadtree.data();
-
-
-    var yExtent = d3.extent(data, function(d) {
+    var viewExtent = d3.extent(videos, function(d) {
         return +d['views'];
     });
-
-
-    var dateExtent = d3.extent(data, function(d) {
+    yScale.domain(viewExtent);
+    var dateExtent = d3.extent(videos, function(d) {
         return +d['trending_date'];
     });
-    var yOffset = 0.01 * (yExtent[1] - yExtent[0]);
-    var xOffset = 0.01 * (dateExtent[1] - dateExtent[0]);
-    yExtent = [yExtent[0] - yOffset, yExtent[1] + yOffset];
-    dateExtent = [dateExtent[0] - xOffset, dateExtent[1] + xOffset];
+    // colorScale.domain(hzdExtent);
+    xScale.domain(dateExtent);
 
-    x.domain(dateExtent);
-    y.domain(yExtent);
-    x2.domain(x.domain());
-    y2.domain(y.domain());
+    var brush = d3.brush()
+        .extent([
+            [100, 50],
+            [1000, 550]
+        ])
+        .on('brush end', updateBrush);
 
-    // append scatter plot to main chart area 
-    var dots = focus.append("g");
-    dots.attr("clip-path", "url(#clip)");
-    dots.selectAll("dot")
-        .data(data)
-        .enter().append("circle")
-        .attr('class', 'dotFocus')
-        .attr('r', radius)
-        .attr("cx", function(d) {
-            return x(d.trending_date);
+    // attach the brush to the chart
+    var gBrush = g.append('g')
+        .attr('class', 'brush')
+        .call(brush);
+
+    // Create a d3 selection for the videos
+    quadtree = d3.quadtree()
+        .x(d => xScale(d.trending_date))
+        .y(d => yScale(d.views))
+        .addAll(data);
+
+    g.selectAll('.video')
+        .data(videos) // Data-bind the videos array to the d3-selection
+        .enter() // Enter - selects incoming data-bound elements
+        .append('circle')
+        .attr('class', 'video') // Add the classname that we selected on
+        .attr('r', function(d) {
+            // Set the radius attribute based on the planet's radius
+            return radius;
         })
-        .attr("cy", function(d) {
-            return y(d.views);
+        .attr('cx', function(d) {
+            // Set the x-position based on the hzd value
+            return xScale(d.trending_date);
         })
-        .style('fill', color)
-        .style('opacity', 0.5)
+        .attr('cy', function(d) {
+            // Set the y-position based on the mass value
+            return yScale(d.views);
+        })
         .on("mouseover", function(d) {
             tooltip.transition()
                 .duration(200)
                 .style("opacity", .9);
-            tooltip.html(d["title"] + "<br/>" + d["views"] + " views")
-                .style("left", (d3.event.pageX - 70) + "px")
-                .style("top", (d3.event.pageY - 60) + "px")
+            tooltip.html(d["title"] + "<br/>" + curr_y + " : " + d[curr_y])
+                .style("margin-left", (d3.event.pageX - 100) + "px")
+                .style("margin-top", (d3.event.pageY - 100) + "px")
                 .style("cursor", "pointer");
-            // connect_dots(data, d);
-            show_all(d);
+
+            connect_dots(data, d, curr_y);
+            highlight_all(d, this);
         })
         .on("mouseout", function(d) {
             tooltip.transition()
-                .duration(500)
+                .duration(200)
                 .style("opacity", 0);
-            reset_all_circles();
+            // var curr_color = this.attr("fill");
+
+            reset_all_circles(this);
             remove_path();
         });
 
-    focus.append("g")
-        .attr("class", "axis axis--x")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
+    // Create axes for both the y- and x-scale
+    svg.append('g') // Append a g element for the scale
+        .attr('class', 'x axis') // Use a class to css style the axes together
+        .attr('transform', 'translate(0,40)') // Position the axis
+        .call(d3.axisTop(xScale)); // Call the axis function
 
-    focus.append("g")
-        .attr("class", "axis axis--y")
-        .call(yAxis);
+    svg.append('g')
+        .attr('class', 'x axis ')
+        .attr('transform', 'translate(0,570)')
+        .call(d3.axisBottom(xScale));
 
-    // focus.append("text")
-    //       .attr("transform", "rotate(-90)")
-    //       .attr("y", 0 - margin.left)
-    //       .attr("x",0 - (height / 2))
-    //       .attr("dy", "1em")
-    //       .style("text-anchor", "middle")
-    //       .style("fill", "white")
-    //       .text("Views");  
+    svg.append('g')
+        .attr('class', 'y axis axis-left')
+        .attr('transform', 'translate(70,0)')
+        .call(d3.axisLeft(yScale));
 
-    // svg.append("text")             
-    //       .attr("transform",
-    //             "translate(" + ((width + margin.right + margin.left)/2) + " ," + 
-    //                            (height + margin.top + margin.bottom) + ")")
-    //       .style("text-anchor", "middle")
-    //       .text("Trending Date");
+    svg.append('g')
+        .attr('class', 'y axis axis-right')
+        .attr('transform', 'translate(1050,0)')
+        .call(d3.axisRight(yScale));
 
-    // append scatter plot to brush chart area      
-    // var dots = context.append("g");
-    //     dots.attr("clip-path", "url(#clip)");
-    //     dots.selectAll("dot")
-    //        .data(data)
-    //        .enter().append("circle")
-    //        .attr('class', 'dotContext')
-    //        .attr("r",1)
-    //        .style("opacity", .5)
-    //        .style('fill', color)
-    //        .attr("cx", function(d) { return x2(d.trending_date); })
-    //        .attr("cy", function(d) { return y2(d.views); })
+    // left y axis label
+    svg.append("text")
+        .attr("class", "axisLabel")
+        .attr("transform", "translate(20,50)rotate(0)")
+        .attr("dy", "0.3em")
+        .text("Views");
 
-    // context.append("g")
-    //       .attr("class", "axis axis--y")
-    //       .attr("transform", "translate("+ width2+"," + 0 + ")")
-    //       .call(yAxis2);
-
-    context.append("g")
-        .attr("class", "brush")
-        .call(brush)
-        .call(brush.move, y2.range());
-    brush_flag = 1;
+    // right y axis label
+    svg.append("text")
+        .attr("class", "axisLabel")
+        .attr("transform", "translate(1150,50)rotate(0)")
+        .attr("dy", "0.3em")
+        .text("Views");
 });
-
-//create brush function redraw scatterplot with selection
-function brushed() {
-
-    // console.log(newDomain);
-    if (brush_flag) {
-        var selection = d3.event.selection;
-        var newDomain = [selection[1], selection[0]].map(y2.invert, y)
-        y.domain(newDomain);
-        focus.selectAll(".dotFocus")
-            // .attr("cx", function(d) {
-            //     return x(d.trending_date);
-            // })
-            .attr("cy", function(d) {
-                return y(d.views);
-            });
-        focus.select(".axis--y").call(yAxis);
-    }
-}
 
 
 
@@ -216,7 +143,101 @@ d3.selection.prototype.moveToFront = function() {
     });
 };
 
-function connect_dots(all_videos, curr_video) {
+function updateBrush() {
+    var ref = d3.event;
+    var selection = ref.selection;
+    var brushedNodes = new Set();
+    // if we have no selection, just reset the brush highlight to no nodes
+    if (!selection) {
+        highlightBrushed(brushedNodes);
+        return;
+    }
+
+    // begin an array to collect the brushed nodes
+
+
+    // traverse the quad tree, skipping branches where we do not overlap
+    // with the brushed selection box
+    quadtree.visit(function(node, x1, y1, x2, y2) {
+        // check that quadtree node intersects
+        var overlaps = rectIntersects(selection, [
+            [x1, y1],
+            [x2, y2]
+        ]);
+
+        // skip if it doesn't overlap the brush
+        if (!overlaps) {
+            return true;
+        }
+
+        // if this is a leaf node (node.length is falsy), verify it is within the brush
+        // we have to do this since an overlapping quadtree box does not guarantee
+        // that all the points within that box are covered by the brush.
+        if (!node.length) {
+            var d = node.data;
+            var dx = xScale(d.trending_date);
+            var dy = yScale(d.views);
+            if (rectContains(selection, [dx, dy])) {
+                brushedNodes.add(d.video_id);
+            }
+        }
+
+        // return false so that we traverse into branch (only useful for non-leaf nodes)
+        return false;
+    });
+
+    // update the highlighted brushed nodes
+    highlightBrushed(brushedNodes);
+}
+
+
+function highlightBrushed(brushedNodes) {
+    console.log(brushedNodes)
+        // overlap colored circles to indicate the highlighted ones in the chart
+    if (brushedNodes.size > 0) {
+        g.selectAll('.brushed')
+            .attr('class', 'video');
+        g.selectAll('.video')
+            .filter(function(d, i) {
+                return brushedNodes.has(d.video_id);
+            })
+            .attr('class', 'brushed');
+    } else {
+        var circles = g
+            .selectAll('.brushed')
+            .attr('class', 'video');
+    }
+
+}
+
+var X = 0;
+var Y = 1;
+var TOP_LEFT = 0;
+var BOTTOM_RIGHT = 1;
+
+function rectIntersects(rect1, rect2) {
+    return (
+        rect1[TOP_LEFT][X] <= rect2[BOTTOM_RIGHT][X] &&
+        rect2[TOP_LEFT][X] <= rect1[BOTTOM_RIGHT][X] &&
+        rect1[TOP_LEFT][Y] <= rect2[BOTTOM_RIGHT][Y] &&
+        rect2[TOP_LEFT][Y] <= rect1[BOTTOM_RIGHT][Y]
+    );
+}
+
+/**
+ * Determines if a point is inside a rectangle. The rectangle is
+ * defined by two points [[rx1, ry1], [rx2, ry2]]
+ */
+function rectContains(rect, point) {
+    return (
+        rect[TOP_LEFT][X] <= point[X] &&
+        point[X] <= rect[BOTTOM_RIGHT][X] &&
+        rect[TOP_LEFT][Y] <= point[Y] &&
+        point[Y] <= rect[BOTTOM_RIGHT][Y]
+    );
+}
+
+function connect_dots(all_videos, curr_video, curr_y) {
     data = []
     all_videos.forEach(function(element, i) {
         if (element.video_id == curr_video.video_id) {
@@ -227,13 +248,13 @@ function connect_dots(all_videos, curr_video) {
     function basicy() {
         var ret = d3.line()
             .x(function(d) {
-                return x(d.trending_date);
+                return xScale(d.trending_date);
             })
         return ret;
     }
     var valueline = basicy()
         .y(function(d) {
-            return y(d.views);
+            return yScale(d[curr_y]);
         });
 
     svg.append("path")
@@ -249,87 +270,152 @@ function remove_path() {
         .remove();
 }
 
-function show_all(video_obj) {
-    svg.selectAll(".dotFocus")
+function highlight_all(video_obj, curr_element) {
+    var curr_class = curr_element.className;
+    console.log("highlight_all", curr_class);
+    var final_class = (curr_class == "brushed" ? "was-brushed video-hovered" : "video-hovered");
+    svg.selectAll(".video")
         .filter(function(d, i) {
             return d.video_id === video_obj.video_id;
         })
         .moveToFront()
         .transition()
         .duration(200)
-        .style("fill", "#FF5A5F")
-        .style("opacity", "1")
-        .attr("r", 3.5);
+        .attr("class", final_class)
+        .attr("r", radius);
 }
 
-function reset_all_circles() {
-    svg.selectAll(".dotFocus")
+function reset_all_circles(curr_element) {
+
+    var curr_class = curr_element.className;
+    console.log("reset_all_circles", curr_class);
+    var final_class = (curr_class == "was-brushed video-hovered" ? "brushed" : "video");
+    svg.selectAll(".video-hovered")
         .transition()
         .duration(200)
-        .style("fill", color)
-        .style("opacity", "0.5")
+        .attr("class", final_class)
         .attr("r", radius);
 }
 
 function update_svg(value) {
     if (value != curr_y) {
-        console.log(value)
+        curr_y = value;
         var yExtent = d3.extent(videos, function(d) {
             return +d[value];
         });
-        console.log(yExtent);
-        var yOffset = 0.01 * (yExtent[1] - yExtent[0]);
-        yExtent = [yExtent[0] - yOffset, yExtent[1] + yOffset];
+        yScale.domain(yExtent);
+
+        //update brush
+        function updateBrush() {
+            var ref = d3.event;
+            var selection = ref.selection;
+            var brushedNodes = new Set();
+            // if we have no selection, just reset the brush highlight to no nodes
+            if (!selection) {
+                highlightBrushed(brushedNodes);
+                return;
+            }
+
+            // begin an array to collect the brushed nodes
 
 
-        y.domain(yExtent);
-        y2.domain(y.domain());
+            // traverse the quad tree, skipping branches where we do not overlap
+            // with the brushed selection box
+            quadtree.visit(function(node, x1, y1, x2, y2) {
+                // check that quadtree node intersects
+                var overlaps = rectIntersects(selection, [
+                    [x1, y1],
+                    [x2, y2]
+                ]);
 
-        svg.selectAll(".dotFocus")
-            .transition()
-            .duration(600)
-            .attr("cx", function(d) {
-                return x(d.trending_date);
-            })
-            .attr("cy", function(d) {
-                return y(d[value]);
+                // skip if it doesn't overlap the brush
+                if (!overlaps) {
+                    return true;
+                }
+
+                // if this is a leaf node (node.length is falsy), verify it is within the brush
+                // we have to do this since an overlapping quadtree box does not guarantee
+                // that all the points within that box are covered by the brush.
+                if (!node.length) {
+                    var d = node.data;
+                    var dx = xScale(d.trending_date);
+                    var dy = yScale(d[curr_y]);
+                    if (rectContains(selection, [dx, dy])) {
+                        brushedNodes.add(d.video_id);
+                    }
+                }
+
+                // return false so that we traverse into branch (only useful for non-leaf nodes)
+                return false;
             });
 
-        brush_flag = 0
-
-        function brushed() {
-            var selection = d3.event.selection;
-            var newDomain = [selection[1], selection[0]].map(y2.invert, y)
-            y.domain(newDomain);
-            // console.log(newDomain);
-            if (brush_flag) {
-                focus.selectAll(".dotFocus")
-                    .attr("cx", function(d) {
-                        return x(d.trending_date);
-                    })
-                    .attr("cy", function(d) {
-                        return y(d[value]);
-                    });
-                focus.select(".axis--y").call(yAxis);
-            }
+            // update the highlighted brushed nodes
+            highlightBrushed(brushedNodes);
         }
-
-        brush = d3.brushY()
+        var brush = d3.brush()
             .extent([
-                [0, 0],
-                [width2, height]
+                [100, 50],
+                [1000, 550]
             ])
-            .on("brush", brushed);
-        context.select(".brush")
-            .call(brush)
-            .call(brush.move, y2.range());
-        brush_flag = 1;
-        focus.select(".axis--y")
-            .call(yAxis);
-        curr_y = value;
+            .on('brush end', updateBrush);
+
+        // attach the brush to the chart
+        var gBrush = g.append('g')
+            .attr('class', 'brush')
+            .call(brush);
+
+        // Create a d3 selection for the videos
+        quadtree = d3.quadtree()
+            .x(d => xScale(d.trending_date))
+            .y(d => yScale(d[curr_y]))
+            .addAll(videos);
+        
+        //update asxes
+        svg.selectAll(".axis-left")
+            .transition()
+            .duration(200)
+            .call(d3.axisLeft(yScale));
+
+        svg.selectAll(".axis-right")
+            .transition()
+            .duration(200)
+            .call(d3.axisRight(yScale));
+
+        svg.selectAll(".axisLabel")
+            .transition()
+            .duration(200)
+            .text(curr_y);
+        //update circles
+        var all_circles = g.selectAll("circle");
+        all_circles
+            .transition()
+            .duration(200)
+            .attr("cy", function(d) {
+                return yScale(d[value]);
+            });
+        all_circles.on("mouseover", function(d) {
+                tooltip.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                tooltip.html(d["title"] + "<br/>" + curr_y + " : " + d[curr_y])
+                    .style("margin-left", (d3.event.pageX - 100) + "px")
+                    .style("margin-top", (d3.event.pageY - 100) + "px")
+                    .style("cursor", "pointer");
+
+                connect_dots(videos, d, curr_y);
+                highlight_all(d, this);
+            })
+            .on("mouseout", function(d) {
+                tooltip.transition()
+                    .duration(200)
+                    .style("opacity", 0);
+                // var curr_color = this.attr("fill");
+
+                reset_all_circles(this);
+                remove_path();
+            });
     }
 }
-/*helper JS*/
 
 // FOR DATEPICKER
 $('input[name="daterange"]').daterangepicker({
