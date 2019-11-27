@@ -231,7 +231,9 @@ input[type="checkbox"] + label:before {
   opacity: 0.5;
 }
 
-.tooltip { 
+
+
+.overview-tooltip { 
     position: absolute;     
     text-align: center;     
     width: auto;          
@@ -244,6 +246,7 @@ input[type="checkbox"] + label:before {
     border-radius: 8px;     
     pointer-events: none;     
 }
+
 
 /* Line Animation */
 .line {
