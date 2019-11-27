@@ -309,12 +309,12 @@ d3.dsv('\\', './data/US_sample100.csv').then(function(dataset) {
         .attr("class",function(d){
         	var classstring="";
   			for (i=0; i<d.idlist.length; i++){
-  				classstring += d.idlist[i]+" "
+  				classstring += "a"+d.idlist[i]+" "
   			}
   			return classstring;
    		     })
          .on("mouseover", function(d){tooltip.style("visibility", "visible");
-  							    document.getElementById("hover").innerHTML = d.text + "<br/>"+ d.size +"&nbsp"+"times"})
+  							    document.getElementById("hover").innerHTML = d.text + "<br/>"+ d.size +"/"+brushedvideos.length})
 		.on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
 		.on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 		}
@@ -658,18 +658,28 @@ function clearselected(){
 function highlightselectedvideo(){
   var category = selectedvideo.category_name;
   var tags= selectedvideo.tags.split("|");
-  var tagidlist=[];
+  var tagclasslist=[];
   for (var i=0; i<tags.length; i++){
-  	tagidlist.push(selectedvideonum+"s"+i);
+  	tagclasslist.push("."+"a"+selectedvideonum+"_"+i);
   }
+  tagclasslist.forEach(function(el){
+  	    d3.selectAll(el)
+        .style("fill", "#3EA6FF")
+        .style("fill-opacity", "1")
+  })
   d3.select("#"+category.replace(/ /g, '').replace(/&/g, ''))
           .attr("class", "barselected")
+  //tags.forEach(element =>
+  //    d3.select("#a"+element.replace(/ /g, '').replace(/&/g, ''))
+  //      .style("fill", "#3EA6FF")
+  //      .style("fill-opacity", "1")
+  //);  
+  d3.selectAll(
+  	function(){return classstring}
+  		)
+        .style("fill", "#3EA6FF")
+        .style("fill-opacity", "1")
   d3.select("#"+"line"+selectedvideonum).attr("class","lineselected").moveToFront();
-  tags.forEach(element =>
-        d3.select("#a"+element.replace(/ /g, '').replace(/&/g, ''))
-          .style("fill", "#3EA6FF")
-          .style("fill-opacity", "1")
-    );
 }
 
 
