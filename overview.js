@@ -16,7 +16,7 @@ var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S");
 // var colorScale = d3.scaleQuantize()
 //     .range(['#d64d3f', '#96ac3d', '#208d8d']);
 var color = "rgb(128, 168, 180)"
-var tooltip = d3.select(".tooltip");
+var tooltip = d3.select(".overview-tooltip");
 var logo = d3.select("logo");
 
 var g = svg
@@ -369,7 +369,7 @@ function update_svg(value) {
             .x(d => xScale(d.trending_date))
             .y(d => yScale(d[curr_y]))
             .addAll(videos);
-        
+
         //update asxes
         svg.selectAll(".axis-left")
             .transition()
