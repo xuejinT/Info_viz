@@ -1,103 +1,9 @@
 function bdchartchart(root){
-/*var root = {
- "name": "TOTAL",
- "color": "#FFF",
- "children": [
-  {
-   "name": "a",
-   "color": '#DADFE1',
-   "children": [
-    {"name": "High", "size": 170},
-    {"name": "Med", "size": 701},
-    {"name": "Low", "size": 410}
-   ]
-  },
-  {
-   "name": "b",
-   "color": '#CF000F',
-   "children": [
-    {"name": "High", "size": 1701},
-    {"name": "Med", "size": 584},
-    {"name": "Low", "size": 606}
-   ]
-  },
-  {
-   "name": "c",
-   "color": '#87D37C',
-   "children": [
-    {"name": "High", "size": 220},
-    {"name": "Med", "size": 179},
-    {"name": "Low", "size": 322}
-   ]
-  },
-  {
-   "name": "d",
-   "color": '#4ECDC4',
-   "children": [
-    {"name": "High", "size": 883},
-    {"name": "Med", "size": 132},
-    {"name": "Low", "size": 1066}
-   ]
-  },
-  {
-   "name": "e",
-   "color": '#90C695',
-   "children": [
-    {"name": "High", "size": 883},
-    {"name": "Med", "size": 132},
-    {"name": "Low", "size": 416}
-   ]
-  },
-  {
-   "name": "f",
-   "color": '#4183D7',
-   "children": [
-    {"name": "High", "size": 170},
-    {"name": "Med", "size": 701},
-    {"name": "Low", "size": 410}
-   ]
-  },
-  {
-   "name": "g",
-   "color": '#DB0A5B',
-   "children": [
-    {"name": "High", "size": 170},
-    {"name": "Med", "size": 701},
-    {"name": "Low", "size": 810}
-   ]
-  },
-  {
-   "name": "h",
-   "color": '#5AD427',
-   "children": [
-    {"name": "High", "size": 170},
-    {"name": "Med", "size": 701},
-    {"name": "Low", "size": 610}
-   ]
-  },
-  {
-   "name": "i",
-   "color": '#81CFE0',
-   "children": [
-    {"name": "High", "size": 170},
-    {"name": "Med", "size": 701},
-    {"name": "Low", "size": 1010}
-   ]
-  },
-  {
-   "name": "j",
-   "color": '#86a531',
-   "children": [
-    {"name": "High", "size": 170},
-    {"name": "Med", "size": 701},
-    {"name": "Low", "size": 410}
-   ]
-  }
- ]
-};*/
-    // set width, height, and radius
-var width = 500,
-    height = 500,
+    // set width, height, and radius 
+        document.getElementById("bdchart").innerHTML = "";
+
+var width = 200,
+    height = 200,
     radius = (Math.min(width, height) / 2) - 10; // lowest number divided by 2. Then subtract 10
 
 // legend dimensions
@@ -127,13 +33,13 @@ var arc = d3.arc()
 
 // define tooltip
 var tooltip = d3.select('body') // select element in the DOM with id 'chart'
-  .append('div').classed('tooltip', true); // append a div element to the element we've selected    
+  .append('div').classed('tooltip', true); // append a div element to the element we've selected 
 tooltip.append('div') // add divs to the tooltip defined above 
-  .attr('class', 'label'); // add class 'label' on the selection                
+  .attr('class', 'label'); // add class 'label' on the selection 
 tooltip.append('div') // add divs to the tooltip defined above             
   .attr('class', 'count'); // add class 'count' on the selection
-tooltip.append('div') // add divs to the tooltip defined above
-  .attr('class', 'percent'); // add class 'percent' on the selection
+/* tooltip.append('div') // add divs to the tooltip defined above
+  .attr('class', 'percent'); // add class 'percent' on the selection*/
 
 //**********************
 //        CHART
@@ -162,10 +68,11 @@ root.data.children.forEach(function(d){
 
 // define SVG element
 var svg = d3.select("#bdchart").append("svg")
-    .attr("width", width+100) // set width
-    .attr("height", height) // set height
+    .attr("width", 300) // set width
+    .attr("height", 250) // set height
   .append("g") // append g element
     .attr("transform", "translate(" + (width / 2+100) + "," + (height / 2) + ")");
+
 
 // redraw(root);
 var path = svg.selectAll("path")
@@ -179,10 +86,15 @@ var path = svg.selectAll("path")
     .on("click", click)
     .on('mouseover', function(d) {
       var total = d.parent.value;
-      var percent = Math.round(1000 * d.value / total) / 10; // calculate percent
-      tooltip.select('.label').html(d.data.name); // set current label           
-      tooltip.select('.count').html(d.value); // set current count            
-      tooltip.select('.percent').html(percent + '%'); // set percent calculated above          
+      var percent = Math.round(1000 * d.value / total) / 10; // calculate percent       
+      tooltip.select('.label').html(function(){
+        if (d.parent.data.name != "TOTAL"){
+            return d.data.name + ' ' + secFlag;
+        } else {
+            return d.data.name;
+        }
+    }); // set current label           
+      tooltip.select('.count').html(d.value + ' videos'); // set current count            
       tooltip.style('display', 'block'); // set display   
     })
     .on('mouseout', function() { // when mouse leaves div                        
@@ -216,7 +128,7 @@ rect = legend.append('div').classed('rect', true) // append rectangle squares to
   
     var totalEnabled = d3.sum(root.children.map(function(d) {
       return (d.data.enabled ) ? 1 : 0; // return 1 for each enabled entry. and summing it up
-     }))
+     }));
   
     if (rect.classed('clicked')) {
       rect.classed('clicked', false)
@@ -236,7 +148,7 @@ rect = legend.append('div').classed('rect', true) // append rectangle squares to
       if (child.data.enabled === true) {
         enabledCategory.children.push(child);
       }
-    })
+    });
   
     enabledCategory.sum(function(d) {
       if (d.size) {
@@ -255,11 +167,20 @@ legend.append('span')
   .text(function(d) { return d.data.name; })
 
 svg.append("text")
-   .attr("class", "total")
+   .attr("class", "bdtotal")
    .attr("text-anchor", "middle")
-	 .attr('font-size', '4em')
-	 .attr('y', 20)
+    .style('fill', 'white')
+	 .attr('font-size', '2em')
+	 .attr('y', 5)
    .text(total);
+    
+    svg.append("text")
+   .attr("class", "bdtotal")
+   .attr("text-anchor", "middle")
+    .style('fill', 'white')
+	 .attr('font-size', '1em')
+	 .attr('y', 20)
+   .text("Videos");
 
 //**********************
 //       FUNCTIONS
@@ -292,6 +213,7 @@ function redraw(d) {
   
   d3.select(".total").text(d.value);
 }
+    bddetailchart();
 
 // zoom on click
 function click(d) {
@@ -313,4 +235,5 @@ function getRootmostAncestorByWhileLoop(node) {
     while (node.depth > 1) node = node.parent;
     return node;
 }
+    
 }

@@ -36,10 +36,10 @@ function breakdown_click()
         document.getElementById("breakdownSection").style.display = "none";
     }
     
-}
-    
-    bd_dataclean();
 
+    secFlag = document.getElementById("bd-secondlevel").value;
+    bd_dataclean();
+}
 function bd_checkCategory(){
     c1_act = document.getElementById("c1").checked;
     c2_edu = document.getElementById("c2").checked;

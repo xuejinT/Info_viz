@@ -5,7 +5,7 @@
     <title>Trending Videos on Youtube</title>
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./overview.css">
-    <!-- <link rel="stylesheet" href="./breakdown_style.css"> -->
+    <link rel="stylesheet" href="./breakdown_style.css">
     <link href="./plugin/choose/ui-choose.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="./plugin/daterangepicker-master/daterangepicker.css" />
 </head>
@@ -173,7 +173,7 @@
                                         <p class="body2">Second level</p>
                                     </td>
                                     <td>
-                                        <select class="select" id="bd-secondlevel">
+                                        <select class="select" id="bd-secondlevel" onchange="bdchangesort()">
                                             
                                         </select> 
                                     </td>
@@ -181,19 +181,11 @@
                             </table>
                         </div>
                     </div>
-                </div>
-                <div class="bd-filterbox">
-                    <div class="bd-boxselected">
-                        <div class = "bd-box3">
-                            <p class="body1">Selected Videos (0)</p>
-
-                        </div>
-                    </div>
-                </div>
-                                    
+                </div>                                    
             </div>
-            <div class="bd-chart">
             <div id="bdchart"></div>
+            <div class="bd-chart">
+            <div id="bddetailchart"></div>
             </div>
   <!--<div id="legend"></div>-->
        
@@ -211,6 +203,7 @@
 <script src="./plugin/choose/ui-choose.js"></script>
 <script src="./breakdown_data.js"></script>
 <script src="./breakdown_chart.js"></script>
+<script src="./breakdown_detailchart.js"></script>
 <script src="./breakdown.js"></script>
 
 

@@ -5,7 +5,11 @@ ent - 1901 (634, 1268)
 lif - 597 (199, 398)
 new - 265 (122,244)*/ 
 var secFlag;
-
+function bdchangesort()
+{
+    secFlag = document.getElementById("bd-secondlevel").value;
+    bd_dataclean();
+}
 function bd_dataclean()
 {
     //create 6 catgory clusters
@@ -39,15 +43,14 @@ function bd_dataclean()
     var newArray_med =[];
     var newArray_low =[];
 
-
-    secFlag ="a";
     d3.dsv('\\', './data/US_final.csv').then(function(dataset) {
     dataset.forEach(function(d) {
         d.publish_time = parseTime(d.publish_time);
         d.trending_date = parseTime(d.trending_date);
     });
-      
-    
+          console.log("secFlag");
+
+    console.log(secFlag);
     dataset.forEach(function(d){
         if (d.category_id == "29"){
             actArray = actArray.concat(d);
@@ -89,7 +92,7 @@ function bd_dataclean()
              return c.video_id;
         }).entries(newArray);
        
-    if(secFlag == "a"){                     //secondlevel - views
+    if(secFlag == "views"){                     //secondlevel - views
         actArray_nested.sort(function(a, b){
         return a.values[a.values.length-1].views - b.values[b.values.length-1].views;
     }); 
@@ -109,100 +112,138 @@ function bd_dataclean()
         return a.values[a.values.length-1].views - b.values[b.values.length-1].views;
     });       
         
-        } else if(secFlag == "b"){          //secondlevel - like:dislike
-        actArray.sort(function(a, b){
-        return (a.likes/a.dislikes) - (b.likes/b.dislikes);
+        } else if(secFlag == "likes"){          //secondlevel - like
+        actArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].likes - b.values[b.values.length-1].likes;
     }); 
-        tecArray.sort(function(a, b){
-        return (a.likes/a.dislikes) - (b.likes/b.dislikes);
+        tecArray_nested.sort(function(a, b){
+        return  a.values[a.values.length-1].likes - b.values[b.values.length-1].likes;
     }); 
-        eduArray.sort(function(a, b){
-        return (a.likes/a.dislikes) - (b.likes/b.dislikes);
+        eduArray_nested.sort(function(a, b){
+        return  a.values[a.values.length-1].likes - b.values[b.values.length-1].likes;
     });         
-        entArray.sort(function(a, b){
-        return (a.likes/a.dislikes) - (b.likes/b.dislikes);
+        entArray_nested.sort(function(a, b){
+        return  a.values[a.values.length-1].likes - b.values[b.values.length-1].likes;
     }); 
-        lifArray.sort(function(a, b){
-        return (a.likes/a.dislikes) - (b.likes/b.dislikes);
+        lifArray_nested.sort(function(a, b){
+        return  a.values[a.values.length-1].likes - b.values[b.values.length-1].likes;
     }); 
-        newArray.sort(function(a, b){
-        return (a.likes/a.dislikes) - (b.likes/b.dislikes);
+        newArray_nested.sort(function(a, b){
+        return  a.values[a.values.length-1].likes - b.values[b.values.length-1].likes;
     }); 
-        } else if(secFlag == "c"){          //secondlevel - comment
-        actArray.sort(function(a, b){
-        return a.comment_count - b.comment_count;
+        } else if(secFlag == "dislikes"){          //secondlevel - dislike
+        actArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].dislikes - b.values[b.values.length-1].dislikes;
     }); 
-        tecArray.sort(function(a, b){
-        return a.comment_count - b.comment_count;
+        tecArray_nested.sort(function(a, b){
+        return  a.values[a.values.length-1].dislikes - b.values[b.values.length-1].dislikes;
     }); 
-        eduArray.sort(function(a, b){
-        return a.comment_count - b.comment_count;
+        eduArray_nested.sort(function(a, b){
+        return  a.values[a.values.length-1].dislikes - b.values[b.values.length-1].dislikes;
     });         
-        entArray.sort(function(a, b){
-        return a.comment_count - b.comment_count;
+        entArray_nested.sort(function(a, b){
+        return  a.values[a.values.length-1].dislikes - b.values[b.values.length-1].dislikes;
     }); 
-        lifArray.sort(function(a, b){
-        return a.comment_count - b.comment_count;
+        lifArray_nested.sort(function(a, b){
+        return  a.values[a.values.length-1].dislikes - b.values[b.values.length-1].dislikes;
     }); 
-        newArray.sort(function(a, b){
-        return a.comment_count - b.comment_count;
+        newArray_nested.sort(function(a, b){
+        return  a.values[a.values.length-1].dislikes - b.values[b.values.length-1].dislikes;
+    }); 
+        } else if(secFlag == "ratio"){          //secondlevel - like:dislike
+        actArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].ratio - b.values[b.values.length-1].ratio;
+    }); 
+        tecArray_nested.sort(function(a, b){
+        return  a.values[a.values.length-1].ratio - b.values[b.values.length-1].ratio;
+    }); 
+        eduArray_nested.sort(function(a, b){
+        return  a.values[a.values.length-1].ratio - b.values[b.values.length-1].ratio;
+    });         
+        entArray_nested.sort(function(a, b){
+        return  a.values[a.values.length-1].ratio - b.values[b.values.length-1].ratio;
+    }); 
+        lifArray_nested.sort(function(a, b){
+        return  a.values[a.values.length-1].ratio - b.values[b.values.length-1].ratio;
+    }); 
+        newArray_nested.sort(function(a, b){
+        return  a.values[a.values.length-1].ratio - b.values[b.values.length-1].ratio;
+    }); 
+        } else if(secFlag == "comment_count"){          //secondlevel - comment
+        actArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].comment_count - b.values[b.values.length-1].comment_count;
+    }); 
+        tecArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].comment_count - b.values[b.values.length-1].comment_count;
+    }); 
+        eduArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].comment_count - b.values[b.values.length-1].comment_count;
+    });         
+        entArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].comment_count - b.values[b.values.length-1].comment_count;
+    }); 
+        lifArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].comment_count - b.values[b.values.length-1].comment_count;
+    }); 
+        newArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].comment_count - b.values[b.values.length-1].comment_count;
     });    
-        } else if(secFlag == "d"){          //secondlevel - income
-        actArray.sort(function(a, b){
-        return a.views - b.views;
+        } else if(secFlag == "income"){          //secondlevel - income
+        actArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].income - b.values[b.values.length-1].income;
     }); 
-        tecArray.sort(function(a, b){
-        return a.views - b.views;
+        tecArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].income - b.values[b.values.length-1].income;
     }); 
-        eduArray.sort(function(a, b){
-        return a.views - b.views;
+        eduArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].income - b.values[b.values.length-1].income;
     });         
-        entArray.sort(function(a, b){
-        return a.views - b.views;
+        entArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].income - b.values[b.values.length-1].income;
     }); 
-        lifArray.sort(function(a, b){
-        return a.views - b.views;
+        lifArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].income - b.values[b.values.length-1].income;
     }); 
-        newArray.sort(function(a, b){
-        return a.views - b.views;
+        newArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].income - b.values[b.values.length-1].income;
     }); 
-        } else if(secFlag == "e"){          //secondlevel - temperature
-        actArray.sort(function(a, b){
-        return a.temperature - b.temperature;
+        } else if(secFlag == "temperature"){          //secondlevel - temperature
+        actArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].temperature - b.values[b.values.length-1].temperature;
     }); 
-        tecArray.sort(function(a, b){
-        return a.temperature - b.temperature;
+        tecArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].temperature - b.values[b.values.length-1].temperature;
     }); 
-        eduArray.sort(function(a, b){
-        return a.temperature - b.temperature;
+        eduArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].temperature - b.values[b.values.length-1].temperature;
     });         
-        entArray.sort(function(a, b){
-        return a.temperature - b.temperature;
+        entArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].temperature - b.values[b.values.length-1].temperature;
     }); 
-        lifArray.sort(function(a, b){
-        return a.temperature - b.temperature;
+        lifArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].temperature - b.values[b.values.length-1].temperature;
     }); 
-        newArray.sort(function(a, b){
-        return a.temperature - b.temperature;
+        newArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].temperature - b.values[b.values.length-1].temperature;
     }); 
-        } else if(secFlag == "f"){          //secondlevel - trending length
-        actArray.sort(function(a, b){
-        return new Date(b.trending_date) - new Date(a.trending_date);
+        } else if(secFlag == "trending_length"){          //secondlevel - trending length
+        actArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].trending_length - b.values[b.values.length-1].trending_length;
     }); 
-        tecArray.sort(function(a, b){
-        return new Date(b.trending_date) - new Date(a.trending_date);
+        tecArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].trending_length - b.values[b.values.length-1].trending_length;
     }); 
-        eduArray.sort(function(a, b){
-        return new Date(b.trending_date) - new Date(a.trending_date);
+        eduArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].trending_length - b.values[b.values.length-1].trending_length;
     });         
-        entArray.sort(function(a, b){
-        return new Date(b.trending_date) - new Date(a.trending_date);
+        entArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].trending_length - b.values[b.values.length-1].trending_length;
     }); 
-        lifArray.sort(function(a, b){
-        return new Date(b.trending_date) - new Date(a.trending_date);
+        lifArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].trending_length - b.values[b.values.length-1].trending_length;
     }); 
-        newArray.sort(function(a, b){
-        return new Date(b.trending_date) - new Date(a.trending_date);
+        newArray_nested.sort(function(a, b){
+        return a.values[a.values.length-1].trending_length - b.values[b.values.length-1].trending_length;
     }); 
         }
         
@@ -239,57 +280,57 @@ function bd_dataclean()
                 "name": "Entertainment",
                 "color": "#6D72E7",
                 "children": [
-                    {"name": "High", "size": entArray_hig.length, "color": "#999cee","children": entArray_hig},
-                    {"name": "Med", "size": entArray_med.length, "color":"#c5c6f5","children": entArray_med},
-                    {"name": "Low", "size": entArray_low.length, "color":"#dbdbf9","children": entArray_low}
+                    {"name": "High", "size": entArray_hig.length, "color": "#999cee","value": entArray_hig},
+                    {"name": "Med", "size": entArray_med.length, "color":"#c5c6f5","value": entArray_med},
+                    {"name": "Low", "size": entArray_low.length, "color":"#dbdbf9","value": entArray_low}
             ]},
             {
                 "name": "Lifestyle",
                 "color": "#DEB75B",
                 "children": [
-                    {"name": "High", "size": lifArray_hig.length, "color": "#decd5b","children": lifArray_hig},
-                    {"name": "Med", "size": lifArray_med.length, "color": "#e7da85","children": lifArray_med},
-                    {"name": "Low", "size": lifArray_low.length, "color": "#efe7b0","children": lifArray_low}
+                    {"name": "High", "size": lifArray_hig.length, "color": "#decd5b","value": lifArray_hig},
+                    {"name": "Med", "size": lifArray_med.length, "color": "#e7da85","value": lifArray_med},
+                    {"name": "Low", "size": lifArray_low.length, "color": "#efe7b0","value": lifArray_low}
             ]},
             {
                 "name": "News",
                 "color": "#26BDD2",
                 "children": [
-                    {"name": "High", "size": newArray_hig.length, "color": "#4ccddf", "children": newArray_hig},
-                    {"name": "Med", "size": newArray_med.length, "color": "#77d9e7","children": newArray_med},
-                    {"name": "Low", "size": newArray_low.length, "color": "#a2e5ef","children": newArray_low}
+                    {"name": "High", "size": newArray_hig.length, "color": "#4ccddf", "value": newArray_hig},
+                    {"name": "Med", "size": newArray_med.length, "color": "#77d9e7","value": newArray_med},
+                    {"name": "Low", "size": newArray_low.length, "color": "#a2e5ef","value": newArray_low}
             ]
             },
             {
                 "name": "Technology",
                 "color": "#B155DE",
                 "children": [
-                    {"name": "High", "size": tecArray_hig.length, "color": "#c580e6", "children": tecArray_hig},
-                    {"name": "Med", "size": tecArray_med.length, "color": "#d8abee","children": tecArray_med},
-                    {"name": "Low", "size": tecArray_low.length, "color": "#ecd5f7","children": tecArray_low}
+                    {"name": "High", "size": tecArray_hig.length, "color": "#c580e6", "value": tecArray_hig},
+                    {"name": "Med", "size": tecArray_med.length, "color": "#d8abee","value": tecArray_med},
+                    {"name": "Low", "size": tecArray_low.length, "color": "#ecd5f7","value": tecArray_low}
             ]},
             {
                 "name": "Education",
                 "color": "#DE5555",
                 "children": [
-                    {"name": "High", "size": eduArray_hig.length, "color": "#e68080","children": eduArray_hig},
-                    {"name": "Med", "size": eduArray_med.length, "color": "#eeabab","children": eduArray_med},
-                    {"name": "Low", "size": eduArray_low.length, "color": "#f7d5d5","children": eduArray_low}
+                    {"name": "High", "size": eduArray_hig.length, "color": "#e68080","value": eduArray_hig},
+                    {"name": "Med", "size": eduArray_med.length, "color": "#eeabab","value": eduArray_med},
+                    {"name": "Low", "size": eduArray_low.length, "color": "#f7d5d5","value": eduArray_low}
             ]},
             {
                 "name": "Activisim",
                 "color": "#7CC237",
                 "children": [
-                    {"name": "High", "size": actArray_hig.length, "color": "#96d15b","children": actArray_hig},
-                    {"name": "Med", "size": actArray_med.length, "color": "#b0dc83","children": actArray_med},
-                    {"name": "Low", "size": actArray_low.length, "color": "#c9e7ab","children": actArray_low}
+                    {"name": "High", "size": actArray_hig.length, "color": "#96d15b","value": actArray_hig},
+                    {"name": "Med", "size": actArray_med.length, "color": "#b0dc83","value": actArray_med},
+                    {"name": "Low", "size": actArray_low.length, "color": "#c9e7ab","value": actArray_low}
             ]}
             
             
         ]
         
     };
-  
+        console.log(newroot);
         bdchartchart(newroot);
     function low_data(catArray_nested, catArray_low){
          for(i=0;i < Math.floor(catArray_nested.length/3);i++){
