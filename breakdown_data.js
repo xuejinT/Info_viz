@@ -271,8 +271,78 @@ function bd_dataclean()
         newArray_med = med_data(newArray_nested, newArray_med);        
         newArray_hig = hig_data(newArray_nested, newArray_hig);
 
+        var newroot = {
+            name: "TOTAL",
+        color: "#1E1E1E",
+        children: []
+        };
         
-        var newroot ={
+        if(c3_ent == true){
+            newroot.children.push({
+                "name": "Entertainment",
+                "color": "#6D72E7",
+                "children": [
+                    {"name": "High", "size": entArray_hig.length, "color": "#999cee","value": entArray_hig},
+                    {"name": "Med", "size": entArray_med.length, "color":"#c5c6f5","value": entArray_med},
+                    {"name": "Low", "size": entArray_low.length, "color":"#dbdbf9","value": entArray_low}
+            ]});
+        }
+        if(c4_lif == true){
+            newroot.children.push({
+                "name": "Lifestyle",
+                "color": "#DEB75B",
+                "children": [
+                    {"name": "High", "size": lifArray_hig.length, "color": "#decd5b","value": lifArray_hig},
+                    {"name": "Med", "size": lifArray_med.length, "color": "#e7da85","value": lifArray_med},
+                    {"name": "Low", "size": lifArray_low.length, "color": "#efe7b0","value": lifArray_low}
+            ]});
+        }
+        if(c5_new == true){
+            newroot.children.push({
+                "name": "News",
+                "color": "#26BDD2",
+                "children": [
+                    {"name": "High", "size": newArray_hig.length, "color": "#4ccddf", "value": newArray_hig},
+                    {"name": "Med", "size": newArray_med.length, "color": "#77d9e7","value": newArray_med},
+                    {"name": "Low", "size": newArray_low.length, "color": "#a2e5ef","value": newArray_low}
+            ]
+            });
+        }
+        if(c6_tec == true){
+            newroot.children.push({
+                "name": "Technology",
+                "color": "#B155DE",
+                "children": [
+                    {"name": "High", "size": tecArray_hig.length, "color": "#c580e6", "value": tecArray_hig},
+                    {"name": "Med", "size": tecArray_med.length, "color": "#d8abee","value": tecArray_med},
+                    {"name": "Low", "size": tecArray_low.length, "color": "#ecd5f7","value": tecArray_low}
+            ]});
+        }
+        if(c2_edu == true){
+            newroot.children.push({
+                "name": "Education",
+                "color": "#DE5555",
+                "children": [
+                    {"name": "High", "size": eduArray_hig.length, "color": "#e68080","value": eduArray_hig},
+                    {"name": "Med", "size": eduArray_med.length, "color": "#eeabab","value": eduArray_med},
+                    {"name": "Low", "size": eduArray_low.length, "color": "#f7d5d5","value": eduArray_low}
+            ]});
+        }
+        if(c1_act == true){
+            newroot.children.push({
+                "name": "Activisim",
+                "color": "#7CC237",
+                "children": [
+                    {"name": "High", "size": actArray_hig.length, "color": "#96d15b","value": actArray_hig},
+                    {"name": "Med", "size": actArray_med.length, "color": "#b0dc83","value": actArray_med},
+                    {"name": "Low", "size": actArray_low.length, "color": "#c9e7ab","value": actArray_low}
+            ]});
+        }
+
+
+
+        
+       /* var newroot ={
         name: "TOTAL",
         color: "#1E1E1E",
         children: [
@@ -329,7 +399,7 @@ function bd_dataclean()
             
         ]
         
-    };
+    };*/
         console.log(newroot);
         bdchartchart(newroot);
     function low_data(catArray_nested, catArray_low){

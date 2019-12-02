@@ -78,6 +78,9 @@ function bd_checkCategory(){
         } else {
             document.getElementById("bd-tec").style.display = "none";
         }
+    
+        bd_dataclean();
+
 }
 
 function bd_sortfunc() {

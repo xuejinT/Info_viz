@@ -213,7 +213,7 @@ function redraw(d) {
   
   d3.select(".total").text(d.value);
 }
-    bddetailchart();
+    bddetailchart(root);
 
 // zoom on click
 function click(d) {
