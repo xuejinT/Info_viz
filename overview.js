@@ -31,7 +31,7 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
     });
 
     videos = data;
-
+    all_videos = data;
     var viewExtent = d3.extent(videos, function(d) {
         return +d['views'];
     });
@@ -39,7 +39,6 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
     var dateExtent = d3.extent(videos, function(d) {
         return +d['trending_date'];
     });
-    // colorScale.domain(hzdExtent);
     xScale.domain(dateExtent);
 
     var brush = d3.brush()
@@ -79,7 +78,7 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
         })
         .on("mouseover", function(d) {
             tooltip.transition()
-                .duration(200)
+                .duration(350)
                 .style("opacity", .9);
             tooltip.html(d["title"] + "<br/>" + curr_y + " : " + d[curr_y])
                 .style("margin-left", (d3.event.pageX - 100) + "px")
@@ -91,7 +90,7 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
         })
         .on("mouseout", function(d) {
             tooltip.transition()
-                .duration(200)
+                .duration(350)
                 .style("opacity", 0);
             // var curr_color = this.attr("fill");
 
@@ -101,12 +100,12 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
 
     // Create axes for both the y- and x-scale
     svg.append('g') // Append a g element for the scale
-        .attr('class', 'x axis') // Use a class to css style the axes together
+        .attr('class', 'x axis axis-top') // Use a class to css style the axes together
         .attr('transform', 'translate(0,40)') // Position the axis
         .call(d3.axisTop(xScale)); // Call the axis function
 
     svg.append('g')
-        .attr('class', 'x axis ')
+        .attr('class', 'x axis axis-bottom')
         .attr('transform', 'translate(0,570)')
         .call(d3.axisBottom(xScale));
 
@@ -266,7 +265,7 @@ function connect_dots(all_videos, curr_video, curr_y) {
 function remove_path() {
     svg.selectAll(".line")
         .transition()
-        .duration(200)
+        .duration(350)
         .remove();
 }
 
@@ -280,7 +279,7 @@ function highlight_all(video_obj, curr_element) {
         })
         .moveToFront()
         .transition()
-        .duration(200)
+        .duration(350)
         .attr("class", final_class)
         .attr("r", radius);
 }
@@ -292,20 +291,28 @@ function reset_all_circles(curr_element) {
     var final_class = (curr_class == "was-brushed video-hovered" ? "brushed" : "video");
     svg.selectAll(".video-hovered")
         .transition()
-        .duration(200)
+        .duration(350)
         .attr("class", final_class)
         .attr("r", radius);
 }
 
 function update_svg(value) {
     if (value != curr_y) {
+        svg.selectAll(".brush").remove();
         curr_y = value;
         var yExtent = d3.extent(videos, function(d) {
             return +d[value];
         });
         yScale.domain(yExtent);
 
+
         //update brush
+
+        // Create a d3 selection for the videos
+        quadtree = d3.quadtree()
+            .x(d => xScale(d.trending_date))
+            .y(d => yScale(d[curr_y]))
+            .addAll(videos);
         function updateBrush() {
             var ref = d3.event;
             var selection = ref.selection;
@@ -364,38 +371,34 @@ function update_svg(value) {
             .attr('class', 'brush')
             .call(brush);
 
-        // Create a d3 selection for the videos
-        quadtree = d3.quadtree()
-            .x(d => xScale(d.trending_date))
-            .y(d => yScale(d[curr_y]))
-            .addAll(videos);
 
         //update asxes
         svg.selectAll(".axis-left")
             .transition()
-            .duration(200)
+            .duration(350)
             .call(d3.axisLeft(yScale));
 
         svg.selectAll(".axis-right")
             .transition()
-            .duration(200)
+            .duration(350)
             .call(d3.axisRight(yScale));
 
         svg.selectAll(".axisLabel")
             .transition()
-            .duration(200)
+            .duration(350)
             .text(curr_y);
         //update circles
         var all_circles = g.selectAll("circle");
         all_circles
+            .moveToFront()
             .transition()
-            .duration(200)
+            .duration(350)
             .attr("cy", function(d) {
                 return yScale(d[value]);
             });
         all_circles.on("mouseover", function(d) {
                 tooltip.transition()
-                    .duration(200)
+                    .duration(350)
                     .style("opacity", .9);
                 tooltip.html(d["title"] + "<br/>" + curr_y + " : " + d[curr_y])
                     .style("margin-left", (d3.event.pageX - 100) + "px")
@@ -407,7 +410,7 @@ function update_svg(value) {
             })
             .on("mouseout", function(d) {
                 tooltip.transition()
-                    .duration(200)
+                    .duration(350)
                     .style("opacity", 0);
                 // var curr_color = this.attr("fill");
 
@@ -442,3 +445,168 @@ uc_02.change = function(value, item) {
     console.log('change', value);
     update_svg(value);
 };
+
+//FOR SEARCH
+function related(data, keyword) {
+    return data.title.toLowerCase().includes(keyword.toLowerCase()) ||
+        data.description.toLowerCase().includes(keyword.toLowerCase()) ||
+        data.channel_title.toLowerCase().includes(keyword.toLowerCase());
+}
+
+
+function search() {
+	svg.selectAll(".brush").remove();
+	svg.selectAll(".brushed").attr("class", "video");
+    var keyword = $('#keyword').val();
+    videos = all_videos.filter(function(d) {
+        return related(d, keyword);
+    });
+
+
+    var yExtent = d3.extent(videos, function(d) {
+        return +d[curr_y];
+    });
+    yScale.domain(yExtent);
+    var dateExtent = d3.extent(videos, function(d) {
+        return +d["trending_date"];
+    });
+    xScale.domain(dateExtent);
+
+    //update brush
+        
+        // Create a d3 selection for the videos
+        quadtree = d3.quadtree()
+            .x(d => xScale(d.trending_date))
+            .y(d => yScale(d[curr_y]))
+            .addAll(videos);
+        function updateBrush() {
+            var ref = d3.event;
+            var selection = ref.selection;
+            var brushedNodes = new Set();
+            // if we have no selection, just reset the brush highlight to no nodes
+            if (!selection) {
+                highlightBrushed(brushedNodes);
+                return;
+            }
+
+            // begin an array to collect the brushed nodes
+
+
+            // traverse the quad tree, skipping branches where we do not overlap
+            // with the brushed selection box
+            quadtree.visit(function(node, x1, y1, x2, y2) {
+                // check that quadtree node intersects
+                var overlaps = rectIntersects(selection, [
+                    [x1, y1],
+                    [x2, y2]
+                ]);
+
+                // skip if it doesn't overlap the brush
+                if (!overlaps) {
+                    return true;
+                }
+
+                // if this is a leaf node (node.length is falsy), verify it is within the brush
+                // we have to do this since an overlapping quadtree box does not guarantee
+                // that all the points within that box are covered by the brush.
+                if (!node.length) {
+                    var d = node.data;
+                    var dx = xScale(d.trending_date);
+                    var dy = yScale(d[curr_y]);
+                    if (rectContains(selection, [dx, dy])) {
+                        brushedNodes.add(d.video_id);
+                    }
+                }
+
+                // return false so that we traverse into branch (only useful for non-leaf nodes)
+                return false;
+            });
+
+            // update the highlighted brushed nodes
+            highlightBrushed(brushedNodes);
+        }
+        var brush = d3.brush()
+            .extent([
+                [100, 50],
+                [1000, 550]
+            ])
+            .on('brush end', updateBrush);
+
+        // attach the brush to the chart
+        var gBrush = g.append('g')
+            .attr('class', 'brush')
+            .call(brush);
+
+
+    var group = g.selectAll('circle')
+        .data(videos);
+
+    var enter = group.enter()
+    .append('circle')
+        .attr('class', 'video') // Add the classname that we selected on
+        .attr('r', function(d) {
+            // Set the radius attribute based on the planet's radius
+            return radius;
+        })
+        .attr('cx', function(d) {
+            // Set the x-position based on the hzd value
+            return xScale(d.trending_date);
+        })
+        .attr('cy', function(d) {
+            // Set the y-position based on the mass value
+            return yScale(d.views);
+        })
+        .on("mouseover", function(d) {
+            tooltip.transition()
+                .duration(350)
+                .style("opacity", .9);
+            tooltip.html(d["title"] + "<br/>" + curr_y + " : " + d[curr_y])
+                .style("margin-left", (d3.event.pageX - 100) + "px")
+                .style("margin-top", (d3.event.pageY - 100) + "px")
+                .style("cursor", "pointer");
+
+            connect_dots(videos, d, curr_y);
+            highlight_all(d, this);
+        })
+        .on("mouseout", function(d) {
+            tooltip.transition()
+                .duration(350)
+                .style("opacity", 0);
+            // var curr_color = this.attr("fill");
+
+            reset_all_circles(this);
+            remove_path();
+        });
+
+    var merge = group.merge(enter)
+        .transition()
+        .duration(350)
+        .attr('cx', function(d) {
+            return xScale(d.trending_date);
+        })
+        .attr('cy', function(d) {
+            return yScale(d[curr_y]);
+        });
+    var exit = group.exit().remove();
+
+
+    svg.selectAll(".axis-left")
+        .transition()
+        .duration(350)
+        .call(d3.axisLeft(yScale));
+
+    svg.selectAll(".axis-right")
+        .transition()
+        .duration(350)
+        .call(d3.axisRight(yScale));
+
+    svg.selectAll(".axis-bottom")
+        .transition()
+        .duration(350)
+        .call(d3.axisBottom(xScale));
+
+    svg.selectAll(".axis-top")
+        .transition()
+        .duration(350)
+        .call(d3.axisTop(xScale));
+}
