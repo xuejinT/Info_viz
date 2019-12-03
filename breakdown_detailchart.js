@@ -1,8 +1,8 @@
 function bddetailchart(rootdata){
-            document.getElementById("bddetailchart").innerHTML = "";
-
+    document.getElementById("bddetailchart").innerHTML = "";
+ 
 let data_act = [];
-let features = ["View","Like:Dislike","Comment","Income","Temperature","Trending Length"];
+let features = ["views","ratio","comment_count","income","temperature","trending_length"];
 //generate the data
 /*for (var i = 0; i < 3; i++){
     var point = {}
@@ -12,10 +12,40 @@ let features = ["View","Like:Dislike","Comment","Income","Temperature","Trending
 }
 console.log(data);
     */
-    
-    
-    
-    
+    var viewsMax = 0, ratioMax = 0, commentMax = 0, incomeMax = 0, tempMax =0, tlMax=0;
+     for (var i = 0; i < rootdata.children.length; i ++){
+
+        for (var j = 0; j < 3; j ++){
+                console.log(rootdata.children[i].children[j]);
+
+
+            for (var k = 0; k < rootdata.children[i].children[j].value; k ++){
+                let dIndex = rootdata.children[i].children[j].data.value[k].values.length - 1;
+                let d = rootdata.children[i].children[j].data.value[k].values[dIndex];
+                        
+
+                if (d.views - viewsMax > 0){
+                    viewsMax = d.views;
+                }
+                if (d.ratio - ratioMax > 0) {
+                    ratioMax = d.ratio;
+                }
+                if (d.comment_count - commentMax > 0){
+                    commentMax = d.comment_count;
+                }
+                if (d.income - incomeMax > 0){
+                    incomeMax = d.income;
+                }
+                if (d.temperature - tempMax > 0){
+                    tempMax = d.temperature;
+                }
+                if (d.trending_length - tlMax > 0){
+                    tlMax = d.trending_length;
+                }
+            }
+        }
+     }
+      
     var svg = d3.select("#bddetailchart").append("svg")
     .attr("width", 800)
     .attr("height", 600);
@@ -80,23 +110,49 @@ let ticks = [0.25,0.5,0.75,1];
     for (var i = 0; i < features.length; i++){
         let ft_name = features[i];
         let angle = (Math.PI / 2) + (2 * Math.PI * i / features.length);
-        coordinates.push(angleToCoordinate(angle, data_point[ft_name]));
+        var newdata_point;
+        if (ft_name == "views"){
+            newdata_point = data_point[ft_name]/viewsMax;
+        } else if(ft_name == "ratio"){
+            newdata_point = data_point[ft_name]/ratioMax;
+        } else if(ft_name == "comment_count"){
+            newdata_point = data_point[ft_name]/commentMax;
+        } else if(ft_name == "income"){
+            newdata_point = data_point[ft_name]/incomeMax;
+        } else if(ft_name == "temperature"){
+            newdata_point = data_point[ft_name]/tempMax;
+        } else if(ft_name == "trending_length"){
+            newdata_point = data_point[ft_name]/tlMax;
+        }
+        coordinates.push(angleToCoordinate(angle, newdata_point));
     }
     return coordinates;
 }
-    for (var i = 0; i < data.length; i ++){
-    let d = data[i];
-    let color = colors[i];
-    let coordinates = getPathCoordinates(d);
+    for (var i = 0; i < rootdata.children.length; i ++){
 
-    //draw the path element
-    svg.append("path")
-    .datum(coordinates)
-    .attr("d",line)
-    .attr("stroke-width", 3)
-    .attr("stroke", color)
-    .attr("fill", color)
-    .attr("stroke-opacity", 1)
-    .attr("opacity", 0.5);
-}
+        for (var j = 0; j < 3; j ++){
+
+            for (var k = 0; k < rootdata.children[i].children[j].value; k ++){
+                    let color = rootdata.children[i].children[j].data.color;
+                    let dIndex = rootdata.children[i].children[j].data.value[k].values.length - 1;
+                    let d = rootdata.children[i].children[j].data.value[k].values[dIndex];
+                    let coordinates = getPathCoordinates(d);
+                
+
+                
+                    //draw the path element
+                    svg.append("path")
+                    .datum(coordinates)
+                    .attr("d",line)
+                    .attr("stroke", color)
+                    .attr("stroke-width", 3)
+                    .attr("fill", color)
+                    .attr("stroke-opacity", 1)
+                    .attr("opacity", 0.5);
+
+
+            }
+        }
+   
+    }
 }

@@ -1,9 +1,9 @@
 function bdchartchart(root){
-    // set width, height, and radius 
-        document.getElementById("bdchart").innerHTML = "";
+    document.getElementById("bdchart").innerHTML = "";
 
-var width = 200,
-    height = 200,
+    // set width, height, and radius
+var width = 325,
+    height = 325,
     radius = (Math.min(width, height) / 2) - 10; // lowest number divided by 2. Then subtract 10
 
 // legend dimensions
@@ -32,14 +32,12 @@ var arc = d3.arc()
 //**********************
 
 // define tooltip
-var tooltip = d3.select('body') // select element in the DOM with id 'chart'
-  .append('div').classed('tooltip', true); // append a div element to the element we've selected 
+var tooltip = d3.select('#bdchart') // select element in the DOM with id 'chart'
+  .append('div').classed('tooltip', true); // append a div element to the element we've selected    
 tooltip.append('div') // add divs to the tooltip defined above 
-  .attr('class', 'label'); // add class 'label' on the selection 
+  .attr('class', 'label'); // add class 'label' on the selection                
 tooltip.append('div') // add divs to the tooltip defined above             
   .attr('class', 'count'); // add class 'count' on the selection
-/* tooltip.append('div') // add divs to the tooltip defined above
-  .attr('class', 'percent'); // add class 'percent' on the selection*/
 
 //**********************
 //        CHART
@@ -64,29 +62,27 @@ root.data.children.forEach(function(d){
   d.enabled = true;
 });
 
-    
-
 // define SVG element
 var svg = d3.select("#bdchart").append("svg")
-    .attr("width", 300) // set width
-    .attr("height", 250) // set height
+    .attr("width", width) // set width
+    .attr("height", height) // set height
   .append("g") // append g element
-    .attr("transform", "translate(" + (width / 2+100) + "," + (height / 2) + ")");
-
+    .attr("transform", "translate(" + width / 2 + "," + (height / 2) + ")");
 
 // redraw(root);
 var path = svg.selectAll("path")
       .data(partition(root).descendants()) // path for each descendant
     .enter().append("path")
       .attr("d", arc) // draw arcs
-      .attr("class", "path")
+      .attr("class", "bdpath")
       .style("fill", function (d) { 
           return d.data.color; })
-    .attr("opacity","0.8")
+    .style("opacity", 0.8)
     .on("click", click)
     .on('mouseover', function(d) {
       var total = d.parent.value;
-      var percent = Math.round(1000 * d.value / total) / 10; // calculate percent       
+
+      var percent = Math.round(1000 * d.value / total) / 10; // calculate percent
       tooltip.select('.label').html(function(){
         if (d.parent.data.name != "TOTAL"){
             return d.data.name + ' ' + secFlag;
@@ -106,65 +102,6 @@ var path = svg.selectAll("path")
   });
 
 d3.select(self.frameElement).style("height", height + "px");
-
-//**********************
-//        LEGEND
-//**********************
-
-// legend HTML
-var legendContainer = d3.select("#bdlegend").append("div").classed("legends clearfix", true);
-
-var legend = legendContainer.selectAll(".legend")
-  .data(root.children)
-  .enter()
-  .append('div') // replace placeholders with g elements
-  .attr('class', 'legend'); // each g is given a legend class
-
-rect = legend.append('div').classed('rect', true) // append rectangle squares to legend
-  .style('background-color', function(d) { return d.data.color; })
-  .style('border', function (d) { return '1px solid'; })
-  .on('click', function (d) {
-    var rect = d3.select(this); // this refers to the colored squared just clicked
-  
-    var totalEnabled = d3.sum(root.children.map(function(d) {
-      return (d.data.enabled ) ? 1 : 0; // return 1 for each enabled entry. and summing it up
-     }));
-  
-    if (rect.classed('clicked')) {
-      rect.classed('clicked', false)
-        .style('background-color', function(d) { return d.data.color; });
-        d.data.enabled = true;
-      // filter data and rerender
-    } else {
-      rect.classed('clicked', true)
-        .style('background-color', 'transparent');
-        d.data.enabled = false;
-    }
-
-    var enabledCategory = Object.assign({}, d)
-    enabledCategory = d3.hierarchy(enabledCategory.parent.data)
-   enabledCategory.children = [];
-    d.parent.children.forEach(function(child){
-      if (child.data.enabled === true) {
-        enabledCategory.children.push(child);
-      }
-    });
-  
-    enabledCategory.sum(function(d) {
-      if (d.size) {
-        total += d.size
-      }
-      return d.size; 
-    });
-  
-    redraw(enabledCategory)
-           
-  
-    }); // end legend onclick
-
-// adding text to legend
-legend.append('span')
-  .text(function(d) { return d.data.name; })
 
 svg.append("text")
    .attr("class", "bdtotal")
@@ -195,11 +132,16 @@ var drawArc = d3.arc()
       })
       .startAngle(0 * (Math.PI/180))
       .endAngle(function(d, i) {
-        return Math.floor((d*6 * (PI/180))*1000)/1000;
+        return Math.floor((d*6 * (Math.PI/180))*1000)/1000;
       });
 
+bddetailchart(root);
+
+
 // redraw on disabled category
-function redraw(d) {  
+function redraw(d) {
+  console.log("function redraw");
+  
   svg.transition()
       .duration(750)
       .tween("scale", function() {
@@ -211,12 +153,13 @@ function redraw(d) {
     .selectAll("path")
       .attrTween("d", function(d) { return function() { return arc(d); }; });
   
-  d3.select(".total").text(d.value);
+  d3.select(".bdtotal").text(d.value);
 }
-    bddetailchart(root);
 
 // zoom on click
 function click(d) {
+    console.log(d);
+
   svg.transition()
       .duration(750) // duration of transition
       .tween("scale", function() {
@@ -227,7 +170,43 @@ function click(d) {
       })
     .selectAll("path")
       .attrTween("d", function(d) { return function() { return arc(d); }; });
-  d3.select(".total").text(d.value);
+  d3.select(".bdtotal").text(d.value);
+    if(d.depth == 0){
+        bddetailchart(root);
+    } else if(d.depth == 1){
+        var newdata = {
+            name: "TOTAL",
+        color: "#1E1E1E",
+        children: [d.data]
+        };
+        newdata = d3.hierarchy(newdata);
+        newdata.sum(function(d) {
+        if (d.size) {
+            total += d.size;
+        }
+            return d.size; 
+        });
+        bddetailchart(newdata);
+    } else if(d.depth == 2){
+        /*var newChild = d.parent;
+        newChild.data.children = [];
+        newChild.data.children.concat(d.data);
+        var newdata = {
+            name: "TOTAL",
+        color: "#1E1E1E",
+        children: [newChild]
+        };
+        newdata = d3.hierarchy(newdata);
+        newdata.sum(function(d) {
+        if (d.size) {
+            total += d.size;
+        }
+            return d.size; 
+        });
+        console.log(newdata);
+        bddetailchart(newdata);*/
+    }
+
 }
 
 // find ancestors

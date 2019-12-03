@@ -48,9 +48,7 @@ function bd_dataclean()
         d.publish_time = parseTime(d.publish_time);
         d.trending_date = parseTime(d.trending_date);
     });
-          console.log("secFlag");
 
-    console.log(secFlag);
     dataset.forEach(function(d){
         if (d.category_id == "29"){
             actArray = actArray.concat(d);
@@ -402,6 +400,8 @@ function bd_dataclean()
     };*/
         console.log(newroot);
         bdchartchart(newroot);
+
+        
     function low_data(catArray_nested, catArray_low){
          for(i=0;i < Math.floor(catArray_nested.length/3);i++){
                 catArray_low =catArray_low.concat(catArray_nested[i]);
