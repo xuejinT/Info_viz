@@ -47,7 +47,6 @@ function bd_checkCategory(){
     c4_lif = document.getElementById("c4").checked;
     c5_new = document.getElementById("c5").checked;
     c6_tec = document.getElementById("c6").checked;
-    
     if(c1_act == true){
             document.getElementById("bd-act").style.display = "inline";
         } else {
@@ -80,7 +79,6 @@ function bd_checkCategory(){
         }
     
         bd_dataclean();
-
 }
 
 function bd_sortfunc() {

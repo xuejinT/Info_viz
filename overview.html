@@ -26,11 +26,11 @@
          <div class="search">  
              <!-- <form>   -->
                  <input id="keyword" type="text" placeholder="Search by keyword"> 
-                 <button onclick = "search()" >
+                 <button id="search-button" onclick = "search()" >
                      <i class="fa fa-search"></i>
                  </button>  
              <!-- </form>   -->
-             
+                 <span><p id="result"></p></span>
          </div>  
 
         <div class="sort">
@@ -39,7 +39,7 @@
                     <option value="views">view</option>
                     <option value="likes">like</option>
                     <option value="dislikes">dislike</option>
-                    <option value="ratio">like:dislike</option>
+                    <option value="ratio">like ratio</option>
                     <option value="comment_count">comment</option>
                     <option value="income">income</option>
                     <option value="temperature">temperature</option>
@@ -57,7 +57,7 @@
                 <div id="categoryall">
                     <p class="body1" style="display:inline-block;">Category</p>
                     <p class="body2" style="display:inline-block; height:24px;margin-left: 16px">
-                        <input type="checkbox" name="c" value="all" id="all" checked="checked"/>
+                        <input type="checkbox" name="c" value="all" id="all" onclick="checkBox_update()" checked="checked"/>
                         <label for="all">All</label>
                     </p>
                 </div>
@@ -65,13 +65,13 @@
                     <tr>
                         <td>
                             <p class="body2">
-                                <input type="checkbox" name="c" value="activism" id="c1" onclick = "bd_checkCategory()"/>
+                                <input type="checkbox" name="c" value="activism" id="c1" onclick = "bd_checkCategory();checkBox_update()"/>
                                 <label for="c1">Activism</label>
                             </p>
                         </td>
                         <td>
                             <p class="body2">
-                                <input type="checkbox" name="c" value="education" style="margin-left: 80px" id="c2" onclick = "bd_checkCategory()"/>
+                                <input type="checkbox" name="c" value="education" style="margin-left: 80px" id="c2" onclick = "bd_checkCategory();checkBox_update()"/>
                                 <label for="c2">Education</label>
                             </p>
                         </td>
@@ -79,13 +79,13 @@
                     <tr>
                         <td>
                             <p class="body2">
-                                <input type="checkbox" name="c" value="entertainment" id="c3" onclick = "bd_checkCategory()"/>
+                                <input type="checkbox" name="c" value="entertainment" id="c3" onclick = "bd_checkCategory();checkBox_update()"/>
                                 <label for="c3">Entertainment</label>
                             </p>
                         </td>
                         <td>
                             <p class="body2">
-                                <input type="checkbox" name="c" value="lifestyle" style="margin-left: 80px" id="c4" onclick = "bd_checkCategory()"/>
+                                <input type="checkbox" name="c" value="lifestyle" style="margin-left: 80px" id="c4" onclick = "bd_checkCategory();checkBox_update()"/>
                                 <label for="c4">Lifestyle</label>
                             </p>
                         </td>
@@ -93,13 +93,13 @@
                     <tr>
                         <td>
                             <p class="body2">
-                                <input type="checkbox" name="c" value="news" id="c5" onclick = "bd_checkCategory()"/>
+                                <input type="checkbox" name="c" value="news" id="c5" onclick = "bd_checkCategory();checkBox_update()"/>
                                 <label for="c5">News</label>
                             </p>
                         </td>
                         <td>
                             <p class="body2">
-                                <input type="checkbox" name="c" value="technology" style="margin-left: 80px" id="c6" onclick = "bd_checkCategory()"/>
+                                <input type="checkbox" name="c" value="technology" style="margin-left: 80px" id="c6" onclick = "bd_checkCategory();checkBox_update()"/>
                                 <label for="c6">Technology</label>
                             </p>
                         </td>

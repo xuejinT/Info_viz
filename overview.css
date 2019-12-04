@@ -254,6 +254,10 @@ button:focus{
     pointer-events: none;     
 }
 
+#result{
+  color: white;
+  display:inline-block;
+}
 
 /* Line Animation */
 .line {

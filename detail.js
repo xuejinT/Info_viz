@@ -96,9 +96,9 @@ function getcategorydata(){
   categorydata = Object.keys(categoryobject).map(key => ({category: key, count: categoryobject[key]}));
 }
 var svg_c = d3.select("#categorychart").append("svg")
-                    .attr("width", 766)
+                    .attr("width", 550)
                     .attr("height", 300);
-var x_c = d3.scaleBand().rangeRound([0, 732]).padding(0.2);
+var x_c = d3.scaleBand().rangeRound([0, 550]).padding(0.2);
 var y_c = d3.scaleLinear().range([260, 20])
 var xAxis_c = d3.axisBottom(x_c);
 var yAxis_c = d3.axisLeft(y_c);
@@ -109,7 +109,7 @@ var yAxis_c = d3.axisLeft(y_c);
 
 //chart - tag cloud (t)
 var svg_t = d3.select("#wordle").append("svg")
-        .attr("width", 766)
+        .attr("width", 550)
         .attr("height", 300)
         .append("g");
 function gettagdata(){
@@ -156,7 +156,7 @@ function getallattitude(dataset, brushedvideos){
 }
 // set the dimensions and margins of the graph
 var margin_a = {top: 24, right: 0, bottom: 0, left: 16},
-  width_a = 766 - margin_a.left - margin_a.right,
+  width_a = 550 - margin_a.left - margin_a.right,
   height_a = 300 - margin_a.top - margin_a.bottom;
 // append the svg object to the body of the page
 var svg_a = d3.select("#parallelcoordinate")
@@ -281,7 +281,7 @@ d3.dsv('\\', './data/US_final.csv').then(function(dataset) {
   gettagdata();
   //draw
   var layout = d3.layout.cloud()
-    .size([766, 300])
+    .size([550, 300])
       .words(tagdata.map(function(d) { return {text: d.tag, size: d.occurrence, idlist:d.idlist}; }))
       .rotate(function() { return ~~(Math.random() * 2) * 90; })
       .padding(2)
@@ -415,7 +415,7 @@ d3.dsv('\\', './data/US_final.csv').then(function(dataset) {
       return +d.time;
   });
   x_s = d3.scaleTime()
-        .range([70, 300])
+        .range([70, 500])
         .domain(dateExtent)
   timeaxis = d3.axisBottom(x_s)
           .tickFormat(d3.timeFormat("%d %b"))
@@ -432,7 +432,7 @@ d3.dsv('\\', './data/US_final.csv').then(function(dataset) {
   layoutdata[0].forEach(function(el){
   	bandscale_domain.push(el.bandvalue)
   })
-  bandScale = d3.scaleBand().domain(bandscale_domain).range([40,300]);
+  bandScale = d3.scaleBand().domain(bandscale_domain).range([40,500]);
   bandScale.paddingInner(0.1);
   color_s = ["#1C7E8C","#9D4747","#5D8931"]
   var layer = svg_s.selectAll(".stack")
@@ -541,7 +541,7 @@ function updatelinechart(){
   layoutdata[0].forEach(function(el){
   	bandscale_domain.push(el.bandvalue)
   })
-  bandScale = d3.scaleBand().domain(bandscale_domain).range([40,300]);
+  bandScale = d3.scaleBand().domain(bandscale_domain).range([40,500]);
   bandScale.paddingInner(0.1);	
   dateExtent = d3.extent(selectedattitudedata, function(d) {
     return +d.time;});
