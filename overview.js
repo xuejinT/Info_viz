@@ -1,5 +1,21 @@
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+const key = new Map([
+    ['views','Number of Views'],
+    ['likes','Number of Likes'],
+    ['dislikes','Number of Dislikes'],
+    ['ratio','Likes/Dislikes Ratio'],
+    ['comment_count','Number of Commetns'],
+    ['income','Income (Dollar)'],
+    ['temperature','Temperature'],
+    ['trending_length','Trending Length (Day)']
+    ]);
+
 var svg = d3.select('svg');
 var curr_y = "views";
+var highlighted_id = ""
 // Original lab3 codes
 // Create x-scale for positioning the circles
 var radius = 3;
@@ -41,7 +57,7 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
     });
     xScale.domain(dateExtent);
 
-    var brush = d3.brush()
+     brush = d3.brush()
         .extent([
             [100, 50],
             [1000, 550]
@@ -76,32 +92,36 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
             // Set the y-position based on the mass value
             return yScale(d.views);
         })
+        .on("click", function(d) {
+        	highlighted_id = d.video_id;
+        	highlight_single_video();
+        	connect_dots();
+    })
         .on("mouseover", function(d) {
             tooltip.transition()
-                .duration(350)
+                .duration(200)
                 .style("opacity", .9);
-            tooltip.html(d["title"] + "<br/>" + curr_y + " : " + d[curr_y])
+            tooltip.html(d["title"] + "<br/>" + key.get(curr_y) + " : " + d[curr_y])
                 .style("margin-left", (d3.event.pageX - 100) + "px")
                 .style("margin-top", (d3.event.pageY - 100) + "px")
                 .style("cursor", "pointer");
-
-            connect_dots(data, d, curr_y);
             highlight_all(d, this);
         })
         .on("mouseout", function(d) {
             tooltip.transition()
-                .duration(350)
+                .duration(200)
                 .style("opacity", 0);
             // var curr_color = this.attr("fill");
 
             reset_all_circles(this);
             remove_path();
-        });
+        })
+        ;
 
     // Create axes for both the y- and x-scale
     svg.append('g') // Append a g element for the scale
         .attr('class', 'x axis axis-top') // Use a class to css style the axes together
-        .attr('transform', 'translate(0,40)') // Position the axis
+        .attr('transform', 'translate(0,30)') // Position the axis
         .call(d3.axisTop(xScale)); // Call the axis function
 
     svg.append('g')
@@ -111,27 +131,27 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
 
     svg.append('g')
         .attr('class', 'y axis axis-left')
-        .attr('transform', 'translate(70,0)')
+        .attr('transform', 'translate(90,0)')
         .call(d3.axisLeft(yScale));
 
     svg.append('g')
         .attr('class', 'y axis axis-right')
-        .attr('transform', 'translate(1050,0)')
+        .attr('transform', 'translate(1020,0)')
         .call(d3.axisRight(yScale));
 
     // left y axis label
     svg.append("text")
         .attr("class", "axisLabel")
-        .attr("transform", "translate(20,50)rotate(0)")
+        .attr("transform", "translate(10,300)rotate(-90)")
         .attr("dy", "0.3em")
-        .text("Views");
+        .text(key.get(curr_y));
 
     // right y axis label
     svg.append("text")
         .attr("class", "axisLabel")
-        .attr("transform", "translate(1150,50)rotate(0)")
+        .attr("transform", "translate(1100,300)rotate(90)")
         .attr("dy", "0.3em")
-        .text("Views");
+        .text(key.get(curr_y));
 });
 
 
@@ -189,10 +209,18 @@ function updateBrush() {
     highlightBrushed(brushedNodes);
 }
 
-
 function highlightBrushed(brushedNodes) {
-    console.log(brushedNodes)
-        // overlap colored circles to indicate the highlighted ones in the chart
+    // console.log(brushedNodes)
+    g.selectAll('.video-clicked').attr('class', 'video');
+    svg.selectAll('.line').remove();
+    if(brushedNodes.size<=1){
+    	$("#dashboardbutton").attr('disabled','disabled');
+    }else{
+    	$("#dashboardbutton").removeAttr('disabled');
+    }
+    brushedNodes_str = setToStr(brushedNodes);
+    localStorage.setItem("detail_ids",brushedNodes_str);
+
     if (brushedNodes.size > 0) {
         g.selectAll('.brushed')
             .attr('class', 'video');
@@ -207,6 +235,15 @@ function highlightBrushed(brushedNodes) {
             .attr('class', 'video');
     }
 
+}
+
+function setToStr(set){
+	var list = [];
+	set.forEach(function(value1, value2, set)
+		{
+		list.push(value1);
+	});
+	return list.join("||");
 }
 
 var X = 0;
@@ -236,10 +273,10 @@ function rectContains(rect, point) {
     );
 }
 
-function connect_dots(all_videos, curr_video, curr_y) {
+function connect_dots() {
     data = []
-    all_videos.forEach(function(element, i) {
-        if (element.video_id == curr_video.video_id) {
+    videos.forEach(function(element, i) {
+        if (element.video_id == highlighted_id) {
             data.push(element);
         }
     });
@@ -255,7 +292,6 @@ function connect_dots(all_videos, curr_video, curr_y) {
         .y(function(d) {
             return yScale(d[curr_y]);
         });
-
     svg.append("path")
         .data([data])
         .attr("d", valueline)
@@ -263,42 +299,74 @@ function connect_dots(all_videos, curr_video, curr_y) {
 }
 
 function remove_path() {
-    svg.selectAll(".line")
+	if(g.selectAll(".video-clicked").size()==0){
+		    svg.selectAll(".line")
         .transition()
-        .duration(350)
+        .duration(200)
         .remove();
+	}
+
 }
 
+
+
 function highlight_all(video_obj, curr_element) {
+	g.selectAll('.video-hovered,.video-clicked').attr('class',"video");
+	svg.selectAll('.line').remove();
+	// g.selectAll('.video-clicked').attr('class',"video");
+
     var curr_class = curr_element.className;
-    console.log("highlight_all", curr_class);
-    var final_class = (curr_class == "brushed" ? "was-brushed video-hovered" : "video-hovered");
+    var final_class = curr_class;
+    if (curr_class!="video-clicked"){
+    	if(curr_class == "brushed"){
+    		final_class = "was-brushed video-hovered";
+    	}else{
+    		final_class = "video-hovered";
+    	}
+    }
+    // var final_class = (curr_class == "brushed" ? "was-brushed video-hovered" : "video-hovered");
     svg.selectAll(".video")
         .filter(function(d, i) {
             return d.video_id === video_obj.video_id;
         })
         .moveToFront()
         .transition()
-        .duration(350)
+        .duration(200)
         .attr("class", final_class)
         .attr("r", radius);
 }
 
 function reset_all_circles(curr_element) {
-
     var curr_class = curr_element.className;
-    console.log("reset_all_circles", curr_class);
+    // console.log("reset_all_circles", curr_class);
     var final_class = (curr_class == "was-brushed video-hovered" ? "brushed" : "video");
     svg.selectAll(".video-hovered")
         .transition()
-        .duration(350)
+        .duration(200)
         .attr("class", final_class)
         .attr("r", radius);
 }
 
+//highlight one video
+function highlight_single_video(){
+	svg.selectAll(".brush").call(brush.move, null)
+	svg.selectAll('.line').remove();
+	g.selectAll('.video-clicked,video-hovered,brushed').attr('class',"video");
+	
+	g.selectAll('.video-hovered')
+	.filter(function(d, i){
+		return d.video_id === highlighted_id;
+	})
+	.transition()
+        .duration(200)
+        .attr("class","video-clicked");
+}
+
 function update_svg(value) {
     if (value != curr_y) {
+    	svg.selectAll(".line").remove();
         svg.selectAll(".brush").remove();
+
         curr_y = value;
         var yExtent = d3.extent(videos, function(d) {
             return +d[value];
@@ -359,7 +427,7 @@ function update_svg(value) {
             // update the highlighted brushed nodes
             highlightBrushed(brushedNodes);
         }
-        var brush = d3.brush()
+         brush = d3.brush()
             .extent([
                 [100, 50],
                 [1000, 550]
@@ -375,48 +443,53 @@ function update_svg(value) {
         //update asxes
         svg.selectAll(".axis-left")
             .transition()
-            .duration(350)
+            .duration(200)
             .call(d3.axisLeft(yScale));
 
         svg.selectAll(".axis-right")
             .transition()
-            .duration(350)
+            .duration(200)
             .call(d3.axisRight(yScale));
 
         svg.selectAll(".axisLabel")
             .transition()
-            .duration(350)
-            .text(curr_y);
+            .duration(200)
+            .text(key.get(curr_y));
         //update circles
         var all_circles = g.selectAll("circle");
         all_circles
             .moveToFront()
             .transition()
-            .duration(350)
+            .duration(200)
             .attr("cy", function(d) {
                 return yScale(d[value]);
             });
-        all_circles.on("mouseover", function(d) {
-                tooltip.transition()
-                    .duration(350)
-                    .style("opacity", .9);
-                tooltip.html(d["title"] + "<br/>" + curr_y + " : " + d[curr_y])
-                    .style("margin-left", (d3.event.pageX - 100) + "px")
-                    .style("margin-top", (d3.event.pageY - 100) + "px")
-                    .style("cursor", "pointer");
+        all_circles.on("click", function(d) {
+        	highlighted_id = d.video_id;
+        	highlight_single_video();
+        	connect_dots();
+    })
+        .on("mouseover", function(d) {
+            tooltip.transition()
+                .duration(200)
+                .style("opacity", .9);
+            tooltip.html(d["title"] + "<br/>" + key.get(curr_y) + " : " + d[curr_y])
+                .style("margin-left", (d3.event.pageX - 100) + "px")
+                .style("margin-top", (d3.event.pageY - 100) + "px")
+                .style("cursor", "pointer");
+            highlight_all(d, this);
+        })
+        .on("mouseout", function(d) {
+            tooltip.transition()
+                .duration(200)
+                .style("opacity", 0);
+            // var curr_color = this.attr("fill");
 
-                connect_dots(videos, d, curr_y);
-                highlight_all(d, this);
-            })
-            .on("mouseout", function(d) {
-                tooltip.transition()
-                    .duration(350)
-                    .style("opacity", 0);
-                // var curr_color = this.attr("fill");
-
-                reset_all_circles(this);
-                remove_path();
-            });
+            reset_all_circles(this);
+            remove_path();
+        })
+        ;
+        connect_dots();
     }
 }
 
@@ -446,13 +519,14 @@ uc_02.change = function(value, item) {
     update_svg(value);
 };
 
+
+
 //FOR SEARCH
 function related(data, keyword) {
     return data.title.toLowerCase().includes(keyword.toLowerCase()) ||
         data.description.toLowerCase().includes(keyword.toLowerCase()) ||
         data.channel_title.toLowerCase().includes(keyword.toLowerCase());
 }
-
 
 function search() {
 	svg.selectAll(".brush").remove();
@@ -525,7 +599,7 @@ function search() {
             // update the highlighted brushed nodes
             highlightBrushed(brushedNodes);
         }
-        var brush = d3.brush()
+         brush = d3.brush()
             .extent([
                 [100, 50],
                 [1000, 550]
@@ -556,31 +630,36 @@ function search() {
             // Set the y-position based on the mass value
             return yScale(d.views);
         })
+        .on("click", function(d) {
+        	highlighted_id = d.video_id;
+        	highlight_single_video();
+        	connect_dots();
+    })
         .on("mouseover", function(d) {
             tooltip.transition()
-                .duration(350)
+                .duration(200)
                 .style("opacity", .9);
-            tooltip.html(d["title"] + "<br/>" + curr_y + " : " + d[curr_y])
+            tooltip.html(d["title"] + "<br/>" + key.get(curr_y) + " : " + d[curr_y])
                 .style("margin-left", (d3.event.pageX - 100) + "px")
                 .style("margin-top", (d3.event.pageY - 100) + "px")
                 .style("cursor", "pointer");
-
-            connect_dots(videos, d, curr_y);
             highlight_all(d, this);
         })
         .on("mouseout", function(d) {
             tooltip.transition()
-                .duration(350)
+                .duration(200)
                 .style("opacity", 0);
             // var curr_color = this.attr("fill");
 
             reset_all_circles(this);
             remove_path();
-        });
+        })
+        ;
+        connect_dots();
 
     var merge = group.merge(enter)
         .transition()
-        .duration(350)
+        .duration(200)
         .attr('cx', function(d) {
             return xScale(d.trending_date);
         })
@@ -592,21 +671,21 @@ function search() {
 
     svg.selectAll(".axis-left")
         .transition()
-        .duration(350)
+        .duration(200)
         .call(d3.axisLeft(yScale));
 
     svg.selectAll(".axis-right")
         .transition()
-        .duration(350)
+        .duration(200)
         .call(d3.axisRight(yScale));
 
     svg.selectAll(".axis-bottom")
         .transition()
-        .duration(350)
+        .duration(200)
         .call(d3.axisBottom(xScale));
 
     svg.selectAll(".axis-top")
         .transition()
-        .duration(350)
+        .duration(200)
         .call(d3.axisTop(xScale));
 }

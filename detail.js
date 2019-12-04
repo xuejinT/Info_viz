@@ -210,7 +210,11 @@ var svg_s = d3.select("#selectedattitude")
 var dateExtent, x_s, timeaxis, y_l, y_r, viewsline,likesline,dislikesline,layoutdata,bandScale, bandscale_domain=[];
 
 //load brushed data
-d3.dsv('\\', './data/US_sample100.csv').then(function(dataset) {
+d3.dsv('\\', './data/US_final.csv').then(function(dataset) {
+	var detail_items = localStorage.getItem('detail_ids').split("||");
+	dataset = dataset.filter(function(d,i){
+		return detail_items.includes(d.video_id);
+	})
     dataset.forEach(function(d) {
         d.publish_time = parseTime(d.publish_time);
         d.trending_date = parseTime(d.trending_date);
@@ -684,7 +688,13 @@ function highlightselectedvideo(){
 
 //change title channel tags of selected videos + highlight
 function updateselectedvideoinfo(selectedvideonum){
-  d3.dsv('\\', './data/US_sample100.csv').then(function(dataset) {
+  d3.dsv('\\', './data/US_final.csv').then(function(dataset) {
+
+  	var detail_items = localStorage.getItem('detail_ids').split("||");
+	dataset = dataset.filter(function(d,i){
+		return detail_items.includes(d.video_id);
+	})
+
     dataset.forEach(function(d) {
         d.publish_time = parseTime(d.publish_time);
         d.trending_date = parseTime(d.trending_date);
@@ -712,7 +722,19 @@ function changeslide(){
   updateselectedvideoinfo(selectedvideonum);
   });
 }
+//back to overview click
+function backtooverview_click(){
+	var filter = $("#filter").val();
+	var search = $("#search").val();
+	var sort = $("#sort").val();
+
+	localStorage.setItem("filter",filter);
+	localStorage.setItem("search",search);
+	localStorage.setItem("sort",sort);
+	window.location.replace("./overview.html");
+}
 
 //add setting 
 updateselectedvideoinfo(0);
 changeslide();
+

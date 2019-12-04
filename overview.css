@@ -10,6 +10,10 @@
     margin-left: 20px;
 }
 
+.search{
+  padding-left:35px;
+  margin-bottom:50px;
+}
 
 .search input {  
     float:left;
@@ -44,7 +48,7 @@
     border-style :none; 
     outline: none;
 }  
-
+/* 
 .search button:hover{
     background: #191919;
 }
@@ -60,11 +64,12 @@
     font-size: 16px;  
     color: #ffffff;  
 }  
-
+ */
 .sort {
     margin-top: 24px;
     margin-bottom: 24px;
     height:32px;
+    padding-left: 35px;
 }
 
 .filter{
@@ -180,7 +185,7 @@ input[type="checkbox"] + label:before {
     color : #aaaaaa;
 }
 
-#breakdownbutton{
+button{
   width: 160px;
   height:32px;
   border-radius: 5px;
@@ -191,35 +196,37 @@ input[type="checkbox"] + label:before {
   font-size:14px;
 }
 
-#breakdownbutton{
-  width: 160px;
-  height:32px;
-  border-radius: 5px;
-  background-color:#007FF5;
-  border-style: none;
-  font-family: "roboto";
-  color:#FFFFFF;
-  font-size:14px;
-}
 
-#breakdownbutton:hover{
+button:hover{
     background: #0065E1;
 }
 
-#breakdownbutton:active{
+button:active{
     background: #004BA7;
     border-style: none;
     outline: none;
 }
 
-#breakdownbutton:focus{
+button:disabled{
+    background: grey;
     border-style: none;
     outline: none;
 }
 
-.video-hovered{
+
+button:focus{
+    border-style: none;
+    outline: none;
+}
+
+
+.video-clicked{
   fill:#FF5A5F;
   opacity:1
+}
+.video-hovered{
+  fill:#FF5A5F;
+  opacity:0.5
 }
 .video{
   fill: rgb(128, 168, 180);
@@ -258,11 +265,11 @@ input[type="checkbox"] + label:before {
         stroke-dashoffset: 1000;
         animation: dash 2s linear forwards;
     }
-    @keyframes dash{
-        from{
-            stroke-dashoffset: 1000;
-        }
-        to{
-            stroke-dashoffset: 0;
-        }
+@keyframes dash{
+    from{
+        stroke-dashoffset: 1000;
     }
+    to{
+        stroke-dashoffset: 0;
+    }
+}
