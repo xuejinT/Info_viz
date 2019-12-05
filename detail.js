@@ -318,7 +318,7 @@ d3.dsv('\\', './data/US_final.csv').then(function(dataset) {
   			return classstring;
    		     })
          .on("mouseover", function(d){tooltip.style("visibility", "visible");
-  							    document.getElementById("hover").innerHTML = d.text + "<br/>"+ d.size +"/"+brushedvideos.length})
+  							    document.getElementById("hover").innerHTML = d.text + "<br/>"+ (d.size/8) +"/"+brushedvideos.length})
 		.on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
 		.on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 		}
