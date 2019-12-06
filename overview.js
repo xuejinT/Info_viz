@@ -103,7 +103,7 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
         .on("click", function(d) {
             highlighted_id = d.video_id;
             highlight_single_video();
-            connect_dots();
+            
         })
         .on("mouseover", function(d) {
             tooltip.transition()
@@ -382,9 +382,24 @@ function highlight_single_video() {
         .transition()
         .duration(200)
         .attr("class", "video-clicked");
+    connect_dots();
 }
 
+function highlight_single_video_tagchange() {
+    svg.selectAll(".brush").call(brush.move, null)
+    svg.selectAll('.line').remove();
+    g.selectAll('.video-clicked,video-hovered,brushed').attr('class', "video");
 
+    g.selectAll('.video')
+        .filter(function(d, i) {
+            return d.video_id === highlighted_id;
+        })
+        .moveToFront()
+        .transition()
+        .duration(200)
+        .attr("class", "video-clicked");
+    connect_dots();
+}
 
 // FOR TAGS SELECTION
 $('.ui-choose').ui_choose();
@@ -580,7 +595,7 @@ function update_plot(caller, args) {
             .on("click", function(d) {
                 highlighted_id = d.video_id;
                 highlight_single_video();
-                connect_dots();
+
             })
             .on("mouseover", function(d) {
                 tooltip.transition()
@@ -600,7 +615,7 @@ function update_plot(caller, args) {
 
                 reset_all_circles(this);
             });
-        connect_dots();
+        
 
         var merge = existing_circles.merge(enter)
             .transition()
@@ -620,6 +635,8 @@ function update_plot(caller, args) {
         $("#result").css("display", "");
         g.selectAll('circle').remove();
     }
+
+    highlight_single_video_tagchange();
 
 }
 
