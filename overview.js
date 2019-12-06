@@ -612,6 +612,8 @@ function update_plot(caller, args) {
                 return yScale(d[curr_y]);
             });
         var exit = existing_circles.exit().remove();
+
+        //need to fix:
         g.selectAll('circle').moveToFront();
     } else {
         $("#result").text("No Results Found!");
