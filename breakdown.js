@@ -38,7 +38,6 @@ function breakdown_click()
     
 
     secFlag = document.getElementById("bd-secondlevel").value;
-    bd_dataclean();
 }
 function bd_checkCategory(){
     c1_act = document.getElementById("c1").checked;

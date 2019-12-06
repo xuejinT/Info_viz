@@ -280,9 +280,28 @@ function bd_dataclean()
                 "name": "Entertainment",
                 "color": "#6D72E7",
                 "children": [
-                    {"name": "High", "size": entArray_hig.length, "color": "#999cee","value": entArray_hig},
-                    {"name": "Med", "size": entArray_med.length, "color":"#c5c6f5","value": entArray_med},
-                    {"name": "Low", "size": entArray_low.length, "color":"#dbdbf9","value": entArray_low}
+                    {"name": "High", 
+                    "size": entArray_hig.length, 
+                    "color": "#999cee",
+                    "average":find_ave(entArray_hig),
+                    "maximum":find_max(entArray_hig),
+                    "medium": find_med(entArray_hig),
+                    "value": entArray_hig
+                    },
+                    {"name": "Med", 
+                     "size": entArray_med.length,
+                     "color":"#c5c6f5",
+                     "average":find_ave(entArray_med),
+                     "maximum":find_max(entArray_med),
+                     "medium": find_med(entArray_med),
+                     "value": entArray_med},
+                    {"name": "Low", 
+                     "size": entArray_low.length, 
+                     "color":"#dbdbf9",
+                     "average":find_ave(entArray_low),
+                     "maximum":find_max(entArray_low),
+                     "medium": find_med(entArray_low),
+                     "value": entArray_low}
             ]});
         }
         if(c4_lif == true){
@@ -290,9 +309,27 @@ function bd_dataclean()
                 "name": "Lifestyle",
                 "color": "#DEB75B",
                 "children": [
-                    {"name": "High", "size": lifArray_hig.length, "color": "#decd5b","value": lifArray_hig},
-                    {"name": "Med", "size": lifArray_med.length, "color": "#e7da85","value": lifArray_med},
-                    {"name": "Low", "size": lifArray_low.length, "color": "#efe7b0","value": lifArray_low}
+                    {"name": "High", 
+                     "size": lifArray_hig.length, 
+                     "color": "#decd5b",
+                     "average":find_ave(lifArray_hig),
+                     "maximum":find_max(lifArray_hig),
+                     "medium": find_med(lifArray_hig),
+                     "value": lifArray_hig},
+                    {"name": "Med", 
+                     "size": lifArray_med.length, 
+                     "color": "#e7da85",
+                     "average":find_ave(lifArray_med),
+                     "maximum":find_max(lifArray_med),
+                     "medium": find_med(lifArray_med),
+                     "value": lifArray_med},
+                    {"name": "Low", 
+                     "size": lifArray_low.length, 
+                     "color": "#efe7b0",
+                     "average":find_ave(lifArray_low),
+                     "maximum":find_max(lifArray_low),
+                     "medium": find_med(lifArray_low),
+                     "value": lifArray_low}
             ]});
         }
         if(c5_new == true){
@@ -300,9 +337,27 @@ function bd_dataclean()
                 "name": "News",
                 "color": "#26BDD2",
                 "children": [
-                    {"name": "High", "size": newArray_hig.length, "color": "#4ccddf", "value": newArray_hig},
-                    {"name": "Med", "size": newArray_med.length, "color": "#77d9e7","value": newArray_med},
-                    {"name": "Low", "size": newArray_low.length, "color": "#a2e5ef","value": newArray_low}
+                    {"name": "High", 
+                     "size": newArray_hig.length, 
+                     "color": "#4ccddf", 
+                     "average":find_ave(newArray_hig),
+                     "maximum":find_max(newArray_hig),
+                     "medium": find_med(newArray_hig),
+                     "value": newArray_hig},
+                    {"name": "Med", 
+                     "size": newArray_med.length, 
+                     "color": "#77d9e7", 
+                     "average":find_ave(newArray_med),
+                     "maximum":find_max(newArray_med),
+                     "medium": find_med(newArray_med),
+                     "value": newArray_med},
+                    {"name": "Low", 
+                     "size": newArray_low.length, 
+                     "color": "#a2e5ef", 
+                     "average":find_ave(newArray_low),
+                     "maximum":find_max(newArray_low),
+                     "medium": find_med(newArray_low),
+                     "value": newArray_low}
             ]
             });
         }
@@ -311,9 +366,27 @@ function bd_dataclean()
                 "name": "Technology",
                 "color": "#B155DE",
                 "children": [
-                    {"name": "High", "size": tecArray_hig.length, "color": "#c580e6", "value": tecArray_hig},
-                    {"name": "Med", "size": tecArray_med.length, "color": "#d8abee","value": tecArray_med},
-                    {"name": "Low", "size": tecArray_low.length, "color": "#ecd5f7","value": tecArray_low}
+                    {"name": "High", 
+                     "size": tecArray_hig.length, 
+                     "color": "#c580e6",  
+                     "average":find_ave(tecArray_hig),
+                     "maximum":find_max(tecArray_hig),
+                     "medium": find_med(tecArray_hig),
+                     "value": tecArray_hig},
+                    {"name": "Med", 
+                     "size": tecArray_med.length, 
+                     "color": "#d8abee",  
+                     "average":find_ave(tecArray_med),
+                     "maximum":find_max(tecArray_med),
+                     "medium": find_med(tecArray_med),
+                     "value": tecArray_med},
+                    {"name": "Low", 
+                     "size": tecArray_low.length, 
+                     "color": "#ecd5f7",  
+                     "average":find_ave(tecArray_low),
+                     "maximum":find_max(tecArray_low),
+                     "medium": find_med(tecArray_low),
+                     "value": tecArray_low}
             ]});
         }
         if(c2_edu == true){
@@ -321,9 +394,27 @@ function bd_dataclean()
                 "name": "Education",
                 "color": "#DE5555",
                 "children": [
-                    {"name": "High", "size": eduArray_hig.length, "color": "#e68080","value": eduArray_hig},
-                    {"name": "Med", "size": eduArray_med.length, "color": "#eeabab","value": eduArray_med},
-                    {"name": "Low", "size": eduArray_low.length, "color": "#f7d5d5","value": eduArray_low}
+                    {"name": "High", 
+                     "size": eduArray_hig.length, 
+                     "color": "#e68080",  
+                     "average":find_ave(eduArray_hig,secFlag),
+                     "maximum":find_max(eduArray_hig,secFlag),
+                     "medium": find_med(eduArray_hig,secFlag),
+                     "value": eduArray_hig},
+                    {"name": "Med", 
+                     "size": eduArray_med.length, 
+                     "color": "#eeabab",  
+                     "average":find_ave(eduArray_med,secFlag),
+                     "maximum":find_max(eduArray_med,secFlag),
+                     "medium": find_med(eduArray_med,secFlag),
+                     "value": eduArray_med},
+                    {"name": "Low", 
+                     "size": eduArray_low.length, 
+                     "color": "#f7d5d5",  
+                     "average":find_ave(eduArray_low,secFlag),
+                     "maximum":find_max(eduArray_low,secFlag),
+                     "medium": find_med(eduArray_low,secFlag),
+                     "value": eduArray_low}
             ]});
         }
         if(c1_act == true){
@@ -331,97 +422,107 @@ function bd_dataclean()
                 "name": "Activisim",
                 "color": "#7CC237",
                 "children": [
-                    {"name": "High", "size": actArray_hig.length, "color": "#96d15b","value": actArray_hig},
-                    {"name": "Med", "size": actArray_med.length, "color": "#b0dc83","value": actArray_med},
-                    {"name": "Low", "size": actArray_low.length, "color": "#c9e7ab","value": actArray_low}
+                    {"name": "High", 
+                     "size": actArray_hig.length, 
+                     "color": "#96d15b",  
+                     "average":find_ave(actArray_hig,secFlag),
+                     "maximum":find_max(actArray_hig,secFlag),
+                     "medium": find_med(actArray_hig,secFlag),
+                     "value": actArray_hig},
+                    {"name": "Med", 
+                     "size": actArray_med.length, 
+                     "color": "#b0dc83",  
+                     "average":find_ave(actArray_med,secFlag),
+                     "maximum":find_max(actArray_med,secFlag),
+                     "medium": find_med(actArray_med,secFlag),
+                     "value": actArray_med},
+                    {"name": "Low", 
+                     "size": actArray_low.length, 
+                     "color": "#c9e7ab",  
+                     "average":find_ave(actArray_low,secFlag),
+                     "maximum":find_max(actArray_low,secFlag),
+                     "medium": find_med(actArray_low,secFlag),
+                     "value": actArray_low}
             ]});
         }
 
 
 
         
-       /* var newroot ={
-        name: "TOTAL",
-        color: "#1E1E1E",
-        children: [
-            {
-                "name": "Entertainment",
-                "color": "#6D72E7",
-                "children": [
-                    {"name": "High", "size": entArray_hig.length, "color": "#999cee","value": entArray_hig},
-                    {"name": "Med", "size": entArray_med.length, "color":"#c5c6f5","value": entArray_med},
-                    {"name": "Low", "size": entArray_low.length, "color":"#dbdbf9","value": entArray_low}
-            ]},
-            {
-                "name": "Lifestyle",
-                "color": "#DEB75B",
-                "children": [
-                    {"name": "High", "size": lifArray_hig.length, "color": "#decd5b","value": lifArray_hig},
-                    {"name": "Med", "size": lifArray_med.length, "color": "#e7da85","value": lifArray_med},
-                    {"name": "Low", "size": lifArray_low.length, "color": "#efe7b0","value": lifArray_low}
-            ]},
-            {
-                "name": "News",
-                "color": "#26BDD2",
-                "children": [
-                    {"name": "High", "size": newArray_hig.length, "color": "#4ccddf", "value": newArray_hig},
-                    {"name": "Med", "size": newArray_med.length, "color": "#77d9e7","value": newArray_med},
-                    {"name": "Low", "size": newArray_low.length, "color": "#a2e5ef","value": newArray_low}
-            ]
-            },
-            {
-                "name": "Technology",
-                "color": "#B155DE",
-                "children": [
-                    {"name": "High", "size": tecArray_hig.length, "color": "#c580e6", "value": tecArray_hig},
-                    {"name": "Med", "size": tecArray_med.length, "color": "#d8abee","value": tecArray_med},
-                    {"name": "Low", "size": tecArray_low.length, "color": "#ecd5f7","value": tecArray_low}
-            ]},
-            {
-                "name": "Education",
-                "color": "#DE5555",
-                "children": [
-                    {"name": "High", "size": eduArray_hig.length, "color": "#e68080","value": eduArray_hig},
-                    {"name": "Med", "size": eduArray_med.length, "color": "#eeabab","value": eduArray_med},
-                    {"name": "Low", "size": eduArray_low.length, "color": "#f7d5d5","value": eduArray_low}
-            ]},
-            {
-                "name": "Activisim",
-                "color": "#7CC237",
-                "children": [
-                    {"name": "High", "size": actArray_hig.length, "color": "#96d15b","value": actArray_hig},
-                    {"name": "Med", "size": actArray_med.length, "color": "#b0dc83","value": actArray_med},
-                    {"name": "Low", "size": actArray_low.length, "color": "#c9e7ab","value": actArray_low}
-            ]}
-            
-            
-        ]
-        
-    };*/
         console.log(newroot);
         bdchartchart(newroot);
 
-        
-    function low_data(catArray_nested, catArray_low){
-         for(i=0;i < Math.floor(catArray_nested.length/3);i++){
-                catArray_low =catArray_low.concat(catArray_nested[i]);
+    
+    function low_data(Array_nested, Array_low){
+         for(i=0;i < Math.floor(Array_nested.length/3);i++){
+                Array_low =Array_low.concat(Array_nested[i]);
             } 
-        return catArray_low;
+        return Array_low;
     }
     
-    function med_data(catArray_nested, catArray_med){
-         for(i=Math.floor(catArray_nested.length/3);i < Math.floor(catArray_nested.length/3*2);i++){
-                catArray_med =catArray_med.concat(catArray_nested[i]);
+    function med_data(Array_nested, Array_med){
+         for(i=Math.floor(Array_nested.length/3);i < Math.floor(Array_nested.length/3*2);i++){
+                Array_med =Array_med.concat(Array_nested[i]);
         }
-        return catArray_med;
+        return Array_med;
     }
-    function hig_data(catArray_nested, catArray_hig){
-          for(i=Math.floor(catArray_nested.length/3*2);i < catArray_nested.length;i++){
-                catArray_hig =catArray_hig.concat(catArray_nested[i]);
+    function hig_data(Array_nested, Array_hig){
+          for(i=Math.floor(Array_nested.length/3*2);i < Array_nested.length;i++){
+                Array_hig =Array_hig.concat(Array_nested[i]);
         } 
-        return catArray_hig;
+        return Array_hig;
     }
-    
+    function find_ave(Array){
+        var sum_view=0, sum_ratio=0, sum_comment=0, sum_income=0, sum_temperature=0, sum_tl=0;
+        var avg = {};
+        
+        for(i=0; i< Array.length; i++){
+            sum_view += parseInt(Array[i].values[Array[i].values.length-1].views,10);
+            sum_ratio += parseInt(Array[i].values[Array[i].values.length-1].ratio,10);
+            sum_comment += parseInt(Array[i].values[Array[i].values.length-1].comment_count,10);
+            sum_income += parseInt(Array[i].values[Array[i].values.length-1].income,10);
+            sum_temperature += parseInt(Array[i].values[Array[i].values.length-1].temperature,10);
+            sum_tl += parseInt(Array[i].values[Array[i].values.length-1].trending_length,10);
+        }
+
+        avg.views = sum_view/Array.length;
+        avg.ratio = sum_ratio/Array.length;
+        avg.comment_count = sum_comment/Array.length;
+        avg.income = sum_income/Array.length;
+        avg.temperature = sum_temperature/Array.length;
+        avg.trending_length = sum_tl/Array.length;
+
+        return avg;
+    }
+    function find_max(Array){
+        var max_view = 0, max_ratio = 0, max_comment = 0, max_income = 0, max_temperature = 0, max_tl = 0;
+        var max = {};
+        for(i=0; i<Array.length; i++){
+            if(Array[i].values[Array[i].values.length-1].views > max_view){
+                max_view = Array[i].values[Array[i].values.length-1].views;
+            } if(Array[i].values[Array[i].values.length-1].ratio > max_ratio){
+                max_ratio = Array[i].values[Array[i].values.length-1].ratio;
+            } if(Array[i].values[Array[i].values.length-1].comment_count > max_comment){
+                max_comment = Array[i].values[Array[i].values.length-1].comment_count;
+            } if(Array[i].values[Array[i].values.length-1].income > max_income){
+                max_income = Array[i].values[Array[i].values.length-1].income;
+            } if(Array[i].values[Array[i].values.length-1].temperature > max_temperature){
+                max_temperature = Array[i].values[Array[i].values.length-1].temperature;
+            } if(Array[i].values[Array[i].values.length-1].trending_length > max_tl){
+                max_tl = Array[i].values[Array[i].values.length-1].trending_length;
+            }  
+        }
+        max.views = parseInt(max_view,10);
+        max.ratio = parseInt(max_ratio,10);
+        max.comment_count = parseInt(max_comment,10);
+        max.income = parseInt(max_income,10);
+        max.temperature = parseInt(max_temperature,10);
+        max.trending_length = parseInt(max_tl,10);
+        return max;
+    }
+    function find_med(Array){
+        return Array[Math.floor(Array.length/2)].values[Array[Math.floor(Array.length/2)].values.length-1];
+    }
 });
 }
 
