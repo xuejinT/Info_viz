@@ -23,6 +23,12 @@ var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S");
 var selectedvideo = [];
 var settingsobject = {};
 var layoutdata = [];
+var similarity = [];
+
+//load similar video
+$.getJSON( "./data/sim_final_min.json", function(data) {
+    similarity = data; //json output 
+});
 
 //define tooltip
 var tooltip = d3.select("body")
@@ -329,7 +335,7 @@ d3.dsv('\\', './data/US_final.csv').then(function(dataset) {
 
 
 
-//load the whole dataset for attitude
+//load the whole dataset
 d3.dsv('\\', './data/US_final.csv').then(function(dataset) {
   dataset.forEach(function(d) {
     d.publish_time = parseTime(d.publish_time);
@@ -519,7 +525,7 @@ d3.dsv('\\', './data/US_final.csv').then(function(dataset) {
 });
 
 
-// update selected video attitude
+// update selected video attitude ++and similar video
 function updatelinechart(){
   d3.dsv('\\', './data/US_final.csv').then(function(dataset) {
   dataset.forEach(function(d) {
@@ -688,6 +694,25 @@ function updateselectedvideoinfo(selectedvideonum){
   document.getElementById("videolink").href = selectedvideo.video_url;
   document.getElementById("numofvideo").innerHTML = "Selected" + "&nbsp;" + "Video" + "&nbsp;" + numofvideo + "/" + brushedvideos.length;
   document.getElementById("allvideonum").innerHTML = "Details" + "&nbsp;" + "Of" + "&nbsp;" + "All" +"&nbsp;" + "The" +"&nbsp;" + brushedvideos.length +"&nbsp;" + "Selected" +"&nbsp;" + "Videos"
+  //similar video
+  svid = Object.keys(similarity[selectedvideo.video_id])
+  for (var i=0; i<5; i++){
+  	  var imageid = "svthumbnail" + i;
+  	  var linkid = "svlink" + i;
+  	  var titleid = "svtitle" + i;
+  	  var uploaderid = "svuploader" + i;
+  	  var sv = data.find(o => o.video_id === svid[i]);
+  	  //update thumbnail
+	  var thumbnail = document.getElementById(imageid);
+      var thumbnaillink = sv.thumbnail_link;
+      thumbnail.setAttribute("src",thumbnaillink);
+      //update video link
+      document.getElementById(linkid).href = sv.video_url;
+      //update video title
+      document.getElementById(titleid).innerHTML = sv.title;
+      //update uploader
+      document.getElementById(uploaderid).innerHTML = "by"+"&nbsp; "+sv.channel_title;     
+  }
   highlightselectedvideo();
 });
 }
