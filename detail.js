@@ -771,6 +771,12 @@ function backtooverview_click(){
 	window.location.replace("./overview.html");
 }
 
+function clearsettingsobject(){
+	settingsobject={};
+	document.getElementById("filter").innerHTML = "none";
+	document.getElementById("search").innerHTML =  "none";
+
+}
 //add setting 
 updateselectedvideoinfo(0);
 changeslide();
