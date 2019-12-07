@@ -1,4 +1,7 @@
 /* overview */
+.head{
+  margin-left: 35px;
+}
 #logo {
     width: 62px;
     float:left;
@@ -12,7 +15,7 @@
 
 .search{
   padding-left:35px;
-  margin-bottom:50px;
+  margin-bottom:30px;
 }
 
 .search input {  
@@ -73,14 +76,25 @@
 }
 
 .filter{
+    width: 1140px;
     height:176px;
     background-color: #282828;
     border-radius: 5px;
     margin-top: 24px;
 }
 
-.category, .timerange, .viewbreakdown{
-    width:30%;
+.category, .timerange{
+    width:360px;
+    height: 144px;
+    float:left;
+    margin-top: 16px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 16px;
+}
+
+.viewbreakdown{
+    width:240px;
     height: 144px;
     float:left;
     margin-top: 16px;
@@ -201,6 +215,7 @@ button:hover{
     background: #0065E1;
 }
 
+
 button:active{
     background: #004BA7;
     border-style: none;
@@ -254,9 +269,14 @@ button:focus{
     pointer-events: none;     
 }
 
+
 #result{
   color: white;
   display:inline-block;
+  margin-left: 12px;
+  font-family: "roboto";
+  font-size: 14px;
+
 }
 
 /* Line Animation */
@@ -277,3 +297,5 @@ button:focus{
         stroke-dashoffset: 0;
     }
 }
+
+
