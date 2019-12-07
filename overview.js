@@ -2,6 +2,11 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+var filter = localStorage.getItem("filter");
+var tag = localStorage.getItem("tag");
+
+
+
 const key = new Map([
     ['views', 'Number of Views'],
     ['likes', 'Number of Likes'],
@@ -177,6 +182,10 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
         document.getElementById("bd-date").innerHTML = start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD');
         console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
     });
+
+    if(filter != undefined || tag != undefined) {
+	update_plot("detail_page",[filter,tag])
+}
 });
 
 
@@ -424,6 +433,7 @@ uc_02.change = function(value, item) {
 function related(data, keyword) {
     return data.title.toLowerCase().includes(keyword.toLowerCase()) ||
         data.description.toLowerCase().includes(keyword.toLowerCase()) ||
+        data.tags.toLowerCase().includes(keyword.toLowerCase())||
         data.channel_title.toLowerCase().includes(keyword.toLowerCase());
 }
 
@@ -440,8 +450,7 @@ function tag_change(value) {
 }
 
 function checkBox_update(){
-    
-    c1_act = document.getElementById("c1").checked;
+    // c1_act = document.getElementById("c1").checked;
     c2_edu = document.getElementById("c2").checked;
     c3_ent = document.getElementById("c3").checked;
     c4_lif = document.getElementById("c4").checked;
@@ -451,7 +460,7 @@ function checkBox_update(){
         $("#all").removeAttr("checked");
     }
     all = document.getElementById("all").checked;
-    update_plot("cluster_filter",[c1_act,c2_edu,c3_ent,c4_lif,c5_new,c6_tec,all]);
+    update_plot("cluster_filter",[false,c2_edu,c3_ent,c4_lif,c5_new,c6_tec,all]);
 }
 
 function checkBox_update_all(){
@@ -461,6 +470,11 @@ function checkBox_update_all(){
     // $("#c4").removeAttr("checked");
     // $("#c5").removeAttr("checked");
     // $("#c6").removeAttr("checked");
+    document.getElementById("c2").checked=false;
+    document.getElementById("c3").checked=false;
+    document.getElementById("c4").checked=false;
+    document.getElementById("c5").checked=false;
+    document.getElementById("c6").checked=false;
     // $("#c1").css("background-color","")
     checkBox_update();
 }
@@ -474,7 +488,26 @@ function update_plot(caller, args) {
             return related(d, keyword);
         });
     } else if (caller === "detail_page") {
-
+    	if(filter!="none" && tag != "none"){
+    		videos = all_videos.filter(function(d){
+    			return d.category_name === filter && related(d, tag);
+    		})
+    		$("#all").removeAttr("checked");
+    	}
+    	else if (filter!="none"){
+    		videos = all_videos.filter(function(d){
+    			return d.category_name;
+    		})
+    		$("#all").removeAttr("checked");
+    	}
+    	else if(tag!="none"){
+    		videos = all_videos.filter(function(d){
+    			return related(d, tag);
+    		})
+    		$("#all").removeAttr("checked");
+    	}
+    	//clear localStorage
+    	localStorage.clear();
     } else if (caller === "cluster_filter") {
     	var checked_category = [];
     	args.forEach(function(item,i){
