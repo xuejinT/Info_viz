@@ -46,6 +46,9 @@
                     <option value="trending_length">trending length</option>
                 </select>
             </td>
+
+            <!-- <input style="display:inline-block;" type="checkbox" name="c" value="all" id="" onclick="switch_mode()" />
+            <label style="display:inline-block;color: white" for="all">Only Starting Day</label> -->
         </div>
         <div class="scatterplot">
             <svg style="height:600px; width:100%;"></svg>
@@ -57,7 +60,7 @@
                 <div id="categoryall">
                     <p class="body1" style="display:inline-block;">Category</p>
                     <p class="body2" style="display:inline-block; height:24px;margin-left: 16px">
-                        <input type="checkbox" name="c" value="all" id="all" onclick="checkBox_update()" checked="checked"/>
+                        <input type="checkbox" name="c" value="all" id="all" onclick="checkBox_update_all()" checked="checked"/>
                         <label for="all">All</label>
                     </p>
                 </div>

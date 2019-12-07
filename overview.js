@@ -12,7 +12,9 @@ const key = new Map([
     ['temperature', 'Temperature'],
     ['trending_length', 'Trending Length (Day)']
 ]);
-
+var t = d3.transition()
+    .duration(200)
+    .ease(d3.easeLinear);
 var cluster_map ={
 	0:"Activisim",
 	1:"Education",
@@ -241,6 +243,10 @@ function highlightBrushed(brushedNodes) {
     } else {
         $("#dashboardbutton").removeAttr('disabled');
     }
+
+    // if (brushedNodes.size == 0) {
+    // 	highlighted_id = "";
+    // }
     brushedNodes_str = setToStr(brushedNodes);
     localStorage.setItem("detail_ids", brushedNodes_str);
 
@@ -374,13 +380,11 @@ function highlight_single_video() {
     svg.selectAll('.line').remove();
     g.selectAll('.video-clicked,video-hovered,brushed').attr('class', "video");
 
-    g.selectAll('.video-hovered')
+    g.selectAll('circle')
         .filter(function(d, i) {
             return d.video_id === highlighted_id;
         })
         .moveToFront()
-        .transition()
-        .duration(200)
         .attr("class", "video-clicked");
     connect_dots();
 }
@@ -436,14 +440,29 @@ function tag_change(value) {
 }
 
 function checkBox_update(){
-	all = document.getElementById("all").checked;
-	c1_act = document.getElementById("c1").checked;
+    
+    c1_act = document.getElementById("c1").checked;
     c2_edu = document.getElementById("c2").checked;
     c3_ent = document.getElementById("c3").checked;
     c4_lif = document.getElementById("c4").checked;
     c5_new = document.getElementById("c5").checked;
     c6_tec = document.getElementById("c6").checked;
-	update_plot("cluster_filter",[c1_act,c2_edu,c3_ent,c4_lif,c5_new,c6_tec,all]);
+    if(c1_act||c2_edu||c3_ent||c4_lif||c5_new||c6_tec){
+        $("#all").removeAttr("checked");
+    }
+    all = document.getElementById("all").checked;
+    update_plot("cluster_filter",[c1_act,c2_edu,c3_ent,c4_lif,c5_new,c6_tec,all]);
+}
+
+function checkBox_update_all(){
+    // $("#c1").removeAttr("checked");
+    // $("#c2").removeAttr("checked");
+    // $("#c3").removeAttr("checked");
+    // $("#c4").removeAttr("checked");
+    // $("#c5").removeAttr("checked");
+    // $("#c6").removeAttr("checked");
+    // $("#c1").css("background-color","")
+    checkBox_update();
 }
 
 function update_plot(caller, args) {
@@ -594,6 +613,7 @@ function update_plot(caller, args) {
             })
             .on("click", function(d) {
                 highlighted_id = d.video_id;
+                console.log("click:",highlighted_id)
                 highlight_single_video();
 
             })
@@ -618,14 +638,39 @@ function update_plot(caller, args) {
         
 
         var merge = existing_circles.merge(enter)
-            .transition()
-            .duration(200)
+            .attr('class', 'video') // Add the classname that we selected on
+            .attr('r', radius)
             .attr('cx', function(d) {
                 return xScale(d.trending_date);
             })
             .attr('cy', function(d) {
                 return yScale(d[curr_y]);
+            })
+            .on("click", function(d) {
+                highlighted_id = d.video_id;
+                console.log("click:",highlighted_id)
+                highlight_single_video();
+
+            })
+            .on("mouseover", function(d) {
+                tooltip.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                tooltip.html(d["title"] + "<br/>" + key.get(curr_y) + " : " + d[curr_y])
+                    .style("margin-left", (d3.event.pageX - 100) + "px")
+                    .style("margin-top", (d3.event.pageY - 100) + "px")
+                    .style("cursor", "pointer");
+                highlight_all(d, this);
+            })
+            .on("mouseout", function(d) {
+                tooltip.transition()
+                    .duration(200)
+                    .style("opacity", 0);
+                // var curr_color = this.attr("fill");
+
+                reset_all_circles(this);
             });
+			
         var exit = existing_circles.exit().remove();
 
         //need to fix:
@@ -636,8 +681,7 @@ function update_plot(caller, args) {
         g.selectAll('circle').remove();
     }
 
-    highlight_single_video_tagchange();
-
+    highlight_single_video();
 }
 
 //Press Enter to Search
