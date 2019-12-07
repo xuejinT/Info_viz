@@ -1,7 +1,5 @@
-
-
 //wait jQuery to load
-var waitForJQuery = setInterval(function () {
+var waitForJQuery = setInterval(function() {
     if (typeof $ != 'undefined') {
 
         // place your code here.
@@ -42,22 +40,22 @@ const key = new Map([
 var t = d3.transition()
     .duration(200)
     .ease(d3.easeLinear);
-var cluster_map ={
-	0:"Activisim",
-	1:"Education",
-	2:"Entertainment",
-	3:"Lifestyle",
-	4:"News",
-	5:"Technology"
+var cluster_map = {
+    0: "Activism",
+    1: "Education",
+    2: "Entertainment",
+    3: "Lifestyle",
+    4: "News",
+    5: "Technology"
 }
 
 var colorMap = {
-	"Activisim":"#7CC237",
-	"Education":"#DE5555",
-	"Entertainment":"#6D72E7",
-	"Lifestyle":"#DEB75B",
-	"News":"#26BDD2",
-	"Technology":"#B155DE"
+    "Activisim": "#7CC237",
+    "Education": "#DE5555",
+    "Entertainment": "#6D72E7",
+    "Lifestyle": "#DEB75B",
+    "News": "#26BDD2",
+    "Technology": "#B155DE"
 }
 var svg = d3.select('svg');
 var curr_y = "views";
@@ -67,6 +65,7 @@ var highlighted_id = ""
 var radius = 3;
 var xScale = d3.scaleTime()
     .range([100, 1000]).nice();
+var x2 = xScale.copy();
 
 // Create y-scale for positioning the circles
 var yScale = d3.scaleLinear()
@@ -144,25 +143,25 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
         .on("click", function(d) {
             highlighted_id = d.video_id;
             highlight_single_video();
-            
+
         })
         .on("mouseover", function(d) {
-                tooltip.transition()
-                    .duration(200)
-                    .style("opacity", .9);
-                var x_offset = d3.event.pageX - 100
-                var y_offset = d3.event.pageY - 200<200?d3.event.pageY:d3.event.pageY - 200;
-                tooltip.html("<img src="+d.thumbnail_link
-                	+">"
-                	+"<br>"
-                	+d["title"] 
-                	+ "<br>" 
-                	+ key.get(curr_y) + " : " + d[curr_y])
-                    .style("margin-left", x_offset + "px")
-                    .style("margin-top", y_offset + "px")
-                    .style("cursor", "pointer");
-                highlight_all(d, this);
-            })
+            tooltip.transition()
+                .duration(200)
+                .style("opacity", .9);
+            var x_offset = d3.event.pageX - 100
+            var y_offset = d3.event.pageY - 200 < 200 ? d3.event.pageY : d3.event.pageY - 200;
+            tooltip.html("<img src=" + d.thumbnail_link +
+                    ">" +
+                    "<br>" +
+                    d["title"] +
+                    "<br>" +
+                    key.get(curr_y) + " : " + d[curr_y])
+                .style("margin-left", x_offset + "px")
+                .style("margin-top", y_offset + "px")
+                .style("cursor", "pointer");
+            highlight_all(d, this);
+        })
         .on("mouseout", function(d) {
             tooltip.transition()
                 .duration(200)
@@ -183,16 +182,6 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
         .attr('transform', 'translate(0,570)')
         .call(d3.axisBottom(xScale));
 
-    svg.append('g')
-        .attr('class', 'y axis axis-left')
-        .attr('transform', 'translate(90,0)')
-        .call(d3.axisLeft(yScale));
-
-    svg.append('g')
-        .attr('class', 'y axis axis-right')
-        .attr('transform', 'translate(1020,0)')
-        .call(d3.axisRight(yScale));
-
     // left y axis label
     svg.append("text")
         .attr("class", "axisLabel")
@@ -206,6 +195,59 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
         .attr("transform", "translate(1100,300)rotate(90)")
         .attr("dy", "0.3em")
         .text(key.get(curr_y));
+
+    var yAxis_L = d3.axisLeft(yScale);
+    var yAxis_R = d3.axisRight(yScale)
+    var y_axis_left = svg.append("g")
+        .attr('class', 'y axis axis-left')
+        .attr("id", "y_axis")
+        .attr('transform', 'translate(90,0)')
+        .call(yAxis_L)
+        // .call(d3.zoom().on("zoom", zoom));
+
+    var y_axis_right = svg.append("g")
+        .attr('class', 'y axis axis-right')
+        .attr("id", "y_axis_right")
+        .attr('transform', 'translate(1020,0)')
+        .call(yAxis_R)
+        // .call(d3.zoom().on("zoom", zoom));
+
+    var zoom_rect_left = svg.append("rect")
+    .attr("x",30)
+    .attr("y",50)
+    .attr("opacity",0)
+    .attr("width", 60)
+    .attr("height", 500)
+    var zoom_rect_right = svg.append("rect")
+    .attr("x",1020)
+    .attr("y",50)
+    .attr("opacity",0)
+    .attr("width", 60)
+    .attr("height", 500)
+    zoom_rect_left.call(d3.zoom().on("zoom", zoom));
+    zoom_rect_right.call(d3.zoom().on("zoom", zoom));
+    function zoom() {
+        y_axis_left.transition()
+            .duration(50)
+            .call(yAxis_L.scale(d3.event.transform.rescaleY(yScale)));
+        y_axis_right.transition()
+            .duration(50)
+            .call(yAxis_R.scale(d3.event.transform.rescaleY(yScale)));
+        var new_yScale = d3.event.transform.rescaleY(yScale);
+        var hidden_circle = g.selectAll("circle").filter(function(d) {
+            var new_y = new_yScale(d[curr_y]);
+            return new_y > 560 || new_y < 30;
+        });
+        var show_circle = g.selectAll("circle").filter(function(d) {
+            var new_y = new_yScale(d[curr_y]);
+            return new_y < 560 && new_y > 30;
+        });
+        hidden_circle.style("display", "none")
+        show_circle.style("display", "")
+        g.selectAll("circle").attr("cy", function(d) {
+            return new_yScale(d[curr_y]);
+        });
+    }
 
     // FOR DATEPICKER
     $('input[name="daterange"]').daterangepicker({
@@ -224,10 +266,11 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
         console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
     });
 
-    if(filter != undefined || tag != undefined) {
-	update_plot("detail_page",[filter,tag])
-}
+    if (filter != undefined || tag != undefined) {
+        update_plot("detail_page", [filter, tag])
+    }
 });
+
 
 
 
@@ -426,7 +469,10 @@ function reset_all_circles(curr_element) {
 
 //highlight one video
 function highlight_single_video() {
-    svg.selectAll(".brush").call(brush.move, [[0,0],[1,1]])
+    svg.selectAll(".brush").call(brush.move, [
+        [0, 0],
+        [1, 1]
+    ])
     svg.selectAll('.line').remove();
     g.selectAll('.video-clicked,video-hovered,brushed').attr('class', "video");
 
@@ -440,7 +486,10 @@ function highlight_single_video() {
 }
 
 function highlight_single_video_tagchange() {
-    svg.selectAll(".brush").call(brush.move, [[0,0],[1,1]])
+    svg.selectAll(".brush").call(brush.move, [
+        [0, 0],
+        [1, 1]
+    ])
     svg.selectAll('.line').remove();
     g.selectAll('.video-clicked,video-hovered,brushed').attr('class', "video");
 
@@ -463,7 +512,7 @@ function highlight_single_video_tagchange() {
 function related(data, keyword) {
     return data.title.toLowerCase().includes(keyword.toLowerCase()) ||
         data.description.toLowerCase().includes(keyword.toLowerCase()) ||
-        data.tags.toLowerCase().includes(keyword.toLowerCase())||
+        data.tags.toLowerCase().includes(keyword.toLowerCase()) ||
         data.channel_title.toLowerCase().includes(keyword.toLowerCase());
 }
 
@@ -479,42 +528,46 @@ function tag_change(value) {
     }
 }
 
-function checkBox_update(){
-    // c1_act = document.getElementById("c1").checked;
+function checkBox_update() {
+    c1_act = document.getElementById("c1").checked;
     c2_edu = document.getElementById("c2").checked;
     c3_ent = document.getElementById("c3").checked;
     c4_lif = document.getElementById("c4").checked;
     c5_new = document.getElementById("c5").checked;
     c6_tec = document.getElementById("c6").checked;
-    if(c1_act||c2_edu||c3_ent||c4_lif||c5_new||c6_tec){
+    if (c1_act || c2_edu || c3_ent || c4_lif || c5_new || c6_tec) {
         $("#all").removeAttr("checked");
     }
     all = document.getElementById("all").checked;
-    update_plot("cluster_filter",[false,c2_edu,c3_ent,c4_lif,c5_new,c6_tec,all]);
+    update_plot("cluster_filter", [c1_act, c2_edu, c3_ent, c4_lif, c5_new, c6_tec, all]);
 }
 
-function checkBox_update_all(){
-    document.getElementById("c2").checked=false;
-    document.getElementById("c3").checked=false;
-    document.getElementById("c4").checked=false;
-    document.getElementById("c5").checked=false;
-    document.getElementById("c6").checked=false;
+function checkBox_update_all() {
+    document.getElementById("c1").checked = false;
+    document.getElementById("c2").checked = false;
+    document.getElementById("c3").checked = false;
+    document.getElementById("c4").checked = false;
+    document.getElementById("c5").checked = false;
+    document.getElementById("c6").checked = false;
     // $("#c1").css("background-color","")
     checkBox_update();
 }
 
 
-function reload(){
-	g.selectAll('.brush').remove();
-	highlighted_id = "";
-	curr_y = "views";
-	document.getElementById("c2").checked=false;
-    document.getElementById("c3").checked=false;
-    document.getElementById("c4").checked=false;
-    document.getElementById("c5").checked=false;
-    document.getElementById("c6").checked=false;
-	$("#all").attr("checked","");
-	update_plot("reload",null);
+function reload() {
+    g.selectAll('.brush').remove();
+
+    highlighted_id = "";
+    curr_y = "views";
+    document.getElementById("c1").checked = false;
+    document.getElementById("c2").checked = false;
+    document.getElementById("c3").checked = false;
+    document.getElementById("c4").checked = false;
+    document.getElementById("c5").checked = false;
+    document.getElementById("c6").checked = false;
+    $("#all").attr("checked", "");
+    update_plot("reload", null);
+    g.selectAll('circle').attr("display", "")
 }
 
 
@@ -527,53 +580,54 @@ function update_plot(caller, args) {
             return related(d, keyword);
         });
     } else if (caller === "detail_page") {
-    	if(filter!="none" && tag != "none"){
-    		videos = all_videos.filter(function(d){
-    			return d.category_name === filter && related(d, tag);
-    		})
-    		$("#all").removeAttr("checked");
-    	}
-    	else if (filter!="none"){
-    		videos = all_videos.filter(function(d){
-    			return d.category_name;
-    		})
-    		$("#all").removeAttr("checked");
-    	}
-    	else if(tag!="none"){
-    		videos = all_videos.filter(function(d){
-    			return related(d, tag);
-    		})
-    		$("#all").removeAttr("checked");
-    	}
-    	//clear localStorage
-    	localStorage.clear();
+        if (filter != "none" && tag != "none") {
+            videos = all_videos.filter(function(d) {
+                return d.category_name === filter && related(d, tag);
+            })
+            $("#all").removeAttr("checked");
+        } else if (filter != "none") {
+            videos = all_videos.filter(function(d) {
+                return d.category_name;
+            })
+            $("#all").removeAttr("checked");
+        } else if (tag != "none") {
+            videos = all_videos.filter(function(d) {
+                return related(d, tag);
+            })
+            $("#all").removeAttr("checked");
+        }
+        //clear localStorage
+        localStorage.clear();
     } else if (caller === "cluster_filter") {
-    	var checked_category = [];
-    	args.forEach(function(item,i){
-    		if(i<6 && item){
-    			checked_category.push(cluster_map[i]);
-    		}else if(i==6 && item){
-    			checked_category = ["Activisim","Education","Entertainment","Lifestyle","News","Technology"]
-    		}
-    	});
-    	console.log(checked_category);
-    	videos = all_videos.filter(function(d) {
-    		return checked_category.includes(d.cluster);
-    	})
+        var checked_category = [];
+        args.forEach(function(item, i) {
+            if (i < 6 && item) {
+                checked_category.push(cluster_map[i]);
+            } else if (i == 6 && item) {
+                checked_category = ["Activism", "Education", "Entertainment", "Lifestyle", "News", "Technology"]
+            }
+        });
+        console.log(checked_category);
+        videos = all_videos.filter(function(d) {
+            return checked_category.includes(d.cluster);
+        })
     } else if (caller === "date") {
         var start = args[0];
         var end = args[1];
         videos = all_videos.filter(function(d) {
             return d.trending_date > start && d.trending_date < end;
         });
-    } else if(caller === "reload"){
-    	videos = all_videos;
+    } else if (caller === "reload") {
+        g.selectAll('circle').remove();
+        videos = all_videos;
     }
 
     if (videos.length > 0) {
-    	var num_videos = d3.nest()
-      .key(function(d) { return d.video_id; })
-      .entries(videos).length;
+        var num_videos = d3.nest()
+            .key(function(d) {
+                return d.video_id;
+            })
+            .entries(videos).length;
         $("#result").text(num_videos + " Videos Found!");
         $("#result").css("display", "");
         //clear brush and line
@@ -655,14 +709,14 @@ function update_plot(caller, args) {
             .attr('class', 'brush')
             .call(brush);
 
-        svg.selectAll(".axis-left")
-            .transition()
-            .duration(200)
-            .call(d3.axisLeft(yScale));
-        svg.selectAll(".axis-right")
-            .transition()
-            .duration(200)
-            .call(d3.axisRight(yScale));
+        // svg.selectAll(".axis-left")
+        //     .transition()
+        //     .duration(200)
+        //     .call(d3.axisLeft(yScale));
+        // svg.selectAll(".axis-right")
+        //     .transition()
+        //     .duration(200)
+        //     .call(d3.axisRight(yScale));
         svg.selectAll(".axis-bottom")
             .transition()
             .duration(200)
@@ -675,6 +729,16 @@ function update_plot(caller, args) {
             .transition()
             .duration(200)
             .text(key.get(curr_y));
+
+        var yAxis_L = d3.axisLeft(yScale);
+        var yAxis_R = d3.axisRight(yScale)
+        var y_axis_left = svg.selectAll(".axis-left")
+            .call(yAxis_L)
+            // .call(d3.zoom().on("zoom", zoom));
+
+        var y_axis_right = svg.selectAll(".axis-right")
+            .call(yAxis_R)
+            // .call(d3.zoom().on("zoom", zoom));
 
         var existing_circles = g.selectAll('circle')
             .data(videos);
@@ -690,7 +754,7 @@ function update_plot(caller, args) {
             })
             .on("click", function(d) {
                 highlighted_id = d.video_id;
-                console.log("click:",highlighted_id)
+                console.log("click:", highlighted_id)
                 highlight_single_video();
 
             })
@@ -699,13 +763,13 @@ function update_plot(caller, args) {
                     .duration(200)
                     .style("opacity", .9);
                 var x_offset = d3.event.pageX - 100
-                var y_offset = d3.event.pageY - 200<200?d3.event.pageY:d3.event.pageY - 200;
-                tooltip.html("<img src="+d.thumbnail_link
-                	+">"
-                	+"<br>"
-                	+d["title"] 
-                	+ "<br>" 
-                	+ key.get(curr_y) + " : " + d[curr_y])
+                var y_offset = d3.event.pageY - 200 < 200 ? d3.event.pageY : d3.event.pageY - 200;
+                tooltip.html("<img src=" + d.thumbnail_link +
+                        ">" +
+                        "<br>" +
+                        d["title"] +
+                        "<br>" +
+                        key.get(curr_y) + " : " + d[curr_y])
                     .style("margin-left", x_offset + "px")
                     .style("margin-top", y_offset + "px")
                     .style("cursor", "pointer");
@@ -719,7 +783,7 @@ function update_plot(caller, args) {
 
                 reset_all_circles(this);
             });
-        
+
 
         var merge = existing_circles.merge(enter)
             .attr('class', 'video') // Add the classname that we selected on
@@ -732,7 +796,7 @@ function update_plot(caller, args) {
             })
             .on("click", function(d) {
                 highlighted_id = d.video_id;
-                console.log("click:",highlighted_id)
+                console.log("click:", highlighted_id)
                 highlight_single_video();
 
             })
@@ -741,13 +805,13 @@ function update_plot(caller, args) {
                     .duration(200)
                     .style("opacity", .9);
                 var x_offset = d3.event.pageX - 100
-                var y_offset = d3.event.pageY - 200<200?d3.event.pageY:d3.event.pageY - 200;
-                tooltip.html("<img src="+d.thumbnail_link
-                	+">"
-                	+"<br>"
-                	+d["title"] 
-                	+ "<br>" 
-                	+ key.get(curr_y) + " : " + d[curr_y])
+                var y_offset = d3.event.pageY - 200 < 200 ? d3.event.pageY : d3.event.pageY - 200;
+                tooltip.html("<img src=" + d.thumbnail_link +
+                        ">" +
+                        "<br>" +
+                        d["title"] +
+                        "<br>" +
+                        key.get(curr_y) + " : " + d[curr_y])
                     .style("margin-left", x_offset + "px")
                     .style("margin-top", y_offset + "px")
                     .style("cursor", "pointer");
@@ -761,7 +825,7 @@ function update_plot(caller, args) {
 
                 reset_all_circles(this);
             });
-			
+
         var exit = existing_circles.exit().remove();
 
         //need to fix:
