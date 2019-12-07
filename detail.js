@@ -729,12 +729,13 @@ function changeslide(){
 }
 //back to overview click
 function backtooverview_click(){
-	var filter = $("#filter").val();
-	var search = $("#search").val();
-	var sort = $("#sort").val();
+	var filter = $("#filter").text();
+	var tag = $("#search").text();
+	var sort = $("#sort").text();
 
+	console.log(filter,tag)
 	localStorage.setItem("filter",filter);
-	localStorage.setItem("search",search);
+	localStorage.setItem("tag",tag);
 	localStorage.setItem("sort",sort);
 	window.location.replace("./overview.html");
 }

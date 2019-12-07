@@ -385,7 +385,7 @@ function reset_all_circles(curr_element) {
 
 //highlight one video
 function highlight_single_video() {
-    svg.selectAll(".brush").call(brush.move, null)
+    svg.selectAll(".brush").call(brush.move, [[0,0],[1,1]])
     svg.selectAll('.line').remove();
     g.selectAll('.video-clicked,video-hovered,brushed').attr('class', "video");
 
@@ -399,7 +399,7 @@ function highlight_single_video() {
 }
 
 function highlight_single_video_tagchange() {
-    svg.selectAll(".brush").call(brush.move, null)
+    svg.selectAll(".brush").call(brush.move, [[0,0],[1,1]])
     svg.selectAll('.line').remove();
     g.selectAll('.video-clicked,video-hovered,brushed').attr('class', "video");
 
@@ -530,7 +530,10 @@ function update_plot(caller, args) {
     }
 
     if (videos.length > 0) {
-        $("#result").text(videos.length + " Results Found!");
+    	var num_videos = d3.nest()
+      .key(function(d) { return d.video_id; })
+      .entries(videos).length;
+        $("#result").text(num_videos + " Results Found!");
         $("#result").css("display", "");
         //clear brush and line
         svg.selectAll(".line").remove();
