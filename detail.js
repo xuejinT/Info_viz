@@ -241,7 +241,7 @@ d3.dsv('\\', './data/US_final.csv').then(function(dataset) {
     //set domains for category chart
     x_c.domain(categorydata.map(function(d){return d.category;}));
     y_c.domain([0, d3.max(categorydata, function(d){return d.count})]);
-    yAxis_c.ticks(d3.max(categorydata,function(d){return d.count}));
+    // yAxis_c.ticks(d3.max(categorydata,function(d){return d.count}));
     //draw category chart
        //x axis
     svg_c.append("g")

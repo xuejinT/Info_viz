@@ -1,7 +1,29 @@
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
 
+
+//wait jQuery to load
+var waitForJQuery = setInterval(function () {
+    if (typeof $ != 'undefined') {
+
+        // place your code here.
+
+        clearInterval(waitForJQuery);
+    }
+}, 10);
+
+
+
+// FOR TAGS SELECTION
+$('.ui-choose').ui_choose();
+var uc_02 = $('#uc_02').data('ui-choose');
+uc_02.click = function(value, item) {
+    console.log('click', value);
+
+};
+uc_02.change = function(value, item) {
+    bd_sortfunc();
+    console.log('change', value);
+    tag_change(value);
+};
 var filter = localStorage.getItem("filter");
 var tag = localStorage.getItem("tag");
 
@@ -28,6 +50,15 @@ var cluster_map ={
 	4:"News",
 	5:"Technology"
 }
+
+var colorMap = {
+	"Activisim":"#7CC237",
+	"Education":"#DE5555",
+	"Entertainment":"#6D72E7",
+	"Lifestyle":"#DEB75B",
+	"News":"#26BDD2",
+	"Technology":"#B155DE"
+}
 var svg = d3.select('svg');
 var curr_y = "views";
 var highlighted_id = ""
@@ -35,11 +66,11 @@ var highlighted_id = ""
     // Create x-scale for positioning the circles
 var radius = 3;
 var xScale = d3.scaleTime()
-    .range([100, 1000]);
+    .range([100, 1000]).nice();
 
 // Create y-scale for positioning the circles
 var yScale = d3.scaleLinear()
-    .range([550, 50]);
+    .range([550, 50]).nice();
 
 var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S");
 
@@ -107,21 +138,31 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
             // Set the y-position based on the mass value
             return yScale(d.views);
         })
+        // .attr('fill',function(d){
+        // 	return colorMap[d.category_name]
+        // })
         .on("click", function(d) {
             highlighted_id = d.video_id;
             highlight_single_video();
             
         })
         .on("mouseover", function(d) {
-            tooltip.transition()
-                .duration(200)
-                .style("opacity", .9);
-            tooltip.html(d["title"] + "<br/>" + key.get(curr_y) + " : " + d[curr_y])
-                .style("margin-left", (d3.event.pageX - 100) + "px")
-                .style("margin-top", (d3.event.pageY - 100) + "px")
-                .style("cursor", "pointer");
-            highlight_all(d, this);
-        })
+                tooltip.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                var x_offset = d3.event.pageX - 100
+                var y_offset = d3.event.pageY - 200<200?d3.event.pageY:d3.event.pageY - 200;
+                tooltip.html("<img src="+d.thumbnail_link
+                	+">"
+                	+"<br>"
+                	+d["title"] 
+                	+ "<br>" 
+                	+ key.get(curr_y) + " : " + d[curr_y])
+                    .style("margin-left", x_offset + "px")
+                    .style("margin-top", y_offset + "px")
+                    .style("cursor", "pointer");
+                highlight_all(d, this);
+            })
         .on("mouseout", function(d) {
             tooltip.transition()
                 .duration(200)
@@ -245,7 +286,7 @@ function updateBrush() {
 
 function highlightBrushed(brushedNodes) {
     // console.log(brushedNodes)
-    g.selectAll('.video-clicked').attr('class', 'video');
+    g.selectAll('.video-clicked,.video-hovered').attr('class', 'video');
     svg.selectAll('.line').remove();
     if (brushedNodes.size <= 1) {
         $("#dashboardbutton").attr('disabled', 'disabled');
@@ -414,18 +455,7 @@ function highlight_single_video_tagchange() {
     connect_dots();
 }
 
-// FOR TAGS SELECTION
-$('.ui-choose').ui_choose();
-var uc_02 = $('#uc_02').data('ui-choose');
-uc_02.click = function(value, item) {
-    console.log('click', value);
 
-};
-uc_02.change = function(value, item) {
-    bd_sortfunc();
-    console.log('change', value);
-    tag_change(value);
-};
 
 
 
@@ -464,12 +494,6 @@ function checkBox_update(){
 }
 
 function checkBox_update_all(){
-    // $("#c1").removeAttr("checked");
-    // $("#c2").removeAttr("checked");
-    // $("#c3").removeAttr("checked");
-    // $("#c4").removeAttr("checked");
-    // $("#c5").removeAttr("checked");
-    // $("#c6").removeAttr("checked");
     document.getElementById("c2").checked=false;
     document.getElementById("c3").checked=false;
     document.getElementById("c4").checked=false;
@@ -478,6 +502,21 @@ function checkBox_update_all(){
     // $("#c1").css("background-color","")
     checkBox_update();
 }
+
+
+function reload(){
+	g.selectAll('.brush').remove();
+	highlighted_id = "";
+	curr_y = "views";
+	document.getElementById("c2").checked=false;
+    document.getElementById("c3").checked=false;
+    document.getElementById("c4").checked=false;
+    document.getElementById("c5").checked=false;
+    document.getElementById("c6").checked=false;
+	$("#all").attr("checked","");
+	update_plot("reload",null);
+}
+
 
 function update_plot(caller, args) {
     if (caller === "tag_change") {
@@ -527,13 +566,15 @@ function update_plot(caller, args) {
         videos = all_videos.filter(function(d) {
             return d.trending_date > start && d.trending_date < end;
         });
+    } else if(caller === "reload"){
+    	videos = all_videos;
     }
 
     if (videos.length > 0) {
     	var num_videos = d3.nest()
       .key(function(d) { return d.video_id; })
       .entries(videos).length;
-        $("#result").text(num_videos + " Results Found!");
+        $("#result").text(num_videos + " Videos Found!");
         $("#result").css("display", "");
         //clear brush and line
         svg.selectAll(".line").remove();
@@ -657,9 +698,16 @@ function update_plot(caller, args) {
                 tooltip.transition()
                     .duration(200)
                     .style("opacity", .9);
-                tooltip.html(d["title"] + "<br/>" + key.get(curr_y) + " : " + d[curr_y])
-                    .style("margin-left", (d3.event.pageX - 100) + "px")
-                    .style("margin-top", (d3.event.pageY - 100) + "px")
+                var x_offset = d3.event.pageX - 100
+                var y_offset = d3.event.pageY - 200<200?d3.event.pageY:d3.event.pageY - 200;
+                tooltip.html("<img src="+d.thumbnail_link
+                	+">"
+                	+"<br>"
+                	+d["title"] 
+                	+ "<br>" 
+                	+ key.get(curr_y) + " : " + d[curr_y])
+                    .style("margin-left", x_offset + "px")
+                    .style("margin-top", y_offset + "px")
                     .style("cursor", "pointer");
                 highlight_all(d, this);
             })
@@ -692,9 +740,16 @@ function update_plot(caller, args) {
                 tooltip.transition()
                     .duration(200)
                     .style("opacity", .9);
-                tooltip.html(d["title"] + "<br/>" + key.get(curr_y) + " : " + d[curr_y])
-                    .style("margin-left", (d3.event.pageX - 100) + "px")
-                    .style("margin-top", (d3.event.pageY - 100) + "px")
+                var x_offset = d3.event.pageX - 100
+                var y_offset = d3.event.pageY - 200<200?d3.event.pageY:d3.event.pageY - 200;
+                tooltip.html("<img src="+d.thumbnail_link
+                	+">"
+                	+"<br>"
+                	+d["title"] 
+                	+ "<br>" 
+                	+ key.get(curr_y) + " : " + d[curr_y])
+                    .style("margin-left", x_offset + "px")
+                    .style("margin-top", y_offset + "px")
                     .style("cursor", "pointer");
                 highlight_all(d, this);
             })
