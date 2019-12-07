@@ -147,7 +147,7 @@ position:fixed;
 bottom:0; 
 right:0; 
 width:250px; 
-height:150px;
+height:120px;
 }
 
 .settings{
@@ -165,9 +165,10 @@ height:150px;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
 #backtooverview{
-	margin-top:12px;
-	margin-left:48px;
+margin-top:12px;
+ margin-left:36px;
   width: 120px;
   height:24px;
   border-radius: 4px;
@@ -176,6 +177,23 @@ height:150px;
   font-family: "roboto";
   color:#FFFFFF;
   font-size:12px;
+  float: left;
+}
+
+#clearall
+{   margin-top: 18px;
+	margin-left: 4px;
+	float:right;
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+	font-family: "roboto";
+  	color:#aaaaaa;
+  	font-size:12px;
 }
 
 #categorychart .bar,

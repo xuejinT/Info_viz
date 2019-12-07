@@ -411,10 +411,6 @@ d3.dsv('\\', './data/US_final.csv').then(function(dataset) {
       .text(function(d) { return d; })
       .style("fill", "#aaaaaa")
       .style("font-size",14)
-      .on("click", function(d){
-        settingsobject.sort = d;
-        document.getElementById("sort").innerHTML = d;
-      })
 
 
 
@@ -465,21 +461,9 @@ d3.dsv('\\', './data/US_final.csv').then(function(dataset) {
   							    document.getElementById("hover").innerHTML = formatTime(d.x) + "<br/>"+d.type+":"+"&nbsp"+d.y})
 	.on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
 	.on("mouseout", function(){return tooltip.style("visibility", "hidden");});
-
-  svg_ld.selectAll(".text")
-      .data(selectedattitudedata)
-      .enter()
-      .append("text")
-      .attr("class","datelabel")
-      .attr("x",function(d){return x_s(d.bandvalue);})
-      .attr("width", x_s.bandwidth())
-      .attr("y",246)
-	  .text(function(d){return formatTime(d.time)})
-	  .attr('transform', 'translate(70,4)')
-  	  .style("font-family","roboto")
-  	  .style("font-size","10px")
-  	  .style("color","#aaaaaa")
-  	  .style("fill","#aaaaaa");
+      
+    var timestart = formatTime(selectedattitudedata[0].time)
+    var timeend = formatTime(selectedattitudedata[(selectedattitudedata.length-1)].time)
 
   svg_v.append('g')
        .attr('class', 'y_v axis')
@@ -502,25 +486,53 @@ d3.dsv('\\', './data/US_final.csv').then(function(dataset) {
 	  .attr('transform', 'translate(70,4)')
 	  .style("fill","#1C7E8C");
 
-  svg_v.selectAll(".text")
-      .data(selectedattitudedata)
-      .enter()
-      .append("text")
-      .attr("class","datelabel")
-      .attr("x",function(d){return x_s(d.bandvalue);})
-      .attr("width", x_s.bandwidth())
-      .attr("y",246)
-	  .text(function(d){return formatTime(d.time)})
-	  .attr('transform', 'translate(70,4)')
-  	  .style("font-family","roboto")
-  	  .style("font-size","10px")
-  	  .style("color","#aaaaaa")
-  	  .style("fill","#aaaaaa");
-
   svg_ld.append('g')
        .attr('class', 'y_ld axis')
        .attr('transform', 'translate(0,4)')
        .call(d3.axisRight(y_ld)); 
+
+  var timestart = formatTime(selectedattitudedata[0].time)
+  var timeend = formatTime(selectedattitudedata[(selectedattitudedata.length-1)].time)
+
+  svg_v.append("text")
+  	   .attr("x",70)
+  	   .attr("y",250)
+  	   .attr("class","datelabel")
+  	   .text(function(){return timestart})
+  	   .style("font-family","roboto")  	  
+  	   .style("font-size","10px")
+ 	   .style("color","#aaaaaa")
+ 	   .style("fill","#aaaaaa");
+
+  svg_v.append("text")
+  	   .attr("x",240)
+  	   .attr("y",250)
+  	   .attr("class","datelabel")
+  	   .text(function(){return timeend})
+  	   .style("font-family","roboto")  	  
+  	   .style("font-size","10px")
+ 	   .style("color","#aaaaaa")
+ 	   .style("fill","#aaaaaa");
+
+  svg_ld.append("text")
+  	   .attr("x",70)
+  	   .attr("y",250)
+  	   .attr("class","datelabel")
+  	   .text(function(){return timestart})
+  	   .style("font-family","roboto")  	  
+  	   .style("font-size","10px")
+ 	   .style("color","#aaaaaa")
+ 	   .style("fill","#aaaaaa");
+
+  svg_ld.append("text")
+  	   .attr("x",240)
+  	   .attr("y",250)
+  	   .attr("class","datelabel")
+  	   .text(function(){return timeend})
+  	   .style("font-family","roboto")  	  
+  	   .style("font-size","10px")
+ 	   .style("color","#aaaaaa")
+ 	   .style("fill","#aaaaaa");
 			
 });
 
@@ -580,20 +592,6 @@ function updatelinechart(){
 	.on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
 	.on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
-  svg_ld.selectAll(".text")
-      .data(selectedattitudedata)
-      .enter()
-      .append("text")
-      .attr("class","datelabel")
-      .attr("x",function(d){return x_s(d.bandvalue);})
-      .attr("width", x_s.bandwidth())
-      .attr("y",246)
-	  .text(function(d){return formatTime(d.time)})
-	  .attr('transform', 'translate(70,4)')
-  	  .style("font-family","roboto")
-  	  .style("font-size","10px")
-  	  .style("color","#aaaaaa")
-  	  .style("fill","#aaaaaa");
 
   svg_v.selectAll("rect")
       .data(selectedattitudedata)
@@ -611,20 +609,49 @@ function updatelinechart(){
 	  .attr('transform', 'translate(70,4)')
 	  .style("fill","#1C7E8C");
 
-  svg_v.selectAll(".text")
-      .data(selectedattitudedata)
-      .enter()
-      .append("text")
-      .attr("class","datelabel")
-      .attr("x",function(d){return x_s(d.bandvalue);})
-      .attr("width", x_s.bandwidth())
-      .attr("y",246)
-	  .text(function(d){return formatTime(d.time)})
-	  .attr('transform', 'translate(70,4)')
-  	  .style("font-family","roboto")
-  	  .style("font-size","10px")
-  	  .style("color","#aaaaaa")
-  	  .style("fill","#aaaaaa");
+  var timestart = formatTime(selectedattitudedata[0].time)
+  var timeend = formatTime(selectedattitudedata[(selectedattitudedata.length-1)].time)
+
+  svg_v.append("text")
+  	   .attr("x",70)
+  	   .attr("y",250)
+  	   .attr("class","datelabel")
+  	   .text(function(){return timestart})
+  	   .style("font-family","roboto")  	  
+  	   .style("font-size","10px")
+ 	   .style("color","#aaaaaa")
+ 	   .style("fill","#aaaaaa");
+
+  svg_v.append("text")
+  	   .attr("x",240)
+  	   .attr("y",250)
+  	   .attr("class","datelabel")
+  	   .text(function(){return timeend})
+  	   .style("font-family","roboto")  	  
+  	   .style("font-size","10px")
+ 	   .style("color","#aaaaaa")
+ 	   .style("fill","#aaaaaa");
+
+  svg_ld.append("text")
+  	   .attr("x",70)
+  	   .attr("y",250)
+  	   .attr("class","datelabel")
+  	   .text(function(){return timestart})
+  	   .style("font-family","roboto")  	  
+  	   .style("font-size","10px")
+ 	   .style("color","#aaaaaa")
+ 	   .style("fill","#aaaaaa");
+
+  svg_ld.append("text")
+  	   .attr("x",240)
+  	   .attr("y",250)
+  	   .attr("class","datelabel")
+  	   .text(function(){return timeend})
+  	   .style("font-family","roboto")  	  
+  	   .style("font-size","10px")
+ 	   .style("color","#aaaaaa")
+ 	   .style("fill","#aaaaaa");
+
 
   });
 }
@@ -695,7 +722,11 @@ function updateselectedvideoinfo(selectedvideonum){
   document.getElementById("numofvideo").innerHTML = "Selected" + "&nbsp;" + "Video" + "&nbsp;" + numofvideo + "/" + brushedvideos.length;
   document.getElementById("allvideonum").innerHTML = "Details" + "&nbsp;" + "Of" + "&nbsp;" + "All" +"&nbsp;" + "The" +"&nbsp;" + brushedvideos.length +"&nbsp;" + "Selected" +"&nbsp;" + "Videos"
   //similar video
-  svid = Object.keys(similarity[selectedvideo.video_id])
+  //sort by similarity
+  
+  svlist = similarity[selectedvideo.video_id];
+  svid = Object.keys(svlist).sort(function(a,b){return svlist[b]-svlist[a]})
+  //svid = Object.keys(similarity[selectedvideo.video_id])
   for (var i=0; i<5; i++){
   	  var imageid = "svthumbnail" + i;
   	  var linkid = "svlink" + i;

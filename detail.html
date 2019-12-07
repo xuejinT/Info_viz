@@ -15,12 +15,11 @@
         <p class="body2 settingvalue" id="filter">none</p>
         <p class="body2 settings">Search tag</p>
         <p class="body2 settingvalue" id="search">none</p>
-        <p class="body2 settings">Sort by</p>
-        <p class="body2 settingvalue" id="sort">none</p>
-        <button type="button" id="backtooverview" onclick="backtooverview_click()">View in Overview</button>
+        <button type="button" id="backtooverview" onclick="backtooverview_click()">View In Overview</button>
+        <button type="button" id="clearall" onclick="clearsettingsobject()">Clear All</button>
       </div>
       <div id="backbutton" style="height:24px">
-          <a href="javascript:history.go(-1);"><p class="textbutton" style="margin-top:30px;">BACK</p></a>
+          <a href="javascript:history.go(-1);"><p class="textbutton" style="margin-top:30px;">&#60;&#160;Reset and back to overview</p></a>
       </div>
 
       <div class="variable slider" id="carousel">
@@ -44,10 +43,10 @@
               <!--
               <div style='background-color:#363636;height:1px;border:none;'></div>
             -->
-              <div id="vbar" style="width:270px; height:280px; float:left;">
+              <div id="vbar" style="width:270px; height:270px; float:left;">
                             <p class="body2" style="float: left; margin-top: 4px; margin-bottom: 6px; color:#1C7E8C;">Views</p>
               </div>
-              <div id="ldbar" style="width:270px; height:280px; float: right;">
+              <div id="ldbar" style="width:270px; height:270px; float: right;">
                   <p class="body2" style="float: left; margin-top: 4px; margin-bottom: 6px;color:#9D4747;">Likes</p>   
                   <p class="body2" style="float: left; margin-top: 4px; margin-bottom: 6px;">/</p>             
                     <p class="body2" style="float: left; margin-top: 4px; margin-bottom: 6px;color:#5D8931;">Dislikes</p>
@@ -55,13 +54,14 @@
               </div>
             </div>
             <div id="similarvideos" style="height: 624px; background-color: #282828; border-radius: 5px; padding: 12px 20px 20px 20px">
-                        <p class="body2" style ="margin-top: 8px ; margin-bottom: 20px; color: #3ea6ff;">Similar Videos</p>
+                        <p class="body2" style ="margin-top: 8px ; margin-bottom: 20px; color: #3ea6ff;">Similar Videos Based On Content</p>
                         <!-- sv1 -->
                         <div class="sv" id="sv0" style="height:80px; margin-top: 10px; margin-bottom: 30px">
                           <div style="width: 123px; float: left; margin-right: 24px">
                             <img src="./figure/placeholder.png" style="height: 80px; width: 123px;" id="svthumbnail0">
                           </div>
                           <div>
+                              <p class="body2 similarityranking" id="svranking0" style="font-size: 12px;color:#3ea6ff;">No. 1</p>
                               <a href="http://www.google.com" id="svlink0">
                                 <p id="svtitle0" class="body2" style="color: white; margin-bottom: 8px" >Patriots vs. Ravens  Week 9 Highlights | NFL 2019</p>
                               </a>
@@ -74,6 +74,7 @@
                             <img src="./figure/placeholder.png" style="height: 80px; width: 123px;" id="svthumbnail1">
                           </div>
                           <div>
+                              <p class="body2 similarityranking" id="svranking1" style="font-size: 12px;color:#3ea6ff;">No. 2</p>
                               <a href="http://www.google.com" id="svlink1">
                                 <p id="svtitle1" class="body2" style="color: white; margin-bottom: 8px" >Patriots vs. Ravens  Week 9 Highlights | NFL 2019</p>
                               </a>
@@ -86,6 +87,7 @@
                             <img src="./figure/placeholder.png" style="height: 80px; width: 123px;" id="svthumbnail2">
                           </div>
                           <div>
+                              <p class="body2 similarityranking" id="svranking1" style="font-size: 12px;color:#3ea6ff;">No. 3</p>
                               <a href="http://www.google.com" id="svlink2">
                                 <p id="svtitle2" class="body2" style="color: white; margin-bottom: 8px" >Patriots vs. Ravens  Week 9 Highlights | NFL 2019</p>
                               </a>
@@ -98,6 +100,7 @@
                             <img src="./figure/placeholder.png" style="height: 80px; width: 123px;" id="svthumbnail3">
                           </div>
                           <div>
+                              <p class="body2 similarityranking" id="svranking3" style="font-size: 12px;color:#3ea6ff;">No. 4</p>
                               <a href="http://www.google.com" id="svlink3">
                                 <p id="svtitle3" class="body2" style="color: white; margin-bottom: 8px" >Patriots vs. Ravens  Week 9 Highlights | NFL 2019</p>
                               </a>
@@ -110,6 +113,7 @@
                             <img src="./figure/placeholder.png" style="height: 80px; width: 123px;" id="svthumbnail4">
                           </div>
                           <div>
+                              <p class="body2 similarityranking" id="svranking4" style="font-size: 12px;color:#3ea6ff;">No. 5</p>
                               <a href="http://www.google.com" id="svlink4">
                                 <p id="svtitle4" class="body2" style="color: white; margin-bottom: 8px" >Patriots vs. Ravens  Week 9 Highlights | NFL 2019</p>
                               </a>
