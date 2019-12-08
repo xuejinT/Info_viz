@@ -248,6 +248,11 @@ button:focus{
   opacity: 0.5;
 }
 
+.video-hidden{
+  fill: rgb(128, 168, 180);
+  opacity: 0.5;
+  display: none;
+}
 
 .brushed{
   fill: tomato;

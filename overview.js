@@ -70,7 +70,6 @@ var x2 = xScale.copy();
 // Create y-scale for positioning the circles
 var yScale = d3.scaleLinear()
     .range([550, 50]).nice();
-
 var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S");
 
 // Create a quantize scale for the three habital zone bins
@@ -101,6 +100,7 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
         return +d['trending_date'];
     });
     xScale.domain(dateExtent);
+    constantY = yScale;
 
     brush = d3.brush()
         .extent([
@@ -213,20 +213,24 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
         // .call(d3.zoom().on("zoom", zoom));
 
     var zoom_rect_left = svg.append("rect")
-    .attr("x",30)
-    .attr("y",50)
-    .attr("opacity",0)
-    .attr("width", 60)
-    .attr("height", 500)
+    	.attr("class", "rect-zoom")
+        .attr("x", 30)
+        .attr("y", 50)
+        .attr("opacity", 0)
+        .attr("width", 60)
+        .attr("height", 500)
     var zoom_rect_right = svg.append("rect")
-    .attr("x",1020)
-    .attr("y",50)
-    .attr("opacity",0)
-    .attr("width", 60)
-    .attr("height", 500)
+    .attr("class", "rect-zoom")
+        .attr("x", 1020)
+        .attr("y", 50)
+        .attr("opacity", 0)
+        .attr("width", 60)
+        .attr("height", 500)
     zoom_rect_left.call(d3.zoom().on("zoom", zoom));
     zoom_rect_right.call(d3.zoom().on("zoom", zoom));
+
     function zoom() {
+        svg.selectAll(".line").remove();
         y_axis_left.transition()
             .duration(50)
             .call(yAxis_L.scale(d3.event.transform.rescaleY(yScale)));
@@ -234,6 +238,7 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
             .duration(50)
             .call(yAxis_R.scale(d3.event.transform.rescaleY(yScale)));
         var new_yScale = d3.event.transform.rescaleY(yScale);
+        yScale = new_yScale;
         var hidden_circle = g.selectAll("circle").filter(function(d) {
             var new_y = new_yScale(d[curr_y]);
             return new_y > 560 || new_y < 30;
@@ -242,8 +247,8 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
             var new_y = new_yScale(d[curr_y]);
             return new_y < 560 && new_y > 30;
         });
-        hidden_circle.style("display", "none")
-        show_circle.style("display", "")
+        hidden_circle.attr("class", "video-hidden")
+        show_circle.attr("class", "video")
         g.selectAll("circle").attr("cy", function(d) {
             return new_yScale(d[curr_y]);
         });
@@ -270,6 +275,7 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
         update_plot("detail_page", [filter, tag])
     }
 });
+
 
 
 
@@ -555,8 +561,12 @@ function checkBox_update_all() {
 
 
 function reload() {
-    g.selectAll('.brush').remove();
-
+    svg.selectAll(".brush").call(brush.move, [
+        [0, 0],
+        [1, 1]
+    ])
+    $(".selected").removeClass("selected");
+    $("li[title='view']").addClass("selected");
     highlighted_id = "";
     curr_y = "views";
     document.getElementById("c1").checked = false;
@@ -567,9 +577,7 @@ function reload() {
     document.getElementById("c6").checked = false;
     $("#all").attr("checked", "");
     update_plot("reload", null);
-    g.selectAll('circle').attr("display", "")
 }
-
 
 function update_plot(caller, args) {
     if (caller === "tag_change") {
@@ -739,6 +747,35 @@ function update_plot(caller, args) {
         var y_axis_right = svg.selectAll(".axis-right")
             .call(yAxis_R)
             // .call(d3.zoom().on("zoom", zoom));
+
+        svg.selectAll("rect-zoom").call(d3.zoom().on("zoom", zoom));
+
+
+        function zoom() {
+            svg.selectAll(".line").remove();
+            y_axis_left.transition()
+                .duration(50)
+                .call(yAxis_L.scale(d3.event.transform.rescaleY(yScale)));
+            y_axis_right.transition()
+                .duration(50)
+                .call(yAxis_R.scale(d3.event.transform.rescaleY(yScale)));
+            var new_yScale = d3.event.transform.rescaleY(yScale);
+            yScale = new_yScale;
+            var hidden_circle = g.selectAll("circle").filter(function(d) {
+                var new_y = new_yScale(d[curr_y]);
+                return new_y > 560 || new_y < 30;
+            });
+            var show_circle = g.selectAll("circle").filter(function(d) {
+                var new_y = new_yScale(d[curr_y]);
+                return new_y < 560 && new_y > 30;
+            });
+            hidden_circle.attr("class", "video-hidden")
+            show_circle.attr("class", "video")
+            g.selectAll("circle").attr("cy", function(d) {
+                return new_yScale(d[curr_y]);
+            });
+        }
+
 
         var existing_circles = g.selectAll('circle')
             .data(videos);
