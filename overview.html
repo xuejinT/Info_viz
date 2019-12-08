@@ -249,27 +249,27 @@
                             <p class="body2" style="margin-top:16px">Videos in category</p>
                             <div id="bd-act">                           
                                 <div class="bdcolor-box" style="background-color: #7CC237"></div>
-                                <p class="body3" style="display:inline-block; height:24px;margin-left: 5px">Activism</p>
+                                <p class="body3" style="display:inline-block; height:24px;margin-left: 5px;margin-right:51.9px">Activism</p>
                             </div>
                             <div id="bd-edu">
                                 <div class="bdcolor-box" style="background-color: #DE5555"></div>
-                                <p class="body3" style="display:inline-block; height:24px;margin-left: 5px">Education</p>
+                                <p class="body3" style="display:inline-block; height:24px;margin-left: 5px;margin-right:43.9px">Education</p>
                             </div>
                             <div id="bd-ent">
                                 <div class="bdcolor-box" style="background-color: #6D72E7"></div>
-                                <p class="body3" style="display:inline-block; height:24px;margin-left: 5px">Entertainment</p>
+                                <p class="body3" style="display:inline-block; height:24px;margin-left: 5px;margin-right:17.9px">Entertainment</p>
                             </div>
                             <div id="bd-lif">
                                 <div class="bdcolor-box" style="background-color: #DEB75B"></div>
-                                <p class="body3" style="display:inline-block; height:24px;margin-left: 5px;margin-right:36px">Lifestyle</p>
+                                <p class="body3" style="display:inline-block; height:24px;margin-left: 5px;margin-right:53.7px">Lifestyle</p>
                             </div>
                             <div id="bd-new">
                                 <div class="bdcolor-box" style="background-color: #26BDD2"></div>
-                                <p class="body3" style="display:inline-block; height:24px;margin-left: 5px;margin-right:52px">News</p>
+                                <p class="body3" style="display:inline-block; height:24px;margin-left: 5px;margin-right:70.8px">News</p>
                             </div>
                             <div id="bd-tec">
                                 <div class="bdcolor-box" style="background-color: #B155DE"></div>
-                                <p class="body3" style="display:inline-block; height:24px;margin-left: 5px;margin-right:17px">Technology</p>
+                                <p class="body3" style="display:inline-block; height:24px;margin-left: 5px;margin-right:38.2px">Technology</p>
                             </div>
                             
                             <p class="body2" style="margin-top:14px">Date range</p>
@@ -279,15 +279,15 @@
                 </div>
                 <div class="bd-filterbox">
                     <div class="bd-boxhierarchy">
-                        <div class = "bd-box2">
+                        <div class = "bd-box2" style="width:200px">
                             <p class="body1">Breakdown Hierarchy</p>
                             
-                                        <p class="body2"  style="margin-top:16px;height:24px">Firstly break down by:</p>
+                                        <p class="body2"  style="margin-top:16px;height:24px">1. Firstly break down by:</p>
                                    
-                                        <p class="body3" style="height:24px">   Category Cluster</p>
-                                                                            <p class="body2" style="margin-top:16px;height:24px">Within firstly breakdown groups,</p>
+                                        <p class="body3" style="height:24px">   Category </p>
+                                                                            <p class="body2" style="margin-top:16px;height:24px">2. Within individual category,</p>
 
-                                        <p class="body2" style="height:24px">Secondly break down by:</p>
+                                        <p class="body2" style="height:24px">break down by:</p>
                                     
                                         <select class="select" id="bd-secondlevel" style="height:30px" onchange="bdchangesort()">
                                             
@@ -297,9 +297,21 @@
                     </div>
                 </div> 
                 <div class="bd-filterbox">
-                    <div class = "bd-boxchart" >
+                    <div class = "bd-boxchart" style="width:230px">
                         <div class = "bd-box3">
                             <div id="bdchart"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bd-filterbox">
+                    <div class = "bd-boxlegend" style="width:244px" >
+                            <div class = "bd-box4" style="width:200px">
+                            <p style= "margin-top:76px"> 
+                            <img src="legend.png" alt="Breakdown Legend" class="bd-legend" align="left" style="padding-top:14px">
+                            <p class="body2">High, medium, low</p>
+                            <p class="body2" id="bdlegendtext"></p>
+                            <p class="body2">Category</p>
+                            </p>
                         </div>
                     </div>
                 </div>

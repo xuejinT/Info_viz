@@ -8,6 +8,7 @@ var secFlag;
 function bdchangesort()
 {
     secFlag = document.getElementById("bd-secondlevel").value;
+        document.getElementById("bdlegendtext").innerHTML = secFlag; 
     bd_dataclean();
 }
 function bd_dataclean()

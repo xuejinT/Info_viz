@@ -49,11 +49,18 @@ bd-detailchart{
     box-sizing: border-box; 
     height: 250px;
     background-color: #282828;
+    border-radius: 0px;
+    overflow: auto;
+}
+.bd-boxlegend{
+    box-sizing: border-box; 
+    height: 250px;
+    background-color: #282828;
     border-radius: 0px 5px 5px 0px;
     overflow: auto;
 }
 
-.bd-box1, .bd-box2, .bd-box3{
+.bd-box1, .bd-box2, .bd-box3, .bd-box4{
     box-sizing: border-box; 
     width:298px;
     margin-top: 16px;
@@ -77,6 +84,9 @@ bd-detailchart{
 
 }
 
+.bd-legend{
+ max-width: 80px;
+}
 
 
 /* sunburst */

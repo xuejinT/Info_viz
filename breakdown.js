@@ -33,7 +33,7 @@ function breakdown_click()
         console.log("breakdown btn clicked");
     if (bd_isClick == true){
         $("#breakdownbutton").text("Hide Breakdown");
-
+        bd_checkCategory();
         bd_sortfunc();
         document.getElementById("breakdownSection").style.display = "block";
     } else {
@@ -43,6 +43,7 @@ function breakdown_click()
     
 
     secFlag = document.getElementById("bd-secondlevel").value;
+    document.getElementById("bdlegendtext").innerHTML = secFlag; 
 
 }
 function bd_checkCategory(){
@@ -89,7 +90,6 @@ function bd_checkCategory(){
 function bd_sortfunc() {
     document.getElementById("bd-secondlevel").options.length = 0;
     bd_sort = document.getElementById("uc_02").value;
-    //var el = document.getElementById('display');
     var selectobject = document.getElementById("uc_02");
     for (var i=0; i<selectobject.length; i++) {
         if (selectobject.options[i].value != bd_sort){
