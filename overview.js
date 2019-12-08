@@ -71,8 +71,9 @@ var xScale = d3.scaleTime()
 var x2 = xScale.copy();
 
 // Create y-scale for positioning the circles
-var yScale = d3.scaleLinear()
-    .range([550, 50]).nice();
+var yScale = d3.scalePow().exponent(0.2)
+    .range([550, 50])
+    .nice();
 var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S");
 
 // Create a quantize scale for the three habital zone bins
@@ -95,15 +96,15 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
 
     videos = data;
     all_videos = data;
-    var viewExtent = d3.extent(videos, function(d) {
-        return +d['views'];
+    var yExtent = d3.extent(videos, function(d) {
+        return +d[curr_y];
     });
-    yScale.domain(viewExtent);
+    yScale.domain(yExtent);
     var dateExtent = d3.extent(videos, function(d) {
         return +d['trending_date'];
     });
     xScale.domain(dateExtent);
-    constantY = yScale;
+    constantY = yScale.copy();
 
     brush = d3.brush()
         .extent([
@@ -229,31 +230,34 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
         .attr("opacity", 0)
         .attr("width", 60)
         .attr("height", 500)
-    zoom_rect_left.call(d3.zoom().on("zoom", zoom));
-    zoom_rect_right.call(d3.zoom().on("zoom", zoom));
+    zoom_rect_left.call(d3.zoom().on("zoom", zoom)
+        .scaleExtent([1, 3]));
+    // .extent([[0,0],[1000,599]]));
+    zoom_rect_right.call(d3.zoom().on("zoom", zoom)
+        .scaleExtent([1, 3]));
+    // .extent([[0,0],[1000,599]]));
 
     function zoom() {
         svg.selectAll(".line").remove();
         y_axis_left.transition()
             .duration(50)
-            .call(yAxis_L.scale(d3.event.transform.rescaleY(yScale)));
+            .call(yAxis_L.scale(d3.event.transform.rescaleY(constantY)));
         y_axis_right.transition()
             .duration(50)
-            .call(yAxis_R.scale(d3.event.transform.rescaleY(yScale)));
-        var new_yScale = d3.event.transform.rescaleY(yScale);
-        yScale = new_yScale;
+            .call(yAxis_R.scale(d3.event.transform.rescaleY(constantY)));
+        yScale = d3.event.transform.rescaleY(constantY);
         var hidden_circle = g.selectAll("circle").filter(function(d) {
-            var new_y = new_yScale(d[curr_y]);
+            var new_y = yScale(d[curr_y]);
             return new_y > 560 || new_y < 30;
         });
         var show_circle = g.selectAll("circle").filter(function(d) {
-            var new_y = new_yScale(d[curr_y]);
+            var new_y = yScale(d[curr_y]);
             return new_y < 560 && new_y > 30;
         });
         hidden_circle.attr("class", "video-hidden")
         show_circle.attr("class", "video")
         g.selectAll("circle").attr("cy", function(d) {
-            return new_yScale(d[curr_y]);
+            return yScale(d[curr_y]);
         });
     }
 
@@ -295,11 +299,11 @@ function updateBrush() {
     var brushedNodes = new Set();
     // if we have no selection, just reset the brush highlight to no nodes
     if (!selection) {
-    	g.selectAll('.video-clicked,.video-hovered,.video-similar').attr('class', 'video');
-    	svg.selectAll('.line').remove();
-    	$("#indiV").css("display", "none");
-    	$("#similarbutton").attr('disabled','disabled')
-    	highlighted_id = "";
+        g.selectAll('.video-clicked,.video-hovered,.video-similar').attr('class', 'video');
+        svg.selectAll('.line').remove();
+        $("#indiV").css("display", "none");
+        $("#similarbutton").attr('disabled', 'disabled')
+        highlighted_id = "";
         highlightBrushed(brushedNodes);
         return;
     }
@@ -483,10 +487,10 @@ function reset_all_circles(curr_element) {
 
 //highlight one video
 function highlight_single_video() {
-	if(highlighted_id!=""){
-		$("#similarbutton").removeAttr('disabled')
-	}
-	
+    if (highlighted_id != "") {
+        $("#similarbutton").removeAttr('disabled')
+    }
+
     svg.selectAll(".brush").call(brush.move, [
         [0, 0],
         [1, 1]
@@ -501,7 +505,7 @@ function highlight_single_video() {
         .moveToFront()
         .attr("class", "video-clicked");
     connect_dots();
-    
+
 }
 
 function showSimilar() {
@@ -514,7 +518,7 @@ function showSimilar() {
     $("#selectedV").attr("src", base_video.thumbnail_link);
     $("#selectedT").text(base_video.title);
     $("#selectedU").text(base_video.channel_title);
-    $("#selectedV-link").attr("href",base_video.video_url);
+    $("#selectedV-link").attr("href", base_video.video_url);
 
     Object.keys(sim_ids).forEach(key => {
         curr_sim_video = all_videos.find(o => o.video_id === key);
@@ -592,20 +596,20 @@ function checkBox_update() {
     c4_lif = document.getElementById("c4").checked;
     c5_new = document.getElementById("c5").checked;
     c6_tec = document.getElementById("c6").checked;
-    console.log(c1_act,c2_edu,c3_ent,c4_lif,c5_new,c6_tec)
-    if (c1_act==false || c2_edu==false || c3_ent==false || c4_lif==false || c5_new==false || c6_tec==false) {
-    	console.log("not all ")
+    console.log(c1_act, c2_edu, c3_ent, c4_lif, c5_new, c6_tec)
+    if (c1_act == false || c2_edu == false || c3_ent == false || c4_lif == false || c5_new == false || c6_tec == false) {
+        console.log("not all ")
         document.getElementById("all").checked = false;
-    }else if(c1_act && c2_edu && c3_ent && c4_lif && c5_new && c6_tec){
-    	console.log("all")
-    	document.getElementById("all").checked = true;
+    } else if (c1_act && c2_edu && c3_ent && c4_lif && c5_new && c6_tec) {
+        console.log("all")
+        document.getElementById("all").checked = true;
     }
     var all = document.getElementById("all").checked;
     update_plot("cluster_filter", [c1_act, c2_edu, c3_ent, c4_lif, c5_new, c6_tec, all]);
 }
 
 function checkBox_update_all() {
-	var all = document.getElementById("all").checked;
+    var all = document.getElementById("all").checked;
     document.getElementById("c1").checked = all;
     document.getElementById("c2").checked = all;
     document.getElementById("c3").checked = all;
@@ -624,17 +628,19 @@ function reload() {
     ])
     $("#indiV").css("display", "none");
     $(".selected").removeClass("selected");
-    $("li[title='view']").addClass("selected");
+    $("li[data-value='views']").addClass("selected");
     highlighted_id = "";
-    $("#similarbutton").attr('disabled','disabled')
+    $("#similarbutton").attr('disabled', 'disabled')
+    $("#breakdownbutton").text('View Breakdown');
+    $("#breakdownSection").css('display', 'none');
     curr_y = "views";
-    document.getElementById("c1").checked = false;
-    document.getElementById("c2").checked = false;
-    document.getElementById("c3").checked = false;
-    document.getElementById("c4").checked = false;
-    document.getElementById("c5").checked = false;
-    document.getElementById("c6").checked = false;
-    $("#all").attr("checked", "");
+    document.getElementById("c1").checked = true;
+    document.getElementById("c2").checked = true;
+    document.getElementById("c3").checked = true;
+    document.getElementById("c4").checked = true;
+    document.getElementById("c5").checked = true;
+    document.getElementById("c6").checked = true;
+    document.getElementById("all").checked = true;
     update_plot("reload", null);
 }
 
@@ -647,12 +653,12 @@ function update_plot(caller, args) {
             return related(d, keyword);
         });
     } else if (caller === "detail_page") {
-        if (filter != "none"|| tag != "none") {
+        if (filter != "none" || tag != "none") {
             videos = all_videos.filter(function(d) {
                 return d.category_name === filter || related(d, tag);
             })
             $("#all").removeAttr("checked");
-        } 
+        }
         //clear localStorage
         localStorage.clear();
     } else if (caller === "cluster_filter") {
@@ -660,10 +666,7 @@ function update_plot(caller, args) {
         args.forEach(function(item, i) {
             if (i < 6 && item) {
                 checked_category.push(cluster_map[i]);
-            } 
-            // else if (i == 6 && item) {
-            //     checked_category = ["Activism", "Education", "Entertainment", "Lifestyle", "News", "Technology"]
-            // }
+            }
         });
         console.log(checked_category);
         videos = all_videos.filter(function(d) {
@@ -693,15 +696,21 @@ function update_plot(caller, args) {
         svg.selectAll(".line").remove();
         svg.selectAll(".brush").remove();
 
+        
+
         var yExtent = d3.extent(videos, function(d) {
             return +d[curr_y];
         });
+        yScale.domain(yExtent);
+
+        // var yScale_temp = d3.scaleLinear()
+        //     .range([550, 50]).domain(yExtent).nice();
+        constantY = yScale.copy();
+
         var dateExtent = d3.extent(videos, function(d) {
             return +d["trending_date"];
         });
         xScale.domain(dateExtent);
-        yScale.domain(yExtent);
-
 
         //update quadtree and brush
         quadtree = d3.quadtree()
@@ -715,14 +724,14 @@ function update_plot(caller, args) {
             var brushedNodes = new Set();
             // if we have no selection, just reset the brush highlight to no nodes
             if (!selection) {
-    	g.selectAll('.video-clicked,.video-hovered,.video-similar').attr('class', 'video');
-    	svg.selectAll('.line').remove();
-    	$("#indiV").css("display", "none");
-    	$("#similarbutton").attr('disabled','disabled')
-    	highlighted_id = "";
-        highlightBrushed(brushedNodes);
-        return;
-    }
+                g.selectAll('.video-clicked,.video-hovered,.video-similar').attr('class', 'video');
+                svg.selectAll('.line').remove();
+                $("#indiV").css("display", "none");
+                $("#similarbutton").attr('disabled', 'disabled')
+                highlighted_id = "";
+                highlightBrushed(brushedNodes);
+                return;
+            }
 
             // begin an array to collect the brushed nodes
 
@@ -773,14 +782,6 @@ function update_plot(caller, args) {
             .attr('class', 'brush')
             .call(brush);
 
-        // svg.selectAll(".axis-left")
-        //     .transition()
-        //     .duration(200)
-        //     .call(d3.axisLeft(yScale));
-        // svg.selectAll(".axis-right")
-        //     .transition()
-        //     .duration(200)
-        //     .call(d3.axisRight(yScale));
         svg.selectAll(".axis-bottom")
             .transition()
             .duration(200)
@@ -804,31 +805,55 @@ function update_plot(caller, args) {
             .call(yAxis_R)
             // .call(d3.zoom().on("zoom", zoom));
 
-        svg.selectAll("rect-zoom").call(d3.zoom().on("zoom", zoom));
+        svg.selectAll("rect-zoom").call(d3.zoom().on("zoom", zoom).scaleExtent([1, 3]));
 
+
+        function connect_dots() {
+            data = []
+            videos.forEach(function(element, i) {
+                if (element.video_id == highlighted_id) {
+                    data.push(element);
+                }
+            });
+
+            function basicy() {
+                var ret = d3.line()
+                    .x(function(d) {
+                        return xScale(d.trending_date);
+                    })
+                return ret;
+            }
+            var valueline = basicy()
+                .y(function(d) {
+                    return yScale(d[curr_y]);
+                });
+            svg.append("path")
+                .data([data])
+                .attr("d", valueline)
+                .attr("class", "line")
+        }
 
         function zoom() {
             svg.selectAll(".line").remove();
             y_axis_left.transition()
                 .duration(50)
-                .call(yAxis_L.scale(d3.event.transform.rescaleY(yScale)));
+                .call(yAxis_L.scale(d3.event.transform.rescaleY(constantY)));
             y_axis_right.transition()
                 .duration(50)
-                .call(yAxis_R.scale(d3.event.transform.rescaleY(yScale)));
-            var new_yScale = d3.event.transform.rescaleY(yScale);
-            yScale = new_yScale;
+                .call(yAxis_R.scale(d3.event.transform.rescaleY(constantY)));
+            yScale = d3.event.transform.rescaleY(constantY);
             var hidden_circle = g.selectAll("circle").filter(function(d) {
-                var new_y = new_yScale(d[curr_y]);
+                var new_y = yScale(d[curr_y]);
                 return new_y > 560 || new_y < 30;
             });
             var show_circle = g.selectAll("circle").filter(function(d) {
-                var new_y = new_yScale(d[curr_y]);
+                var new_y = yScale(d[curr_y]);
                 return new_y < 560 && new_y > 30;
             });
             hidden_circle.attr("class", "video-hidden")
             show_circle.attr("class", "video")
             g.selectAll("circle").attr("cy", function(d) {
-                return new_yScale(d[curr_y]);
+                return yScale(d[curr_y]);
             });
         }
 
@@ -931,11 +956,11 @@ function update_plot(caller, args) {
 
 
     highlight_single_video();
-        svg.selectAll("circle")
+    svg.selectAll("circle")
         .filter(function(d) {
-        	if(d.video_id === sim_video_id){
-        		console.log(1)
-        	}
+            if (d.video_id === sim_video_id) {
+                console.log(1)
+            }
             return d.video_id === sim_video_id;
         })
         .attr("class", "video-similar")
