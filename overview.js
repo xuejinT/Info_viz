@@ -619,7 +619,16 @@ function checkBox_update_all() {
     // $("#c1").css("background-color","")
     checkBox_update();
 }
-
+function reset_zoom(){
+	svg.selectAll(".brush").call(brush.move, [
+        [0, 0],
+        [1, 1]
+    ])
+    $("#indiV").css("display", "none");
+    $(".selected").removeClass("selected");
+    $("li[data-value='"+curr_y+"']").addClass("selected");
+    update_plot("reload", null);
+}
 
 function reload() {
     svg.selectAll(".brush").call(brush.move, [

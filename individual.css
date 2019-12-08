@@ -4,7 +4,7 @@
 	margin-top:50px;
 	margin-bottom:50px;
 	display:inline-block;
-	height: auto;
+	height: 600px;
 	width:1104px;
 	background-color: #282828;
 	border-radius: 5px;
@@ -26,13 +26,14 @@
 	height:80px;
 	margin-top: 10px;
 	margin-bottom: 30px;
+	vertical-align:text-top;
 	display:inline-block;
 	margin-right:37px;
 }
 
 .sImgDiv{
-
 	width: 123px;
+	vertical-align: text-top;
 /*	float: left;
 */	margin-right: 24px;
 	margin-bottom:15px;

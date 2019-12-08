@@ -31,9 +31,9 @@
                      <i class="fa fa-search"></i>
                  </button>  
              <!-- </form>   -->
-                 <span><p id="result"></p></span>
+                 <span><p id="result" class="ranking body2" style="color:white"></p></span>
          </div>  
-         <p class="ranking body2" style="margin-left:40px">Select different statistics:</p>
+         <p class="ranking body2" style="margin-left:40px; color:white;font-size:14px">Select different statistics:</p>
         <div class="sort">
             <td>
                 <select class="ui-choose" id="uc_02">
@@ -47,14 +47,17 @@
                     <option value="trending_length">trending length</option>
                 </select>
             </td>
-            <button style="margin-left: 20px" id="reset-button" onclick = "reload()" >
+            <button style="margin-left: 20px;width:80px" id="reset-button" onclick = "reload()" >
                      Reset
+            </button>  
+            <button style="margin-left: 20px;width:80px" id="reset-zoom-button" onclick = "reset_zoom()" >
+                     ReZoom
             </button>  
             <!-- <input style="display:inline-block;" type="checkbox" name="c" value="all" id="" onclick="switch_mode()" />
             <label style="display:inline-block;color: white" for="all">Only Starting Day</label> -->
         </div>
         <div>
-            <p class="body2 ranking" style="margin-left: 40px">The plot shows the overview of the trending cycles of each video. Each dot represents a video on one of its trending date.</p>
+            <p class="body2 ranking" style="margin-left: 40px;color:white;font-size:14px">The plot shows the overview of the trending cycles of each video. Each dot represents a video on one of its trending date.</p>
         </div>
         <div class="scatterplot">
             <svg style="height:600px; width:100%;">
@@ -124,7 +127,7 @@
 
                 <div style="padding-top:70px">
                     <button type="button" id="breakdownbutton" onclick="breakdown_click()" title="Please set filters and date range at the left" class="buttonmouseover">View Breakdown</button>
-                    <p class = "body2 ranking" style="width:240px;margin-top:10px">See breakdown of the videos based on the category & date range selected</p>
+                    <p class = "body2 ranking" style="width:240px;margin-top:10px;color:white;font-size:14px">See breakdown of the videos based on the category & date range selected</p>
                 </div>
                 
             </div>
@@ -132,11 +135,11 @@
                 <p class="body1">Detail</p>
                 <div style="margin-top:16px ">
                     <button type="button" id="similarbutton" disabled="disabled" title="Please brush the dots above" class="buttonmouseover" onclick="showSimilar()">View Similar Videos</button>
-                    <p class="body2 ranking" style="float: right;width:190px;margin-left:10px">See similar videos on selected video</p>
+                    <p class="body2 ranking" style="float: right;width:190px;margin-left:10px;color:white;font-size:14px">See similar videos on selected video</p>
                 </div>
                 <div style="margin-top:16px ">
                     <a href= "./detail.html"><button type="button" id="dashboardbutton" disabled="disabled" title="Please brush the dots above" class="buttonmouseover">View Insights</button></a>
-                    <p class="body2 ranking" style="float: right;width:190px;margin-left:10px">Brush on area of videos you are interested in & see their insights</p>
+                    <p class="body2 ranking" style="float: right;width:190px;margin-left:10px;color:white;font-size:14px">Brush on area of videos you are interested in & see their insights</p>
                 </div>
             </div>
         </div>
@@ -162,7 +165,8 @@
                 </div>
 
                <!--  no1 -->
-                <div id="s0" class="sV">
+               <div id="" style="vertical-align: text-top;">
+                   <div id="s0" class="sV">
                     <a href=" " id="svlink0" target="_blank">
                     <div class="sImgDiv">
                         <p class="ranking body2">N0.1</p >
@@ -232,6 +236,8 @@
                     <p class="body2 svUploader" id="svuploader4"></p >
                     <button type="button" name="s4" class="highlightI buttonmouseover" onclick="highlightSim(s4)">Highlight in Overview</button>
                 </div>
+               </div>
+                
 
             </div>
         </section>
