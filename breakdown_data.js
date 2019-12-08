@@ -271,7 +271,7 @@ function bd_dataclean()
 
         var newroot = {
             name: "TOTAL",
-        color: "#1E1E1E",
+        color: "#282828",
         children: []
         };
         
@@ -448,7 +448,6 @@ function bd_dataclean()
 
 
 
-        
         console.log(newroot);
         bdchartchart(newroot);
 
@@ -473,12 +472,12 @@ function bd_dataclean()
         return Array_hig;
     }
     function find_ave(Array){
-        var sum_view=0, sum_ratio=0, sum_comment=0, sum_income=0, sum_temperature=0, sum_tl=0;
+        var sum_view=0, sum_likes=0, sum_comment=0, sum_income=0, sum_temperature=0, sum_tl=0;
         var avg = {};
         
         for(i=0; i< Array.length; i++){
             sum_view += parseInt(Array[i].values[Array[i].values.length-1].views,10);
-            sum_ratio += parseInt(Array[i].values[Array[i].values.length-1].ratio,10);
+            sum_likes += parseInt(Array[i].values[Array[i].values.length-1].likes,10);
             sum_comment += parseInt(Array[i].values[Array[i].values.length-1].comment_count,10);
             sum_income += parseInt(Array[i].values[Array[i].values.length-1].income,10);
             sum_temperature += parseInt(Array[i].values[Array[i].values.length-1].temperature,10);
@@ -486,7 +485,7 @@ function bd_dataclean()
         }
 
         avg.views = sum_view/Array.length;
-        avg.ratio = sum_ratio/Array.length;
+        avg.likes = sum_likes/Array.length;
         avg.comment_count = sum_comment/Array.length;
         avg.income = sum_income/Array.length;
         avg.temperature = sum_temperature/Array.length;
@@ -495,13 +494,13 @@ function bd_dataclean()
         return avg;
     }
     function find_max(Array){
-        var max_view = 0, max_ratio = 0, max_comment = 0, max_income = 0, max_temperature = 0, max_tl = 0;
+        var max_view = 0, max_likes = 0, max_comment = 0, max_income = 0, max_temperature = 0, max_tl = 0;
         var max = {};
         for(i=0; i<Array.length; i++){
             if(Array[i].values[Array[i].values.length-1].views > max_view){
                 max_view = Array[i].values[Array[i].values.length-1].views;
-            } if(Array[i].values[Array[i].values.length-1].ratio > max_ratio){
-                max_ratio = Array[i].values[Array[i].values.length-1].ratio;
+            } if(Array[i].values[Array[i].values.length-1].likes > max_likes){
+                max_likes = Array[i].values[Array[i].values.length-1].likes;
             } if(Array[i].values[Array[i].values.length-1].comment_count > max_comment){
                 max_comment = Array[i].values[Array[i].values.length-1].comment_count;
             } if(Array[i].values[Array[i].values.length-1].income > max_income){
@@ -513,7 +512,7 @@ function bd_dataclean()
             }  
         }
         max.views = parseInt(max_view,10);
-        max.ratio = parseInt(max_ratio,10);
+        max.likes = parseInt(max_likes,10);
         max.comment_count = parseInt(max_comment,10);
         max.income = parseInt(max_income,10);
         max.temperature = parseInt(max_temperature,10);

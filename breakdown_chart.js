@@ -2,8 +2,8 @@ function bdchartchart(root){
     document.getElementById("bdchart").innerHTML = "";
 
     // set width, height, and radius
-var width = 325,
-    height = 325,
+var width = 200,
+    height = 200,
     radius = (Math.min(width, height) / 2) - 10; // lowest number divided by 2. Then subtract 10
 
 // legend dimensions
@@ -33,7 +33,8 @@ var arc = d3.arc()
 
 // define tooltip
 var tooltip = d3.select('#bdchart') // select element in the DOM with id 'chart'
-  .append('div').classed('tooltip', true); // append a div element to the element we've selected    
+  .append('div').classed('tooltip', true).style('display', 'none'); // set display   
+ // append a div element to the element we've selected    
 tooltip.append('div') // add divs to the tooltip defined above 
   .attr('class', 'label'); // add class 'label' on the selection                
 tooltip.append('div') // add divs to the tooltip defined above             
@@ -80,14 +81,18 @@ var path = svg.selectAll("path")
     .style("opacity", 0.8)
     .on("click", click)
     .on('mouseover', function(d) {
-      var total = d.parent.value;
+      var total; 
+      if(d.parent == null){total = 0;}
+        else{ total = d.parent.value;}
 
       var percent = Math.round(1000 * d.value / total) / 10; // calculate percent
       tooltip.select('.label').html(function(){
+        if(d.parent != null){
         if (d.parent.data.name != "TOTAL"){
             return d.data.name + ' ' + secFlag;
         } else {
             return d.data.name;
+        }
         }
     }); // set current label           
       tooltip.select('.count').html(d.value + ' videos'); // set current count            
@@ -95,11 +100,12 @@ var path = svg.selectAll("path")
     })
     .on('mouseout', function() { // when mouse leaves div                        
       tooltip.style('display', 'none'); // hide tooltip for that element
-    })
-    .on('mousemove', function(d) { // when mouse moves                  
+    });
+    /*.on('mousemove', function(d) { // when mouse moves    
+      tooltip.style('display', 'block'); // set display   
       tooltip.style('top', (d3.event.layerY + 10) + 'px'); // always 10px below the cursor
-      tooltip.style('left', (d3.event.layerX + 10) + 'px'); // always 10px to the right of the mouse
-  });
+      //tooltip.style('left', (d3.event.layerX + 10) + 'px'); // always 10px to the right of the mouse
+  });*/
 
 d3.select(self.frameElement).style("height", height + "px");
 
@@ -123,7 +129,7 @@ svg.append("text")
 //       FUNCTIONS
 //**********************
 
-var drawArc = d3.arc()
+/*var drawArc = d3.arc()
       .innerRadius(function(d, i) {
         return  arcMin + i*(arcWidth) + arcPad;
       })
@@ -133,10 +139,9 @@ var drawArc = d3.arc()
       .startAngle(0 * (Math.PI/180))
       .endAngle(function(d, i) {
         return Math.floor((d*6 * (Math.PI/180))*1000)/1000;
-      });
-
+      });*/
+//bddetailchart(root);
 bddetailchart(root);
-
 
 // redraw on disabled category
 function redraw(d) {
@@ -158,54 +163,21 @@ function redraw(d) {
 
 // zoom on click
 function click(d) {
-    console.log(d);
+                console.log(d);
 
   svg.transition()
       .duration(750) // duration of transition
       .tween("scale", function() {
         var xd = d3.interpolate(x.domain(), [d.x0, d.x1]),
             yd = d3.interpolate(y.domain(), [d.y0, 1]),
-            yr = d3.interpolate(y.range(), [d.y0 ? (80) : 0, radius]);
+            yr = d3.interpolate(y.range(), [d.y0 ? (50) : 0, radius]);
         return function(t) { x.domain(xd(t)); y.domain(yd(t)).range(yr(t)); };
       })
     .selectAll("path")
       .attrTween("d", function(d) { return function() { return arc(d); }; });
   d3.select(".bdtotal").text(d.value);
-    if(d.depth == 0){
-        bddetailchart(root);
-    } else if(d.depth == 1){
-        var newdata = {
-            name: "TOTAL",
-        color: "#1E1E1E",
-        children: [d.data]
-        };
-        newdata = d3.hierarchy(newdata);
-        newdata.sum(function(d) {
-        if (d.size) {
-            total += d.size;
-        }
-            return d.size; 
-        });
-        bddetailchart(newdata);
-    } else if(d.depth == 2){
-        /*var newChild = d.parent;
-        newChild.data.children = [];
-        newChild.data.children.concat(d.data);
-        var newdata = {
-            name: "TOTAL",
-        color: "#1E1E1E",
-        children: [newChild]
-        };
-        newdata = d3.hierarchy(newdata);
-        newdata.sum(function(d) {
-        if (d.size) {
-            total += d.size;
-        }
-            return d.size; 
-        });
-        console.log(newdata);
-        bddetailchart(newdata);*/
-    }
+     
+       
 
 }
 

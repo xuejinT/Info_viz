@@ -115,7 +115,7 @@
             </div>
             <div class="timerange">
                 <p class="body1">Date Range</p>
-                <input type="text" name="daterange" value="11/01/2017 - 04/01/2018" id="slider"/>
+                <input type="text" name="daterange" value="01/13/2018 - 03/31/2018" id="slider"/>
             </div>
             <div class="viewbreakdown">
                 <p class="body1">Detail</p>
@@ -129,22 +129,22 @@
         </div>
     
         <section id="breakdownSection">
-            <div>
-                <h2> Filtered Trending Videos </h2>
+            <div style="margin-top: 80px">
+                <h2> Filtered Trending Videos for Breakdown</h2>
             </div>
             <div class="bd-filter">
                 <div class="bd-filterbox">
                     <div class="bd-boxcurrent">
                         <div class="bd-box1">
                             <p class="body1">Currently Filtered Video Breakdown </p>
-                            <p class="body2">Videos in category</p>
+                            <p class="body2" style="margin-top:16px">Videos in category</p>
                             <div id="bd-act">                           
                                 <div class="bdcolor-box" style="background-color: #7CC237"></div>
-                                <p class="body3" style="display:inline-block; height:24px;margin-left: 5px;margin-right:34px">Activism</p>
+                                <p class="body3" style="display:inline-block; height:24px;margin-left: 5px">Activism</p>
                             </div>
                             <div id="bd-edu">
                                 <div class="bdcolor-box" style="background-color: #DE5555"></div>
-                                <p class="body3" style="display:inline-block; height:24px;margin-left: 5px;margin-right:26px">Education</p>
+                                <p class="body3" style="display:inline-block; height:24px;margin-left: 5px">Education</p>
                             </div>
                             <div id="bd-ent">
                                 <div class="bdcolor-box" style="background-color: #6D72E7"></div>
@@ -171,37 +171,53 @@
                 <div class="bd-filterbox">
                     <div class="bd-boxhierarchy">
                         <div class = "bd-box2">
-                            <p class="body1">Hierarchy</p>
-                            <table  class="bd-table" cellpadding="10">
-                                <tr>
-                                    <td>
-                                        <p class="body2">Top level</p>
-                                    </td>
-                                    <td>
-                                        <p class="body3">   Category Cluster</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <p class="body2">Second level</p>
-                                    </td>
-                                    <td>
-                                        <select class="select" id="bd-secondlevel" onchange="bdchangesort()">
+                            <p class="body1">Breakdown Hierarchy</p>
+                            
+                                        <p class="body2"  style="margin-top:16px;height:24px">Firstly break down by:</p>
+                                   
+                                        <p class="body3" style="height:24px">   Category Cluster</p>
+                                                                            <p class="body2" style="margin-top:16px;height:24px">Within firstly breakdown groups,</p>
+
+                                        <p class="body2" style="height:24px">Secondly break down by:</p>
+                                    
+                                        <select class="select" id="bd-secondlevel" style="height:30px" onchange="bdchangesort()">
                                             
                                         </select> 
-                                    </td>
-                                </tr>
-                            </table>
+                                  
                         </div>
                     </div>
                 </div> 
-                <div id="bdchart"></div>
+                <div class="bd-filterbox">
+                    <div class = "bd-boxchart" >
+                        <div class = "bd-box3">
+                            <div id="bdchart"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="bd-detailchart">
+            <div>
+                <div style="display: inline-block; margin-top: 16px">
+                    <h2>Breakdown of Filtered Videos</h2>
+                </div>
+                <div style="display: inline-block; margin-top: 16px; margin-left:350px">
+                    <p class="body1">Select a data type:</p>
+                </div>
+                <div  style="display: inline-block;margin-left:10px">
+                    <td>
+                        <select class="ui-choose" id="bd_math">
+                            <option value="average">Average</option>
+                            <option value="maximum">Maximun</option>
+                            <option value="medium">Medium</option>
+                        </select>
+                    </td>
+                </div>
+            </div>
+
             <div id="bddetailchart"></div>
             </div>
   <!--<div id="legend"></div>-->
-       
+        </section>
     </div>
     
     

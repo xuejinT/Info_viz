@@ -4,9 +4,9 @@
 }
     
 .bd-filter {
-    width: 28%;
-    float: left;
-    position: relative;
+    width: 1140px;
+    height: 250px;
+    margin-bottom: 30px;
 }
 
 .bd-sb {
@@ -15,45 +15,47 @@
     position: relative;
 }
 
-.bd-chart {
-    padding-left: 72px;
-    width: 66%px;
-    float: left;
-}
 
 bd-detailchart{
     padding-left: 72px;
-    width: 66%px;
-    float: left;
 }
 
 .bd-filterbox{
-    padding-top: 12px;
-    padding-bottom: 12px;
+    box-sizing: border-box; 
+    height: 250px;
+    float: left;
+
+
 }
 
 .bd-boxcurrent{
-    height:210px;
+    box-sizing: border-box; 
+    height: 250px;
     background-color: #282828;
     border-radius: 5px;
     overflow: auto;
+    margin-right: 20px;
 }
 
 .bd-boxhierarchy{
-    height:122px;
+    box-sizing: border-box; 
+    height: 250px;
     background-color: #282828;
-    border-radius: 5px;
+    border-radius: 5px 0px 0px 5px;
+    overflow: auto;
 }
 
-.bd-boxselected{
-    height:500px;
+.bd-boxchart{
+    box-sizing: border-box; 
+    height: 250px;
     background-color: #282828;
-    border-radius: 5px;
+    border-radius: 0px 5px 5px 0px;
     overflow: auto;
 }
 
 .bd-box1, .bd-box2, .bd-box3{
-    float:left;
+    box-sizing: border-box; 
+    width:298px;
     margin-top: 16px;
     margin-left: 20px;
     margin-right: 54px;
@@ -74,6 +76,7 @@ bd-detailchart{
     width: 10px;
 
 }
+
 
 
 /* sunburst */
