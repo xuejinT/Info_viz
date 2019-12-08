@@ -24,15 +24,17 @@ document.getElementById("bd-date").innerHTML = document.getElementById("slider")
 
 function breakdown_click()
 {
-
-    bd_isClick = !bd_isClick;
-    console.log("breakdown btn clicked");
-
+    $("#indiV").css("display", "none");
+    bd_isClick =$("#breakdownbutton").text()=="View Breakdown";
+    // bd_isClick = !bd_isClick;
+        console.log("breakdown btn clicked");
     if (bd_isClick == true){
+        $("#breakdownbutton").text("Hide Breakdown");
         bd_checkCategory();
         bd_sortfunc();
         document.getElementById("breakdownSection").style.display = "block";
     } else {
+        $("#breakdownbutton").text("View Breakdown");
         document.getElementById("breakdownSection").style.display = "none";
     }
     

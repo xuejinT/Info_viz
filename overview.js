@@ -22,6 +22,10 @@ uc_02.change = function(value, item) {
     console.log('change', value);
     tag_change(value);
 };
+
+$.getJSON("./data/sim_final_min.json", function(data) {
+    similarity = data; //json output 
+});
 var filter = localStorage.getItem("filter");
 var tag = localStorage.getItem("tag");
 
@@ -60,8 +64,7 @@ var colorMap = {
 var svg = d3.select('svg');
 var curr_y = "views";
 var highlighted_id = ""
-    // Original lab3 codes
-    // Create x-scale for positioning the circles
+var sim_video_id = ""
 var radius = 3;
 var xScale = d3.scaleTime()
     .range([100, 1000]).nice();
@@ -213,14 +216,14 @@ d3.dsv('\\', './data/US_final.csv').then(function(data) {
         // .call(d3.zoom().on("zoom", zoom));
 
     var zoom_rect_left = svg.append("rect")
-    	.attr("class", "rect-zoom")
+        .attr("class", "rect-zoom")
         .attr("x", 30)
         .attr("y", 50)
         .attr("opacity", 0)
         .attr("width", 60)
         .attr("height", 500)
     var zoom_rect_right = svg.append("rect")
-    .attr("class", "rect-zoom")
+        .attr("class", "rect-zoom")
         .attr("x", 1020)
         .attr("y", 50)
         .attr("opacity", 0)
@@ -292,6 +295,11 @@ function updateBrush() {
     var brushedNodes = new Set();
     // if we have no selection, just reset the brush highlight to no nodes
     if (!selection) {
+    	g.selectAll('.video-clicked,.video-hovered,.video-similar').attr('class', 'video');
+    	svg.selectAll('.line').remove();
+    	$("#indiV").css("display", "none");
+    	$("#similarbutton").attr('disabled','disabled')
+    	highlighted_id = "";
         highlightBrushed(brushedNodes);
         return;
     }
@@ -334,9 +342,9 @@ function updateBrush() {
 }
 
 function highlightBrushed(brushedNodes) {
+
     // console.log(brushedNodes)
-    g.selectAll('.video-clicked,.video-hovered').attr('class', 'video');
-    svg.selectAll('.line').remove();
+
     if (brushedNodes.size <= 1) {
         $("#dashboardbutton").attr('disabled', 'disabled');
     } else {
@@ -475,12 +483,16 @@ function reset_all_circles(curr_element) {
 
 //highlight one video
 function highlight_single_video() {
+	if(highlighted_id!=""){
+		$("#similarbutton").removeAttr('disabled')
+	}
+	
     svg.selectAll(".brush").call(brush.move, [
         [0, 0],
         [1, 1]
     ])
     svg.selectAll('.line').remove();
-    g.selectAll('.video-clicked,video-hovered,brushed').attr('class', "video");
+    g.selectAll('.video-clicked,video-hovered,brushed,.video-similar').attr('class', "video");
 
     g.selectAll('circle')
         .filter(function(d, i) {
@@ -489,6 +501,45 @@ function highlight_single_video() {
         .moveToFront()
         .attr("class", "video-clicked");
     connect_dots();
+    
+}
+
+function showSimilar() {
+    $("#indiV").css("display", "");
+    $("#breakdownSection").css("display", "none");
+    $("#breakdownbutton").text("View Breakdown");
+    sim_ids = similarity[highlighted_id];
+    var i = 0;
+    var base_video = all_videos.find(o => o.video_id === highlighted_id)
+    $("#selectedV").attr("src", base_video.thumbnail_link);
+    $("#selectedT").text(base_video.title);
+    $("#selectedU").text(base_video.channel_title);
+    $("#selectedV-link").attr("href",base_video.video_url);
+
+    Object.keys(sim_ids).forEach(key => {
+        curr_sim_video = all_videos.find(o => o.video_id === key);
+        $("#s" + i + "img").attr("src", curr_sim_video.thumbnail_link);
+        $("#svtitle" + i).text(curr_sim_video.title);
+        $("#svuploader" + i).text(curr_sim_video.channel_title);
+        $("#svlink" + i).attr("href", curr_sim_video.video_url);
+        $("#s" + i).attr("name", curr_sim_video.video_id);
+        i++;
+    });
+
+}
+
+function highlightSim(div) {
+    sim_video_id = div.getAttribute("name");
+
+    svg.selectAll(".video-similar")
+        .attr("class", "video")
+
+    svg.selectAll("circle")
+        .filter(function(d) {
+            return d.video_id === sim_video_id;
+        })
+        .attr("class", "video-similar")
+        .moveToFront()
 }
 
 function highlight_single_video_tagchange() {
@@ -541,20 +592,26 @@ function checkBox_update() {
     c4_lif = document.getElementById("c4").checked;
     c5_new = document.getElementById("c5").checked;
     c6_tec = document.getElementById("c6").checked;
-    if (c1_act || c2_edu || c3_ent || c4_lif || c5_new || c6_tec) {
-        $("#all").removeAttr("checked");
+    console.log(c1_act,c2_edu,c3_ent,c4_lif,c5_new,c6_tec)
+    if (c1_act==false || c2_edu==false || c3_ent==false || c4_lif==false || c5_new==false || c6_tec==false) {
+    	console.log("not all ")
+        document.getElementById("all").checked = false;
+    }else if(c1_act && c2_edu && c3_ent && c4_lif && c5_new && c6_tec){
+    	console.log("all")
+    	document.getElementById("all").checked = true;
     }
-    all = document.getElementById("all").checked;
+    var all = document.getElementById("all").checked;
     update_plot("cluster_filter", [c1_act, c2_edu, c3_ent, c4_lif, c5_new, c6_tec, all]);
 }
 
 function checkBox_update_all() {
-    document.getElementById("c1").checked = false;
-    document.getElementById("c2").checked = false;
-    document.getElementById("c3").checked = false;
-    document.getElementById("c4").checked = false;
-    document.getElementById("c5").checked = false;
-    document.getElementById("c6").checked = false;
+	var all = document.getElementById("all").checked;
+    document.getElementById("c1").checked = all;
+    document.getElementById("c2").checked = all;
+    document.getElementById("c3").checked = all;
+    document.getElementById("c4").checked = all;
+    document.getElementById("c5").checked = all;
+    document.getElementById("c6").checked = all;
     // $("#c1").css("background-color","")
     checkBox_update();
 }
@@ -565,9 +622,11 @@ function reload() {
         [0, 0],
         [1, 1]
     ])
+    $("#indiV").css("display", "none");
     $(".selected").removeClass("selected");
     $("li[title='view']").addClass("selected");
     highlighted_id = "";
+    $("#similarbutton").attr('disabled','disabled')
     curr_y = "views";
     document.getElementById("c1").checked = false;
     document.getElementById("c2").checked = false;
@@ -588,22 +647,12 @@ function update_plot(caller, args) {
             return related(d, keyword);
         });
     } else if (caller === "detail_page") {
-        if (filter != "none" && tag != "none") {
+        if (filter != "none"|| tag != "none") {
             videos = all_videos.filter(function(d) {
-                return d.category_name === filter && related(d, tag);
+                return d.category_name === filter || related(d, tag);
             })
             $("#all").removeAttr("checked");
-        } else if (filter != "none") {
-            videos = all_videos.filter(function(d) {
-                return d.category_name;
-            })
-            $("#all").removeAttr("checked");
-        } else if (tag != "none") {
-            videos = all_videos.filter(function(d) {
-                return related(d, tag);
-            })
-            $("#all").removeAttr("checked");
-        }
+        } 
         //clear localStorage
         localStorage.clear();
     } else if (caller === "cluster_filter") {
@@ -611,9 +660,10 @@ function update_plot(caller, args) {
         args.forEach(function(item, i) {
             if (i < 6 && item) {
                 checked_category.push(cluster_map[i]);
-            } else if (i == 6 && item) {
-                checked_category = ["Activism", "Education", "Entertainment", "Lifestyle", "News", "Technology"]
-            }
+            } 
+            // else if (i == 6 && item) {
+            //     checked_category = ["Activism", "Education", "Entertainment", "Lifestyle", "News", "Technology"]
+            // }
         });
         console.log(checked_category);
         videos = all_videos.filter(function(d) {
@@ -631,6 +681,7 @@ function update_plot(caller, args) {
     }
 
     if (videos.length > 0) {
+
         var num_videos = d3.nest()
             .key(function(d) {
                 return d.video_id;
@@ -664,9 +715,14 @@ function update_plot(caller, args) {
             var brushedNodes = new Set();
             // if we have no selection, just reset the brush highlight to no nodes
             if (!selection) {
-                highlightBrushed(brushedNodes);
-                return;
-            }
+    	g.selectAll('.video-clicked,.video-hovered,.video-similar').attr('class', 'video');
+    	svg.selectAll('.line').remove();
+    	$("#indiV").css("display", "none");
+    	$("#similarbutton").attr('disabled','disabled')
+    	highlighted_id = "";
+        highlightBrushed(brushedNodes);
+        return;
+    }
 
             // begin an array to collect the brushed nodes
 
@@ -873,7 +929,17 @@ function update_plot(caller, args) {
         g.selectAll('circle').remove();
     }
 
+
     highlight_single_video();
+        svg.selectAll("circle")
+        .filter(function(d) {
+        	if(d.video_id === sim_video_id){
+        		console.log(1)
+        	}
+            return d.video_id === sim_video_id;
+        })
+        .attr("class", "video-similar")
+        .moveToFront();
 }
 
 //Press Enter to Search

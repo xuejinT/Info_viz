@@ -1,0 +1,77 @@
+
+#indiV{
+
+	margin-top:50px;
+	margin-bottom:50px;
+	display:inline-block;
+	height: auto;
+	width:1104px;
+	background-color: #282828;
+	border-radius: 5px;
+	padding: 12px 0px 10px 40px;
+}
+
+#similarVideos{
+	margin-bottom: 50px;
+}
+
+
+#titleL{
+	margin-top: 8px ;
+	margin-bottom: 20px;
+	color: #3ea6ff;
+}
+
+.sV{
+	height:80px;
+	margin-top: 10px;
+	margin-bottom: 30px;
+	display:inline-block;
+	margin-right:37px;
+}
+
+.sImgDiv{
+
+	width: 123px;
+/*	float: left;
+*/	margin-right: 24px;
+	margin-bottom:15px;
+}
+
+.sImg{
+	height: 80px;
+	width: 123px;
+}
+
+.svTitle{
+	color: white;
+	margin-bottom: 8px;
+	width:180px;
+}
+
+.svUploader{
+	font-size: 12px;
+}
+
+.tags{
+	height:24px;
+	list-style: none;
+	padding: 0px;
+}
+
+.tags li{
+	float:left;
+	height:24px;
+	padding-top:2px;
+	padding-left: 10px;
+	padding-right:10px;
+	background-color: #1e1e1e;
+	margin-right: 10px;
+	border-radius: 5px;
+}
+
+.ranking{
+	font-size: 12px;
+	color:#3ea6ff;
+	margin-bottom:2px;
+}

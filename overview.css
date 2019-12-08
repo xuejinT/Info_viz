@@ -1,4 +1,7 @@
 /* overview */
+.main{
+  margin-bottom: 50px;
+}
 .head{
   margin-left: 35px;
 }
@@ -77,14 +80,14 @@
 
 .filter{
     width: 1140px;
-    height:176px;
+    height:200px;
     background-color: #282828;
     border-radius: 5px;
     margin-top: 24px;
 }
 
 .category, .timerange{
-    width:360px;
+    width:320px;
     height: 144px;
     float:left;
     margin-top: 16px;
@@ -94,7 +97,7 @@
 }
 
 .viewbreakdown{
-    width:240px;
+    width:370px;
     height: 144px;
     float:left;
     margin-top: 16px;
@@ -236,11 +239,11 @@ button:focus{
 
 
 .video-clicked{
-  fill:#FF5A5F;
+  fill:#FF0100;
   opacity:1
 }
 .video-hovered{
-  fill:#FF5A5F;
+  fill:#FF0100;
   opacity:0.5
 }
 .video{
@@ -252,6 +255,11 @@ button:focus{
   fill: rgb(128, 168, 180);
   opacity: 0.5;
   display: none;
+}
+
+.video-similar{
+    fill:#ffd271;
+    opacity:1
 }
 
 .brushed{
@@ -304,4 +312,6 @@ button:focus{
     }
 }
 
-
+.highlightI{
+  margin-top: 10px;
+}
