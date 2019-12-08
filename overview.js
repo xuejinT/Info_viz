@@ -624,6 +624,7 @@ function reset_zoom(){
         [0, 0],
         [1, 1]
     ])
+	svg.selectAll(".video-similar").attr("class","video")
     $("#indiV").css("display", "none");
     $(".selected").removeClass("selected");
     $("li[data-value='"+curr_y+"']").addClass("selected");
@@ -635,6 +636,7 @@ function reload() {
         [0, 0],
         [1, 1]
     ])
+    svg.selectAll(".video-similar").attr("class","video")
     $("#indiV").css("display", "none");
     $(".selected").removeClass("selected");
     $("li[data-value='views']").addClass("selected");
